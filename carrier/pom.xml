@@ -95,7 +95,7 @@
 						</goals>
 						<configuration>
 							<sources>
-								<source>../../model/generated-sources/annotations</source>
+								<source>${project.build.directory}/../../model/target/generated-sources/annotations</source>
 							</sources>
 						</configuration>
 					</execution>
