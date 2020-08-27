@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -11,8 +12,8 @@
 	<groupId>kr.co.teamfresh.cpft</groupId>
 	<artifactId>kr.co.teamfresh.cpft.multimodule</artifactId>
 	<version>0.0.1</version>
-    <packaging>pom</packaging>
-    <name>Parent cpft - Pom Aggregator</name>
+	<packaging>pom</packaging>
+	<name>Parent cpft - Pom Aggregator</name>
 	<description>cpft multimodule project</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -21,7 +22,7 @@
 		<frontend-maven-plugin.version>1.6</frontend-maven-plugin.version>
 		<node.version>v10.13.0</node.version>
 		<yarn.version>v1.12.1</yarn.version>
-        <spring-boot.repackage.skip>true</spring-boot.repackage.skip>
+		<spring-boot.repackage.skip>true</spring-boot.repackage.skip>
 	</properties>
 
 	<modules>
@@ -48,28 +49,59 @@
 			</exclusions>
 		</dependency>
 	</dependencies>
-	
-	
+
+
 	<build>
 		<plugins>
-			<plugin>
-			    <groupId>org.codehaus.mojo</groupId>
-			    <artifactId>build-helper-maven-plugin</artifactId>
-			    <executions>
-			        <execution>
-			            <id>add-source</id>
-						<phase>generate-sources</phase>
-			            <goals>
-			                <goal>add-source</goal>
-			            </goals>
-			            <configuration>
-			                <sources>
-			                    <source>${project.build.directory}/generated-sources/annotations/</source>
-			                </sources>
-			            </configuration>
-			        </execution>
-			    </executions>
-			 </plugin>
+		<plugin>
+    <groupId>org.bsc.maven</groupId>
+    <artifactId>maven-processor-plugin</artifactId>
+				<version>4.2-jdk8</version>
+    
+    <executions>
+        <execution>
+            <id>process</id>
+            <goals>
+                <goal>process</goal>
+            </goals>
+            <phase>generate-sources</phase>
+            <configuration>
+                <!-- source output directory -->
+                <outputDirectory>${project.build.directory}/generated-sources/annotations</outputDirectory>
+                <processors>
+                    <processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</processor>
+                </processors>
+                <overwrite>true</overwrite>
+            </configuration>
+        </execution>
+    </executions>
+				<dependencies>
+					<dependency>
+						<groupId>org.hibernate</groupId>
+						<artifactId>hibernate-jpamodelgen</artifactId>
+						<version>5.4.15.Final</version>
+					</dependency>
+				</dependencies>
+</plugin>
+<plugin>
+    <groupId>org.codehaus.mojo</groupId>
+    <artifactId>build-helper-maven-plugin</artifactId>
+    <executions>
+        <execution>
+            <id>add-source</id>
+            <phase>generate-sources</phase>
+            <goals>
+                <goal>add-source</goal>
+            </goals>
+            <configuration>
+                <sources>
+                    <source>${project.build.directory}/generated-sources/annotations</source>
+                </sources>
+            </configuration>
+        </execution>
+    </executions>
+ </plugin>
+		<!-- 
 			<plugin>
 				<groupId>org.bsc.maven</groupId>
 				<artifactId>maven-processor-plugin</artifactId>
@@ -80,13 +112,13 @@
 						<goals>
 							<goal>process</goal>
 						</goals>
-						<phase>generate-sources</phase>
+            <phase>generate-sources</phase>
 						<configuration>
 							<outputDirectory>${project.build.directory}/generated-sources/annotations/</outputDirectory>
-							<compilerArguments>-AaddGeneratedAnnotation=false</compilerArguments>
 							<processors>
 								<processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</processor>
 							</processors>
+							<overwrite>true</overwrite>
 						</configuration>
 					</execution>
 				</executions>
@@ -99,12 +131,52 @@
 				</dependencies>
 			</plugin>
 			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>add-source</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>${project.build.directory}/generated-sources/annotations/</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin> -->
+			<!-- <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+				<inherited>true</inherited>
+				<executions>
+					<execution>
+						<id>default-compile</id>
+						<inherited>true</inherited>
+						<configuration>
+							limit first compilation run to processor
+							<includes>
+								<include>${project.build.directory}/classes/*</include>
+								<include>${project.build.directory}/generated-sources/annotations/*</include>
+							</includes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
 					<includeSystemScope>true</includeSystemScope>
 				</configuration>
-			</plugin>
+			</plugin> -->
 		</plugins>
 	</build>
 </project>
