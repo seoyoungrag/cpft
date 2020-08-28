@@ -7,6 +7,7 @@
 		<groupId>kr.co.teamfresh.cpft</groupId>
 		<artifactId>kr.co.teamfresh.cpft.multimodule</artifactId>
 		<version>0.0.1</version>
+		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<artifactId>kr.co.teamfresh.cpft.carrier</artifactId>
 	<name>Project Module - Carrier</name>
@@ -19,12 +20,42 @@
 		<frontend-maven-plugin.version>1.6</frontend-maven-plugin.version>
 		<node.version>v10.13.0</node.version>
 		<yarn.version>v1.12.1</yarn.version>
+        <start-class>kr.co.teamfresh.cpft.carrier.web.backend.CarrierBackendApplication</start-class>
 	</properties>
 
 	<dependencies>
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.junit.vintage</groupId>
+					<artifactId>junit-vintage-engine</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+      <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+		<dependency>
 			<groupId>kr.co.teamfresh.cpft</groupId>
-			<artifactId>com.baroservice</artifactId>
+			<artifactId>kr.co.teamfresh.cpft.baroservice</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
@@ -126,7 +157,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
                     <fork>true</fork>
-                    <mainClass>${start-class}</mainClass>
+                    <mainClass>kr.co.teamfresh.cpft.carrier.web.backend.CarrierBackendApplication</mainClass>
 					<includeSystemScope>true</includeSystemScope>
 				</configuration>
                   <executions>
@@ -141,7 +172,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 			</plugin>
-			<plugin>
+			<!-- <plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<configuration>
@@ -163,7 +194,7 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin> -->
 		</plugins>
 	</build>
 

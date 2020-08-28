@@ -7,6 +7,7 @@
 		<groupId>kr.co.teamfresh.cpft</groupId>
 		<artifactId>kr.co.teamfresh.cpft.multimodule</artifactId>
 		<version>0.0.1</version>
+		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<artifactId>kr.co.teamfresh.cpft.repository</artifactId>
 	<packaging>jar</packaging>
@@ -17,7 +18,6 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-        <spring-boot.repackage.skip>true</spring-boot.repackage.skip>
     </properties>
     
 	<dependencies>

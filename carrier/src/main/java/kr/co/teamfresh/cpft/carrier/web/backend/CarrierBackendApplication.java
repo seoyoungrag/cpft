@@ -3,6 +3,8 @@ package kr.co.teamfresh.cpft.carrier.web.backend;
 import java.net.MalformedURLException;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.cache.annotation.EnableCaching;
@@ -16,12 +18,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.baroservice.api.BarobillApiProfile;
 import com.baroservice.api.BarobillApiService;
 
+@SpringBootConfiguration
 @EnableCaching
 @EntityScan("kr.co.teamfresh.cpft.model.entity")
 @EnableJpaRepositories("kr.co.teamfresh.cpft.repository")
-@ComponentScan({"kr.co.teamfresh.cpft.common", "kr.co.teamfresh.cpft.carrier"})
+@ComponentScan({"kr.co.teamfresh.cpft"})
 @EnableJpaAuditing
 @SpringBootApplication
+@EnableAutoConfiguration
 public class CarrierBackendApplication {
 
 	public static void main(String[] args) {
