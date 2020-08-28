@@ -1,0 +1,114 @@
+/*! CSS Used from: https://themes.startbootstrap.com/sb-admin-pro/css/styles.css */
+@media (prefers-reduced-motion: reduce) {
+ .form-control {
+  -webkit-transition: none;
+  transition: none;
+ }
+}
+.form-control::-ms-expand {
+ background-color: transparent;
+ border: 0;
+}
+.form-control:-moz-focusring {
+ color: transparent;
+ text-shadow: 0 0 0 #687281;
+}
+.form-control:focus {
+ color: #687281;
+ background-color: #fff;
+ border-color: #0061f2;
+ outline: 0;
+ box-shadow: 0 0 0 0.0625rem #0061f2;
+}
+.form-control::-webkit-input-placeholder {
+ color: #687281;
+ opacity: 1;
+}
+.form-control::-moz-placeholder {
+ color: #687281;
+ opacity: 1;
+}
+.form-control:-ms-input-placeholder {
+ color: #687281;
+ opacity: 1;
+}
+.form-control::-ms-input-placeholder {
+ color: #687281;
+ opacity: 1;
+}
+.form-control::placeholder {
+ color: #687281;
+ opacity: 1;
+}
+.form-control:disabled {
+ background-color: #e3e6ec;
+ opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+ .btn {
+  -webkit-transition: none;
+  transition: none;
+ }
+}
+.btn:hover {
+ color: #687281;
+ text-decoration: none;
+}
+.btn:focus {
+ outline: 0;
+ box-shadow: 0 0 0 0.2rem rgba(0, 97, 242, 0.25);
+}
+.btn:disabled {
+ opacity: 0.65;
+}
+.btn-primary:hover {
+ color: #fff;
+ background-color: #0052cc;
+ border-color: #004dbf;
+}
+.btn-primary:focus {
+ color: #fff;
+ background-color: #0052cc;
+ border-color: #004dbf;
+ box-shadow: 0 0 0 0.2rem rgba(38, 121, 244, 0.5);
+}
+.btn-primary:disabled {
+ color: #fff;
+ background-color: #0061f2;
+ border-color: #0061f2;
+}
+@media print {
+ *,
+ *::before,
+ *::after {
+  text-shadow: none !important;
+  box-shadow: none !important;
+ }
+ a:not(.btn) {
+  text-decoration: underline;
+ }
+ h3 {
+  orphans: 3;
+  widows: 3;
+ }
+ h3 {
+  page-break-after: avoid;
+ }
+ .container {
+  min-width: 992px !important;
+ }
+}
+
+/*! CSS Used from: https://jsfiddle.net/css/dist-session.css?fc7b59b5dd7cab298927d3310be1b86d6bb01b3f */
+::-webkit-input-placeholder {
+ color: #8d8f91;
+}
+:-moz-placeholder {
+ color: #8d8f91;
+}
+::-moz-placeholder {
+ color: #8d8f91;
+}
+:-ms-input-placeholder {
+ color: #8d8f91;
+}

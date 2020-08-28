@@ -1,0 +1,64 @@
+.header {
+ background: #7950f2;
+ height: 5rem;
+ display: flex;
+ align-items: center;
+}
+.header .logo {
+ color: white;
+
+ font-weight: 800;
+ font-size: 1.5rem;
+
+ cursor: pointer;
+
+ margin-left: 1rem;
+
+ user-select: none;
+}
+
+.header .logout {
+ margin-left: auto;
+ margin-right: 1rem;
+ color: white;
+
+ font-weight: 800;
+ font-size: 2rem;
+
+ cursor: pointer;
+}
+
+/*! CSS Used from: https://blackrockdigital.github.io/startbootstrap-sb-admin-2/css/sb-admin-2.min.css */
+[tabindex="-1"]:focus {
+ outline: 0 !important;
+}
+[type="button"]::-moz-focus-inner,
+button::-moz-focus-inner {
+ padding: 0;
+ border-style: none;
+}
+@media (prefers-reduced-motion: reduce) {
+ .fade {
+  transition: none;
+ }
+}
+.modal-open .modal {
+ overflow-x: hidden;
+ overflow-y: auto;
+}
+@media (prefers-reduced-motion: reduce) {
+ .modal.fade .modal-dialog {
+  transition: none;
+ }
+}
+@media print {
+ *,
+ ::after,
+ ::before {
+  text-shadow: none !important;
+  box-shadow: none !important;
+ }
+}
+a:focus {
+ outline: 0;
+}

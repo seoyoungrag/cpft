@@ -1,0 +1,47 @@
+server:
+  port: 19101
+logging:
+  file:
+    max-history: 7
+    path: /logs/cpft_admin_web
+  level:
+    root: info
+    kr.co.teamfresh.cpft.admin.web.backend: debug
+    org.hibernate:
+      sql: debug
+#      type.descriptor.sql: trace
+    com.zaxxer.hikari: info
+    com.baroservice: trace
+    javax.jws: trace
+    org.springframework.ws.server.MessageTracing: trace
+    org.springframework.ws: trace
+    org.springframework.cache: trace
+    com.sun.xml.ws.transport.http.client.HttpTransportPipe: debug
+    org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod: debug
+    org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver: debug
+    #org.hibernate.resource.jdbc.internal.ResourceRegistryStandardImpl: trace
+    org.hibernate.type.descriptor.sql.BasicExtractor: debug
+spring:
+  profiles: prod
+  redis:
+    host: localhost
+    port: 6379
+  datasource:
+    url: jdbc:oracle:thin:@100.100.100.31:1521/cdb1
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    username: admin
+    password: Timf180525
+    hikari:
+      pool-name: hikari-cp
+      maximum-pool-size: 30
+      minimum-idle: 2
+  jpa:
+    database-platform: org.hibernate.dialect.Oracle12cDialect
+    hibernate:
+      ddl-auto: create-drop
+      naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    showSql: false
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true
+        

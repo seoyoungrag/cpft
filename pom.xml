@@ -28,6 +28,7 @@
 		<module>repository</module>
 		<module>common</module>
 		<module>carrier</module>
+		<module>admin</module>
   </modules>
 
 </project>
