@@ -18,7 +18,7 @@ function TruckOwnerInfo(props) {
         $("#truckOwnerInfoList").DataTable({
             serverSide: false,
             processing: true,
-            responsice: true,
+            responsive: true,
             autoWidth: false,
             width: "100%",
             ordering: false,
@@ -133,6 +133,7 @@ function TruckOwnerInfo(props) {
                                     cellSpacing="0"
                                     role="grid"
                                     aria-describedby="dataTable_info"
+                                    style={{ textAlign: "center" }}
                                 />
                             </div>
                         </div>

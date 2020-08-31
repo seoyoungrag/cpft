@@ -14,11 +14,11 @@ function TruckOwnerInfoDetail(props) {
 
     useEffect(() => {
         console.log("컴포넌트 마운트");
-        
+         
         return () => {
             console.log("컴포넌트 언마운트");
         }
-    }, []);
+    }, []); 
 
     // inputs
     const [inputs, setInputs] = useState({
