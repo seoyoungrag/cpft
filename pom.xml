@@ -23,7 +23,6 @@
 	</properties>
 
 	<modules>
-		<module>baroservice</module>
 		<module>model</module>
 		<module>repository</module>
 		<module>common</module>
