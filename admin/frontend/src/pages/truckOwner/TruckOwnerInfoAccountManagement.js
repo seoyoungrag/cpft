@@ -35,7 +35,7 @@ function TruckOwnerInfoAccountManagement(props) {
             ...inputs,
             [e.target.name]: e.target.value
         })
-    }
+    };
 
     return (
         <Fragment>

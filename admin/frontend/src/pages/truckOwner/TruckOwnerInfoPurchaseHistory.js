@@ -18,7 +18,7 @@ function TruckOwnerInfoPurchaseHistory(props) {
         $("#purchaseHistoryList").DataTable({
             serverSide: false,
             processing: true,
-            responsice: true,
+            responsive: true,
             autoWidth: false,
             width: "100%",
             ordering: false,
@@ -49,15 +49,12 @@ function TruckOwnerInfoPurchaseHistory(props) {
             ],
             columns: [
                 { title: "no.", data: null },
-                { title: "운송사", data: "carrierNm" },
-                { title: "이름", data: "userNm" },
-                { title: "코드", data: null },
-                { title: "가입 상태", data: null },
-                { title: "사업자 정보", data: "crqfcs.2" },
-                { title: "자격 정보", data: "crqfcs.1" },
-                { title: "차량등록 정보", data: "crqfcs.0" },
-                { title: "결제 정보", data: null },
-                { title: "근무 여부", data: null }
+                { title: "구매상품 종류", data: "carrierNm" },
+                { title: "구매일", data: "userNm" },
+                { title: "판매코드", data: null },
+                { title: "구매금액", data: null },
+                { title: "지불금액", data: "crqfcs.2" },
+                { title: "미수금액", data: "crqfcs.1" },
             ],
             createdRow: function (row, data) {
                 $(row).attr("id", data.userSeq);
@@ -70,8 +67,65 @@ function TruckOwnerInfoPurchaseHistory(props) {
         }
     }, []);
 
+    // 검색옵션, 날짜옵션
+    const [ inputs, setInputs ] = useState({
+        searchOption: "-",
+        startDate: "-",
+        endDate: "-"
+    });
+
+    const { searchOption, startDate, endDate } = inputs;
+
+    const handleChange = (e) => {
+        setInputs({
+            ...inputs,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    const handleClick = () => {
+        console.log("조회 버튼 클릭");
+    }
+
     return (
         <Fragment>
+            <div className="card-header row">
+                <div className="col-12 row mt-3">
+                    <div className="col-3">
+                        <div className="d-flex justify-content-start">
+                            <select id="searchOption" name="searchOption" onChange={handleChange}>
+                                <option value="all">전체</option>
+                                <option value="taxBill">세금계산서 발급</option>
+                                <option value="fee">매칭수수료</option>
+                                <option value="ins">보험</option>
+                                <option value="direct">바로입금</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div className="col-5 d-flex justify-content-center">
+                    </div>
+                    <div className="form-group row col-4 d-flex justify-content-end m-auto p-auto">
+                        <input
+                            className="form-control datepicker col-3"
+                            id="startDate"
+                            name="startDate"
+                            type="text"
+                            placeholder="2020-01-01"
+                            onChange={handleChange}
+                        />
+                        <label className="col-form-label ml-3 mr-3">~</label>
+                        <input
+                            className="form-control datepicker col-3"
+                            id="endDate"
+                            name="endDate"
+                            type="text"
+                            placeholder="2020-12-31"
+                            onChange={handleChange}
+                        />
+                        <button className="btn btn-info ml-5" onClick={handleClick}>조회</button>
+                    </div>
+                </div>
+            </div>
             <div className="form-row my-2 mb-3">
                 <div className="datatable table-responsive">
                     <table
@@ -81,6 +135,7 @@ function TruckOwnerInfoPurchaseHistory(props) {
                         cellSpacing="0"
                         role="grid"
                         aria-describedby="dataTable_info"
+                        style={{ textAlign: "center" }}
                     />
                 </div>
             </div>

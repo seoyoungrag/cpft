@@ -13,10 +13,11 @@ function TruckOwnerInfoTransferHistory(props) {
     useEffect(() => {
         console.log("컴포넌트 마운트");
         
+        // 고정
         $("#fixedTransferList").DataTable({
             serverSide: false,
             processing: true,
-            responsice: true,
+            responsive: true,
             autoWidth: false,
             width: "100%",
             ordering: false,
@@ -47,21 +48,17 @@ function TruckOwnerInfoTransferHistory(props) {
             ],
             columns: [
                 { title: "no.", data: null },
-                { title: "운송사", data: "carrierNm" },
-                { title: "이름", data: "userNm" },
-                { title: "코드", data: null },
-                { title: "가입 상태", data: null },
-                { title: "사업자 정보", data: "crqfcs.2" },
-                { title: "자격 정보", data: "crqfcs.1" },
-                { title: "차량등록 정보", data: "crqfcs.0" },
-                { title: "결제 정보", data: null },
-                { title: "근무 여부", data: null }
+                { title: "운송사", data: "팀프레시" },
+                { title: "계약일", data: "2020/08/13" },
+                { title: "계약종료일", data: "2020/09/30" },
+                { title: "운송상태", data: "근무중" }
             ],
             createdRow: function (row, data) {
                 $(row).attr("id", data.userSeq);
             }
         });
 
+        // 단기
         $("#shortTermTransferList").DataTable({
             serverSide: false,
             processing: true,
@@ -95,20 +92,21 @@ function TruckOwnerInfoTransferHistory(props) {
                 }
             ],
             columns: [
-                { title: "no.", data: null },
-                { title: "운송사", data: "carrierNm" },
-                { title: "이름", data: "userNm" },
-                { title: "코드", data: null },
-                { title: "가입 상태", data: null },
-                { title: "사업자 정보", data: "crqfcs.2" },
-                { title: "자격 정보", data: "crqfcs.1" },
-                { title: "차량등록 정보", data: "crqfcs.0" },
-                { title: "결제 정보", data: null },
-                { title: "근무 여부", data: null }
+                { data: null },
+                { data: "팀프레시", name: "rowSpan"},
+                { data: "userNm" },
+                { data: null },
+                { data: null },
+                { data: "crqfcs.2" },
+                { data: null },
+                { data: null }
             ],
             createdRow: function (row, data) {
                 $(row).attr("id", data.userSeq);
-            }
+            },
+            rowsGroup: [
+                "rowSpan:name"
+            ]
         });
 
         return () => {
@@ -147,7 +145,7 @@ function TruckOwnerInfoTransferHistory(props) {
     return (
         <Fragment>
             <div className="form-row my-2 mb-3">
-                <div className="transferHistoryArea">
+                <div className="transferHistoryArea" style={{ width: "100%" }}>
                     <h4><b>운송내역</b></h4>
                     <div className="card-header card-header-tabs card-header-primary pb-0">
                         <div className="nav-tabs-navigation">
@@ -155,7 +153,7 @@ function TruckOwnerInfoTransferHistory(props) {
                                 <ul className="nav nav-tabs" data-tabs="tabs">
                                     <li className="nav-item">
                                         <a
-                                            className="nav-link d-flex align-items-center active"
+                                            className="nav-link d-flex align-items-center"
                                             href="#fixed"
                                             data-toggle="tab"
                                         >
@@ -189,6 +187,7 @@ function TruckOwnerInfoTransferHistory(props) {
                                             cellSpacing="0"
                                             role="grid"
                                             aria-describedby="dataTable_info"
+                                            style={{ textAlign: "center" }}
                                         />
                                     </div>
                                 </div>
@@ -203,7 +202,25 @@ function TruckOwnerInfoTransferHistory(props) {
                                             cellSpacing="0"
                                             role="grid"
                                             aria-describedby="dataTable_info"
-                                        />
+                                            style={{ textAlign: "center" }}
+                                        >
+                                            <thead>
+                                                <tr>
+                                                    <th rowspan="2" style={{ width: "1rem", verticalAlign: "middle" }}>No.</th>
+                                                    <th rowspan="2" style={{ width: "5rem", verticalAlign: "middle" }}>운송사</th>
+                                                    <th rowspan="2" style={{ width: "5rem", verticalAlign: "middle" }}>매칭일</th>
+                                                    <th colspan="2" style={{ width: "6rem" }}>상차</th>
+                                                    <th colspan="2" style={{ width: "6rem" }}>하차</th>
+                                                    <th rowspan="2" style={{ width: "5rem", verticalAlign: "middle" }}>운송상태</th>
+                                                </tr>
+                                                <tr>
+                                                    <th style={{ width: "3rem" }}>상차일</th>
+                                                    <th style={{ width: "3rem" }}>출발지</th>
+                                                    <th style={{ width: "3rem" }}>하차일</th>
+                                                    <th style={{ width: "3rem" }}>도착지</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
