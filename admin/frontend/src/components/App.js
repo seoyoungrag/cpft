@@ -83,7 +83,7 @@ class App extends React.Component {
                         <Route exact path="/dtStmn/list" component={DtStmnList} />
                         <Route exact path="/elctrnTaxBill/list" component={ElctrnTaxBill} />
                         <Route exact path="/dashboard/dashboard" component={DashBoard} />
-                        <Route exact path="/calculate/transpoertList" component={TransportList} />
+                        <Route exact path="/calculate/transportList" component={TransportList} />
                         <Route exact path="/calculate/carrierCalc" component={CarrierCalc} />
                         <Route exact path="/calculate/truckOwnerCalc" component={TruckOwnerCalc} />
                         <Route exact path="/carrier/carrierService" component={CarrierService} />
