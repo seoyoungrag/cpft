@@ -10,7 +10,7 @@ function TruckOwnerInfoContainer(props) {
     
     return (
         <MainStructure>
-            <TruckOwnerInfoCommon userSeq={userSeq} array={array} />
+            <TruckOwnerInfoCommon userSeq={userSeq} />
         </MainStructure>
     );
 }
