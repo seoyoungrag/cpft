@@ -29,7 +29,7 @@ import CarOwnerList from "pages/truckOwner/TruckOwnerList";
 import DtStmnList from "pages/truckOwner/DtStmnList";
 import ElctrnTaxBill from "pages/elctrnTaxBill/ElctrnTaxBill";
 import DashBoard from "pages/dashboard/Dashboard";
-import TransportList from "pages/calculate/TranspoertList";
+import TransportList from "pages/calculate/TransportList";
 import CarrierCalc from "pages/calculate/CarrierCalc"
 import TruckOwnerCalc from "pages/calculate/TruckOwnerCalc"
 import CarrierService from "pages/carrier/CarrierService";
