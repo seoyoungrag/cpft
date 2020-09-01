@@ -150,15 +150,34 @@ class SideNav extends Component {
 							<a
 								className="nav-link collapsed"
 								href="#"
+								data-toggle="collapse"
+								data-target="#collapseTwo"
+								aria-expanded="true"
+								aria-controls="collapseTwo"
 								onClick={() => store.handleClick("buttonn2")}
 							>
 								<i className="fas fa-fw fa-krw"></i>
-								<Link className="collapse-item" to="/calculate/carrierCalc">
 								<span>정산관리</span>
-								</Link>
 							</a>
+							<div id="collapseTwo" className="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+								<div className="bg-white py-2 collapse-inner rounded">
+									<h6 className="collapse-header">정산관리</h6>
+
+									<div className="forMobileMenu">
+										<Link className="collapse-item" to="/calculate/transportList">
+											운송료내역
+										</Link>
+										<Link className="collapse-item" to="/calculate/carrierCalc">
+											운송사정산
+										</Link>
+										<Link className="collapse-item" to="/calculate/truckOwnerCalc">
+											차주정산
+										</Link>
+									</div>
+								</div>
+							</div>
 						</li>
-						
+
 						<li className="nav-item" id="button3">
 							<a
 								className="nav-link collapsed"
