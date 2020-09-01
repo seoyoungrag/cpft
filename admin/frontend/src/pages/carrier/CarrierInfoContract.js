@@ -4,11 +4,15 @@ function CarrierInfoContract(props) {
 
     useEffect(() => {
         console.log("컴포넌트 마운트");
-        
+        setData(userSeq-1);
+
         return () => {
             console.log("컴포넌트 언마운트");
         }
     }, []);
+
+    // CarrierInfoCommon에서 가져옴
+    const userSeq = props.userSeq;
 
     // inputs
     const [ inputs, setInputs ] = useState({
@@ -46,6 +50,56 @@ function CarrierInfoContract(props) {
         });
     };
 
+    // 더미 데이터 ---------------------------------------------------------------------
+    const array = [
+        {
+            "serviceYn": "Y",
+            "contractStartDate": "2020/08/11",
+            "contractEndDate": "2022/08/11"
+        },
+        {
+            "serviceYn": "Y",
+            "contractStartDate": "2020/05/21",
+            "contractEndDate": "2020/08/11"
+        },
+        {
+            "serviceYn": "Y",
+            "contractStartDate": "2020/09/11",
+            "contractEndDate": "2021/08/11"
+        },
+    ];
+
+    // 더미 데이터 세팅
+    const setData = (userSeq) => {
+        switch(userSeq) {
+            case 0:
+                setInputs((state) => ({
+                    ...inputs,
+                    serviceYn: array[userSeq].serviceYn,
+                    contractStartDate: array[userSeq].contractStartDate,
+                    contractEndDate: array[userSeq].contractEndDate
+                }));
+                break;
+            case 1:
+                setInputs((state) => ({
+                    ...inputs,
+                    serviceYn: array[userSeq].serviceYn,
+                    contractStartDate: array[userSeq].contractStartDate,
+                    contractEndDate: array[userSeq].contractEndDate
+                }));
+                break;
+            case 2:
+                setInputs((state) => ({
+                    ...inputs,
+                    serviceYn: array[userSeq].serviceYn,
+                    contractStartDate: array[userSeq].contractStartDate,
+                    contractEndDate: array[userSeq].contractEndDate
+                }));
+                break;
+        };
+    };
+    // --------------------------------------------------------------------------------------
+    
     return (
         <Fragment>
             <div className="form-row my-2 mb-3">
@@ -56,15 +110,15 @@ function CarrierInfoContract(props) {
                             <tbody>
                                 <tr>
                                     <td style={{ width: "10rem" }}>서비스 운영 여부</td>
-                                    <td><input type="text" id="serviceYn" name="serviceYn" onChange={handleChange} /></td>
+                                    <td><input type="text" id="serviceYn" name="serviceYn" value={serviceYn} onChange={handleChange} /></td>
                                 </tr>
                                 <tr>
                                     <td style={{ width: "10rem" }}>계약일</td>
-                                    <td><input type="text" id="contractStartDate" name="contractStartDate" onChange={handleChange} /></td>
+                                    <td><input type="text" id="contractStartDate" name="contractStartDate" value={contractStartDate} onChange={handleChange} /></td>
                                 </tr>
                                 <tr>
                                     <td style={{ width: "10rem" }}>계약종료일</td>
-                                    <td><input type="text" id="contractEndDate" name="contractEndDate" onChange={handleChange} /></td>
+                                    <td><input type="text" id="contractEndDate" name="contractEndDate" value={contractEndDate} onChange={handleChange} /></td>
                                 </tr>
                             </tbody>
                         </table>

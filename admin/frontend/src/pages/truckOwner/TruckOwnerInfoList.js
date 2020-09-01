@@ -64,7 +64,7 @@ function TruckOwnerInfoList(props) {
         //     }
         // });
 
-        // 더미 테이블
+        // 더미 테이블 -----------------------------------------------------------
         $("#truckOwnerInfoList").DataTable({
             data: array,
             columns: [
@@ -101,7 +101,7 @@ function TruckOwnerInfoList(props) {
         }
     }, []);
 
-    // 더미 데이터
+    // 더미 데이터 -------------------------------------------------------------
     const array = [
         {
             "ownerName": "갑",
@@ -134,6 +134,7 @@ function TruckOwnerInfoList(props) {
             "workingYn": "X"
         }
     ];
+    // ----------------------------------------------------------------------
 
     // 리스트 클릭 시 페이지 이동
     $(document).on("click", "tbody tr", function () {

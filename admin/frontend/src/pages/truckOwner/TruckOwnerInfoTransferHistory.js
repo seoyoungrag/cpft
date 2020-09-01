@@ -170,9 +170,32 @@ function TruckOwnerInfoTransferHistory(props) {
         }
     }, []);
 
+    // TruckOwnerCommon에서 받아옴
     const userSeq = props.userSeq;
 
-    // 더미 데이터
+    // 데이터 조회
+    // const getData = async () => {
+    //     setIsLoading(true);
+    //     // var userSeq = props.location.state.userSeq;
+    //     var userSeq = props.userSeq;
+    //     var url = "/v1/truckOwner/truckOwnerInfoDetail/";
+    //     var data = null;
+    //     await axios.get(url + userSeq)
+    //         .then(res => {
+    //             data = res.data.data;
+    //             setInputs((state) => ({
+    //                 ...inputs,
+    //                 userName: data.userNm,
+    //                 phoneNumber: data.truckOwner.phone
+    //             }));
+    //         })
+    //         .catch(res => {
+    //             alert("에러가 발생하였습니다 새로고침 후 다시 이용해주세요.");
+    //         });
+    //     setIsLoading(false);
+    // };
+
+    // 더미 데이터 -----------------------------------------------------------------
     const fixedArray = [
         {
             companyName: "팀프레시",
@@ -208,29 +231,7 @@ function TruckOwnerInfoTransferHistory(props) {
             deliveryStatus: "운송종료"
         },
     ];
-
-
-    // 데이터 조회
-    // const getData = async () => {
-    //     setIsLoading(true);
-    //     // var userSeq = props.location.state.userSeq;
-    //     var userSeq = props.userSeq;
-    //     var url = "/v1/truckOwner/truckOwnerInfoDetail/";
-    //     var data = null;
-    //     await axios.get(url + userSeq)
-    //         .then(res => {
-    //             data = res.data.data;
-    //             setInputs((state) => ({
-    //                 ...inputs,
-    //                 userName: data.userNm,
-    //                 phoneNumber: data.truckOwner.phone
-    //             }));
-    //         })
-    //         .catch(res => {
-    //             alert("에러가 발생하였습니다 새로고침 후 다시 이용해주세요.");
-    //         });
-    //     setIsLoading(false);
-    // };
+    // ------------------------------------------------------------------------------
   
     return (
         <Fragment>

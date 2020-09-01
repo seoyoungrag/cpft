@@ -39,6 +39,8 @@ function TruckOwnerInfoAccountManagement(props) {
         });
     };
 
+    // 차주 계정 관리 탭에서는 더미데이터 사용 X - 보여줄 컬럼이 얼마 없으므로...
+
     return (
         <Fragment>
             <div className="form-row my-2 mb-3">

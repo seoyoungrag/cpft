@@ -7,7 +7,6 @@ function CarrierInfoContainer(props) {
 
     const userSeq = props.location.state.userSeq;
     const url = props.location.pathname;
-    console.log(url);
 
     return (
         <MainStructrue>

@@ -14,17 +14,20 @@ import CarrierInfoAccountManagement from "pages/carrier/CarrierInfoAccountManage
 
 function CarrierInfoCommon(props) {
 
-    const userSeq = props.userSeq;
-    // 수정해야함
-    const url = "/v1/truckOwner/truckOwnerInfoDetail/";
-
     useEffect(() => {
         console.log("컴포넌트 마운트");
-
+        setData(userSeq-1);
+        
         return () => {
             console.log("컴포넌트 언마운트");
         }
     }, []);
+
+    // 수정해야함
+    const url = "/v1/~~~~~/";
+
+    // CarrierInfoContainer에서 가져옴
+    const userSeq = props.userSeq;
 
     const [ inputs, setInputs ] = useState({
         // 운송사 이름
@@ -46,8 +49,8 @@ function CarrierInfoCommon(props) {
         setInputs({
             ...inputs,
             [e.target.name]: e.target.value
-        })
-    }
+        });
+    };
 
     // 데이터 조회
     const getDate = async () => { 
@@ -61,8 +64,64 @@ function CarrierInfoCommon(props) {
         .catch(res => {
             alert("에러가 발생하였습니다 새로고침 후 다시 이용해주세요.");
             console.log("에러: " + res);
-        })
+        });
     };
+
+    // 더미 데이터 ------------------------------------------------------------------------
+    const array = [
+        {
+            "carrierName": "팀프레시",
+            "registrationNumber": "45-6687-9821",
+            "serviceYn": "Y",
+            "carrierCode": "W00001"
+        },
+        {
+            "carrierName": "마켓컬리",
+            "registrationNumber": "543-67-21",
+            "serviceYn": "Y",
+            "carrierCode": "W00051"
+        },
+        {
+            "carrierName": "CJ홈쇼핑",
+            "registrationNumber": "766-12-321",
+            "serviceYn": "Y",
+            "carrierCode": "W00321"
+        }
+    ];
+
+    // 더미 데이터 세팅
+    const setData = (userSeq) => {
+        switch(userSeq) {
+            case 0:
+                setInputs((state) => ({
+                    ...inputs,
+                    carrierName: array[userSeq].carrierName,
+                    registrationNumber: array[userSeq].registrationNumber,
+                    serviceYn: array[userSeq].serviceYn,
+                    carrierCode: array[userSeq].carrierCode
+                }));
+                break;
+            case 1:
+                setInputs((state) => ({
+                    ...inputs,
+                    carrierName: array[userSeq].carrierName,
+                    registrationNumber: array[userSeq].registrationNumber,
+                    serviceYn: array[userSeq].serviceYn,
+                    carrierCode: array[userSeq].carrierCode
+                }));
+                break;
+            case 2:
+                setInputs((state) => ({
+                    ...inputs,
+                    carrierName: array[userSeq].carrierName,
+                    registrationNumber: array[userSeq].registrationNumber,
+                    serviceYn: array[userSeq].serviceYn,
+                    carrierCode: array[userSeq].carrierCode
+                }));
+                break;
+        };
+    };
+    // ---------------------------------------------------------------------------------
 
     return (
         <main>
@@ -106,23 +165,23 @@ function CarrierInfoCommon(props) {
                     </div>
                     <div className="card-body">
                         <div className="basicInfoArea" style={{ overflow: "hidden", marginBottom: "20px", height: "70px" }}>
-                            <div className="photoArea" style={{ float: "left", width: "90px", paddingLeft: "20px", marginRight: "20px" }}>
+                            {/* <div className="photo" style={{ float: "left", width: "90px", paddingLeft: "20px", marginRight: "20px" }}> */}
                                 {/* <img src={imgSrc} style={{ width: "70px", height: "70px" }}></img> */}
-                            </div>
-                            <div className="basicInfoArea" style={{ float: "left" }}>
-                                <span id="userName" style={{ fontSize: "25px", heigth: "70px", lineHeight: "70px", marginRight: "50px" }}></span>
+                            {/* </div> */}
+                            <div className="basicInfo" style={{ float: "left", marginLeft: "5rem" }}>
+                                <span id="userName" style={{ fontSize: "25px", heigth: "70px", lineHeight: "70px", marginRight: "50px" }}><b>{carrierName}</b></span>
                                 <span style={{ fontSize: "15px", marginRight: "50px" }}>
                                     <b>사업자등록번호</b>&nbsp;&nbsp;
-                                            <input type="text" id="registrationNumber" name="registrationNumber" onChange={handleChange} style={{ width: "130px" }} />
+                                            <input type="text" id="registrationNumber" name="registrationNumber" onChange={handleChange} value={registrationNumber} style={{ width: "130px" }} />
                                 </span>
-                                <span id="" style={{ fontSize: "15px", marginRight: "50px" }}><b>가입 상태</b>&nbsp;&nbsp;-</span>
+                                {/* <span id="" style={{ fontSize: "15px", marginRight: "50px" }}><b>가입 상태</b>&nbsp;&nbsp;-</span> */}
                                 <span style={{ fontSize: "15px", marginRight: "50px" }}>
                                     <b>서비스 운영여부</b>&nbsp;&nbsp;
-                                            <input type="text" id="serviceYn" name="serviceYn" onChange={handleChange} style={{ width: "130px" }} />
+                                            <input type="text" id="serviceYn" name="serviceYn" onChange={handleChange} value={serviceYn} style={{ width: "130px" }} />
                                 </span>
                                 <span id="" style={{ fontSize: "15px", marginRight: "50px" }}>
                                     <b>운송사 코드</b>&nbsp;&nbsp;
-                                            <input type="text" id="carrierCode" name="carrierCode" onChange={handleChange} style={{ width: "130px" }} />
+                                            <input type="text" id="carrierCode" name="carrierCode" onChange={handleChange} value={carrierCode} style={{ width: "130px" }} />
                                 </span>
                             </div>
                             <div className="modifyBtnArea" style={{ float: "right" }}>
@@ -180,16 +239,16 @@ function CarrierInfoCommon(props) {
                         <div className="card-body">
                             <div className="tab-content">
                                 <div className="tab-pane col-12 active" id="basicInfo">
-                                    <CarrierInfoBasic />
+                                    <CarrierInfoBasic userSeq={userSeq} />
                                 </div>
                                 <div className="tab-pane col-12" id="contractInfo">
-                                    <CarrierInfoContract />
+                                    <CarrierInfoContract userSeq={userSeq} />
                                 </div>
                                 <div className="tab-pane col-12" id="paymentInfo">
-                                    <CarrierInfoPayment />
+                                    <CarrierInfoPayment userSeq={userSeq} />
                                 </div>
                                 <div className="tab-pane col-12" id="accountManagement">
-                                    <CarrierInfoAccountManagement />
+                                    <CarrierInfoAccountManagement userSeq={userSeq} />
                                 </div>
                             </div>
                         </div>

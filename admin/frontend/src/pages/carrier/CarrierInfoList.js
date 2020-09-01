@@ -13,59 +13,94 @@ function CarrierInfoList(props) {
     useEffect(() => {
         console.log("컴포넌트 마운트");
 
+        // DataTables
+        // $("#carrierInfoList").DataTable({
+        //     serverSide: false,
+        //     processing: true,
+        //     responsice: true,
+        //     autoWidth: false,
+        //     width: "100%",
+        //     ordering: false,
+        //     select: false,
+        //     dom:
+        //         "<'row'<'col-sm-12'rt>>" +
+        //         "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+        //     ajax: {
+        //         url: "/v1/truckOwner/truckOwnerInfoList",
+        //         type: "GET",
+        //         data: { length: 100 },
+        //         dataSrc: function (res) {
+        //             var data = res.data;
+        //             return data;
+        //         }
+        //     },
+        //     columnDefs: [
+        //         {
+        //             defaultContent: "-",
+        //             targets: "_all",
+        //         },
+        //         {
+        //             targets: [0],
+        //             createdCell: function (td, cellData, rowData, row, col) {
+        //                 $(td).text(row + 1);
+        //             }
+        //         }
+        //     ],
+        //     columns: [
+        //         { title: "no.", data: null },
+        //         { title: "법인명", data: "carrierNm" },
+        //         { title: "운송사 코드", data: "userNm" },
+        //         { title: "대표자", data: null },
+        //         { title: "담당자명", data: null },
+        //         { title: "담당자연락처", data: "crqfcs.2" },
+        //         { title: "담당자이메일", data: "crqfcs.1" },
+        //         { title: "서비스 운영 여부", data: "crqfcs.0" },
+        //         { title: "계약일", data: null }
+        //     ],
+        //     createdRow: function (row, data) {
+        //         $(row).attr("id", data.userSeq);
+        //     }
+        // });
+
+        // 더미 테이블
         $("#carrierInfoList").DataTable({
-            serverSide: false,
-            processing: true,
-            responsice: true,
-            autoWidth: false,
-            width: "100%",
-            ordering: false,
-            select: false,
-            dom:
-                "<'row'<'col-sm-12'rt>>" +
-                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-            ajax: {
-                url: "/v1/truckOwner/truckOwnerInfoList",
-                type: "GET",
-                data: { length: 100 },
-                dataSrc: function (res) {
-                    var data = res.data;
-                    return data;
-                }
-            },
+            data: array,
+            columns: [
+                { data: null },
+                { data: "corporationName" },
+                { data: "carrierCode" },
+                { data: "ceoName" },
+                { data: "managerName" },
+                { data: "managerPhoneNumber" },
+                { data: "managerEmail" },
+                { data: "serviceYn" },
+                { data: "contractDate" }
+            ],
             columnDefs: [
                 {
                     defaultContent: "-",
-                    targets: "_all",
+                    targets: "_all"
                 },
                 {
                     targets: [0],
-                    createdCell: function (td, cellData, rowData, row, col) {
+                    createdCell: function(td, cellData, rowData, row, col) {
                         $(td).text(row + 1);
                     }
                 }
             ],
-            columns: [
-                { title: "no.", data: null },
-                { title: "법인명", data: "carrierNm" },
-                { title: "운송사 코드", data: "userNm" },
-                { title: "대표자", data: null },
-                { title: "담당자명", data: null },
-                { title: "담당자연락처", data: "crqfcs.2" },
-                { title: "담당자이메일", data: "crqfcs.1" },
-                { title: "서비스 운영 여부", data: "crqfcs.0" },
-                { title: "계약일", data: null }
-            ],
-            createdRow: function (row, data) {
-                $(row).attr("id", data.userSeq);
+            createdRow: function(row, data, dataIndex, cells) {
+                $(row).attr("id", dataIndex + 1);
             }
         });
+
+
         return () => {
             console.log("컴포넌트 언마운트");
             $("#carrierInfoList").DataTable().destroy(true);
         }
     }, []);
 
+    // 리스트 행 클릭 시 상세보기 이동
     $(document).on("click", "tbody tr", function () {
         var userSeq = $(this).attr("id");
         var url = "/carrier/CarrierInfoDetail";
@@ -73,9 +108,44 @@ function CarrierInfoList(props) {
         props.history.push(url, { userSeq: userSeq });
     });
 
+    // 리스트 마우스 hover시 포인터 변경
     $(document).on("mouseenter", "tbody tr", function () {
         $(this).css("cursor", "pointer");
     })
+
+    // 더미 데이터 ---------------------------------------------------------------------
+    const array = [
+        {
+            "corporationName": "(주)팀프레시",
+            "carrierCode": "W000001",
+            "ceoName": "이성일",
+            "managerName": "홍길동",
+            "managerPhoneNumber": "010-1234-5678",
+            "managerEmail": "hoho@gmail.com",
+            "serviceYn": "Y",
+            "contractDate": "2020/08/15"
+        },
+        {
+            "corporationName": "(주)마켓컬리",
+            "carrierCode": "W000001",
+            "ceoName": "이성일",
+            "managerName": "고길동",
+            "managerPhoneNumber": "010-1234-5678",
+            "managerEmail": "gogo@gmail.com",
+            "serviceYn": "Y",
+            "contractDate": "2020/08/15"
+        },
+        {
+            "corporationName": "(주)CJ홈쇼핑",
+            "carrierCode": "W000001",
+            "ceoName": "이성일",
+            "managerName": "장보고",
+            "managerPhoneNumber": "010-1234-5678",
+            "managerEmail": "jojo@gmail.com",
+            "serviceYn": "Y",
+            "contractDate": "2020/08/15"
+        }
+    ];
 
     return (
         <MainStructure>
@@ -131,7 +201,21 @@ function CarrierInfoList(props) {
                                     role="grid"
                                     aria-describedby="dataTable_info"
                                     style={{ textAlign: "center" }}
-                                />
+                                >
+                                    <thead>
+                                        <tr>
+                                            <th>no.</th>
+                                            <th>법인명</th>
+                                            <th>운송사 코드</th>
+                                            <th>대표자</th>
+                                            <th>담당자명</th>
+                                            <th>담당자연락처</th>
+                                            <th>담당자이메일</th>
+                                            <th>서비스 운영 여부</th>
+                                            <th>계약일</th>
+                                        </tr>
+                                    </thead>
+                                </table>
                             </div>
                         </div>
                     </div>

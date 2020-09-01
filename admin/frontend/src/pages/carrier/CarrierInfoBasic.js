@@ -12,11 +12,15 @@ function CarrierInfoBasic(props) {
 
     useEffect(() => {
         console.log("컴포넌트 마운트");
-         
+        setData(userSeq-1);
+
         return () => {
             console.log("컴포넌트 언마운트");
         }
-    }, []); 
+    }, []);
+
+    // CarrierInfoCommon에서 가져옴
+    const userSeq = props.userSeq;
 
     // inputs
     const [ inputs, setInputs ] = useState({
@@ -46,6 +50,123 @@ function CarrierInfoBasic(props) {
     })
 
     const { businessLicenseImg, seal } = files;
+
+    // 저장버튼 
+    const handleClick = () => {
+         
+    }
+
+    // input값 세팅
+    const handleChange = (e) => {
+        setInputs({
+            ...inputs,
+            [e.target.name]: e.target.value
+        });
+    };
+
+    // files값 세팅
+    const handleFileChange = (e) => {
+        setFiles({
+            ...files,
+            [e.target.name]: e.target.value
+        });
+    };
+
+    // // 데이터 조회
+    // const getData = async () => {
+    //     setIsLoading(true);
+    //     var data = null;
+    //     await axios.get(url + userSeq)
+    //         .then(res => {
+    //             data = res.data.data;
+    //             setInputs((state) => ({
+    //                 ...inputs,
+    //                 userName: data.userNm,
+    //                 phoneNumber: data.truckOwner.phone
+    //             }));
+    //         })
+    //         .catch(res => {
+    //             alert("에러가 발생하였습니다 새로고침 후 다시 이용해주세요.");
+    //         });
+    //     setIsLoading(false);
+
+    // 더미 데이터 ------------------------------------------------------------------------------
+    const array = [
+        {
+            "corporationName": "팀프레시",
+            "ceoName": "이성일",
+            "registrationNumberData": "561-88-31138",
+            "carrierCodeData": "W00001",
+            "customerCenterNumber": "02-888-8988",
+            "customerCenterTime": "09:00~18:00"
+        },
+        {
+            "corporationName": "마켓컬리",
+            "ceoName": "이성일",
+            "registrationNumberData": "422-32-1138",
+            "carrierCodeData": "W00521",
+            "customerCenterNumber": "02-623-7788",
+            "customerCenterTime": "09:00~18:00"
+        },
+        {
+            "corporationName": "CJ홈쇼핑",
+            "ceoName": "이성일",
+            "registrationNumberData": "852-18-323",
+            "carrierCodeData": "W00301",
+            "customerCenterNumber": "02-766-5252",
+            "customerCenterTime": "09:00~18:00"
+        }
+    ];
+
+    // 더미 데이터 세팅
+    const setData = (userSeq) => {
+        switch (userSeq) {
+            case 0:
+                setInputs((state) => ({
+                    ...inputs,
+                    corporationName: array[userSeq].corporationName,
+                    ceoName: array[userSeq].ceoName,
+                    registrationNumberData: array[userSeq].registrationNumberData,
+                    carrierCodeData: array[userSeq].carrierCodeData,
+                    customerCenterNumber: array[userSeq].customerCenterNumber,
+                    customerCenterTime: array[userSeq].customerCenterTime
+                }));
+                break;
+            case 1:
+                setInputs((state) => ({
+                    ...inputs,
+                    corporationName: array[userSeq].corporationName,
+                    ceoName: array[userSeq].ceoName,
+                    registrationNumberData: array[userSeq].registrationNumberData,
+                    carrierCodeData: array[userSeq].carrierCodeData,
+                    customerCenterNumber: array[userSeq].customerCenterNumber,
+                    customerCenterTime: array[userSeq].customerCenterTime
+                }));
+                break;
+            case 2:
+                setInputs((state) => ({
+                    ...inputs,
+                    corporationName: array[userSeq].corporationName,
+                    ceoName: array[userSeq].ceoName,
+                    registrationNumberData: array[userSeq].registrationNumberData,
+                    carrierCodeData: array[userSeq].carrierCodeData,
+                    customerCenterNumber: array[userSeq].customerCenterNumber,
+                    customerCenterTime: array[userSeq].customerCenterTime
+                }));
+                break;
+            case 3:
+                setInputs((state) => ({
+                    ...inputs,
+                    corporationName: array[userSeq].corporationName,
+                    ceoName: array[userSeq].ceoName,
+                    registrationNumberData: array[userSeq].registrationNumberData,
+                    carrierCodeData: array[userSeq].carrierCodeData,
+                    customerCenterNumber: array[userSeq].customerCenterNumber,
+                    customerCenterTime: array[userSeq].customerCenterTime
+                }));
+                break;
+        };
+    };
 
     // 담당자 정보(배열) - 더미데이터
     const [ datas, setDatas ] = useState([
@@ -94,50 +215,7 @@ function CarrierInfoBasic(props) {
         // 삭제하려는 key 값이 아닌 것들만 새로 배열 생성 = 삭제하려는 key값에 해당하는 배열요소만 제외하고 새로 생성
         setDatas(datas.filter(data => data.key !== key));
     }
-
-    // 저장버튼 
-    const handleClick = () => {
-         
-    }
-
-    // input값 세팅
-    const handleChange = (e) => {
-        setInputs({
-            ...inputs,
-            [e.target.name]: e.target.value
-        });
-    };
-
-    // files값 세팅
-    const handleFileChange = (e) => {
-        setFiles({
-            ...files,
-            [e.target.name]: e.target.value
-        });
-    };
-
-    // // 데이터 조회
-    // const getData = async () => {
-    //     setIsLoading(true);
-        
-    //     var data = null;
-    //     await axios.get(url + userSeq)
-    //         .then(res => {
-    //             data = res.data.data;
-    //             setInputs((state) => ({
-    //                 ...inputs,
-    //                 userName: data.userNm,
-    //                 phoneNumber: data.truckOwner.phone
-    //             }));
-
-                
-                
-    //         })
-    //         .catch(res => {
-    //             alert("에러가 발생하였습니다 새로고침 후 다시 이용해주세요.");
-    //         });
-            
-    //     setIsLoading(false);
+    // ------------------------------------------------------------------------------------------------------------------------
   
     return (
         <Fragment>
@@ -149,21 +227,21 @@ function CarrierInfoBasic(props) {
                         <tbody>
                             <tr>
                                 <td style={{ width: "10rem" }}>법인명</td>
-                                <td style={{ width: "15rem" }}><input type="text" id="corporationName" name="corporationName" /></td>
+                                <td style={{ width: "15rem" }}><input type="text" id="corporationName" name="corporationName" value={corporationName} onChange={handleChange} /></td>
                                 <td style={{ width: "10rem" }}>대표자</td>
-                                <td><input type="text" id="ceoName" name="ceoName" onChange={handleChange} /></td>
+                                <td><input type="text" id="ceoName" name="ceoName" value={ceoName} onChange={handleChange} /></td>
                             </tr>
                             <tr>
                                 <td style={{ width: "10rem" }}>사업자등록번호</td>
-                                <td style={{ width: "15rem" }}><input type ="text" id="registrationNumberData" name="registrationNumberData" /></td>
+                                <td style={{ width: "15rem" }}><input type ="text" id="registrationNumberData" name="registrationNumberData" value={registrationNumberData} onChange={handleChange} /></td>
                                 <td style={{ width: "10rem" }}>운송사코드</td>
-                                <td><input type="text" id="carrierCodeData" name="carrierCodeData" onChange={handleChange} /></td>
+                                <td><input type="text" id="carrierCodeData" name="carrierCodeData" value={carrierCodeData} onChange={handleChange} /></td>
                             </tr>
                             <tr>
                                 <td style={{ width: "10rem" }}>고객센터 전화번호</td>
-                                <td style={{ width: "15rem" }}><input type="text" id="customerCenterNumber" name="customerCenterNumber" onChange={handleChange} /></td>
+                                <td style={{ width: "15rem" }}><input type="text" id="customerCenterNumber" name="customerCenterNumber" value={customerCenterNumber} onChange={handleChange} /></td>
                                 <td style={{ width: "10rem" }}>고객센터 운영시간</td>
-                                <td><input type="text" id="customerCenterTime" name="customerCenterTime" onChange={handleChange} /></td>
+                                <td><input type="text" id="customerCenterTime" name="customerCenterTime" value={customerCenterTime} onChange={handleChange} /></td>
                             </tr>
                         </tbody>
                     </table>

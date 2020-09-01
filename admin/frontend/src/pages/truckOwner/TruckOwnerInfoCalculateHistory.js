@@ -103,9 +103,32 @@ function TruckOwnerInfoCalculateHistory(props) {
             $("#calculateHistoryList").DataTable().destroy(true);
         }
 
-    }, [])
+    }, []);
 
-    // 더미 데이터
+    // inputs
+    const [ inputs, setInputs ] = useState({
+        // 시작 날짜
+        startDate: "-",
+        // 끝 날짜
+        endDate: "-"
+    });
+
+    const { startDate, endDate } = inputs;
+
+    // inputs값 세팅
+    const handleChange = (e) => {
+        setInputs({
+            ...inputs,
+            [e.target.name]: e.target.value
+        });
+    };
+
+    // 조회 버튼 클릭
+    const handleClick = () => {
+        console.log("조회 버튼 클릭");
+    };
+
+    // 더미 데이터 --------------------------------------------------------------------------
     const array = [
         {
             companyName: "팀프레시",
@@ -135,29 +158,7 @@ function TruckOwnerInfoCalculateHistory(props) {
             calculateStatus: "지불 완료"
         }
     ];
-
-    // inputs
-    const [ inputs, setInputs ] = useState({
-        // 시작 날짜
-        startDate: "-",
-        // 끝 날짜
-        endDate: "-"
-    });
-
-    const { startDate, endDate } = inputs;
-
-    // inputs값 세팅
-    const handleChange = (e) => {
-        setInputs({
-            ...inputs,
-            [e.target.name]: e.target.value
-        });
-    };
-
-    // 조회 버튼 클릭
-    const handleClick = () => {
-        console.log("조회 버튼 클릭");
-    };
+    // ----------------------------------------------------------------------------------
 
     return (
         <Fragment>

@@ -97,7 +97,32 @@ function TruckOwnerInfoPurchaseHistory(props) {
         }
     }, []);
 
-    // 더미 데이터
+    // inputs
+    const [ inputs, setInputs ] = useState({
+        // 검색옵션
+        searchOption: "-",
+        // 시작 날짜
+        startDate: "-",
+        // 끝 날짜
+        endDate: "-"
+    });
+
+    const { searchOption, startDate, endDate } = inputs;
+
+    // inputs값 세팅
+    const handleChange = (e) => {
+        setInputs({
+            ...inputs,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    // 조회 버튼 클릭
+    const handleClick = () => {
+        console.log("조회 버튼 클릭");
+    }
+
+    // 더미 데이터 -----------------------------------------------------------------
     const array = [
         {
             purchaseKindOf: "세금계산서 발급",
@@ -140,31 +165,7 @@ function TruckOwnerInfoPurchaseHistory(props) {
             notReceived: "0원"
         },
     ];
-
-    // inputs
-    const [ inputs, setInputs ] = useState({
-        // 검색옵션
-        searchOption: "-",
-        // 시작 날짜
-        startDate: "-",
-        // 끝 날짜
-        endDate: "-"
-    });
-
-    const { searchOption, startDate, endDate } = inputs;
-
-    // inputs값 세팅
-    const handleChange = (e) => {
-        setInputs({
-            ...inputs,
-            [e.target.name]: e.target.value
-        })
-    }
-
-    // 조회 버튼 클릭
-    const handleClick = () => {
-        console.log("조회 버튼 클릭");
-    }
+    // -------------------------------------------------------------------------------
 
     return (
         <Fragment>

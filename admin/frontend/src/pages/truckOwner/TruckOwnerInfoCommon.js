@@ -24,54 +24,10 @@ function TruckOwnerInfoCommon(props) {
         }
     }, []);
 
-    // 컨테이너에서 받아옴
+    // TruckOwnerInfoContainer에서 받아옴
     const userSeq = props.userSeq;
+
     // const url = "/v1/truckOwner/truckOwnerInfoDetail/";
-    console.log(userSeq);
-    
-    // 더미 데이터
-    const array = [
-        {
-            "ownerName": "갑",
-            "ownerCode": "N0002643",
-            "joinStatus": "미제출",
-            "businessInfo": "O",
-            "certificateInfo": "O",
-            "vehicleInfo": "X",
-            "paymentInfo": "X",
-            "workingYn": "X"
-        },
-        {
-            "ownerName": "을",
-            "ownerCode": "N0002543",
-            "joinStatus": "승인완료",
-            "businessInfo": "O",
-            "certificateInfo": "O",
-            "vehicleInfo": "O",
-            "paymentInfo": "O",
-            "workingYn": "O"
-        },
-        {
-            "ownerName": "병",
-            "ownerCode": "N0001253",
-            "joinStatus": "미제출",
-            "businessInfo": "O",
-            "certificateInfo": "X",
-            "vehicleInfo": "X",
-            "paymentInfo": "O",
-            "workingYn": "X"
-        },
-        {
-            "ownerName": "정",
-            "ownerCode": "N0001123",
-            "joinStatus": "미제출",
-            "businessInfo": "O",
-            "certificateInfo": "X",
-            "vehicleInfo": "X",
-            "paymentInfo": "O",
-            "workingYn": "O"
-        }
-    ];
 
     // inputs
     const [ inputs, setInputs ] = useState({
@@ -86,48 +42,6 @@ function TruckOwnerInfoCommon(props) {
         // 운송사Seq (미정)
         carrierSeq: "-"
     });
-
-    // 더미 데이터 세팅
-    const setData = (userSeq) => {
-        switch(userSeq) {
-            case 0:
-                setInputs({
-                    ...inputs,
-                    ownerName: array[userSeq].ownerName,
-                    ownerCode: array[userSeq].ownerCode,
-                    ownerPhoneNumber: "010-1234-5678",
-                    joinStatus: array[userSeq].joinStatus
-                });
-                break;
-            case 1:
-                setInputs({
-                    ...inputs,
-                    ownerName: array[userSeq].ownerName,
-                    ownerCode: array[userSeq].ownerCode,
-                    ownerPhoneNumber: "010-1541-1119",
-                    joinStatus: array[userSeq].joinStatus
-                });
-                break;
-            case 2:
-                setInputs({
-                    ...inputs,
-                    ownerName: array[userSeq].ownerName,
-                    ownerCode: array[userSeq].ownerCode,
-                    ownerPhoneNumber: "010-5525-5257",
-                    joinStatus: array[userSeq].joinStatus
-                });
-                break;
-            case 3:
-                setInputs({
-                    ...inputs,
-                    ownerName: array[userSeq].ownerName,
-                    ownerCode: array[userSeq].ownerCode,
-                    ownerPhoneNumber: "010-5252-5252",
-                    joinStatus: array[userSeq].joinStatus
-                });
-                break;
-        };
-    };
 
     const { ownerName, ownerCode, ownerPhoneNumber, joinStatus, carrierSeq } = inputs;
 
@@ -167,6 +81,83 @@ function TruckOwnerInfoCommon(props) {
         var saveType = e.target.id;     // state, commit
         
     };
+
+    // 더미 데이터 -------------------------------------------------------------
+    const array = [
+        {
+            "ownerName": "갑",
+            "ownerCode": "N0002643",
+            "joinStatus": "미제출",
+            "businessInfo": "O",
+            "certificateInfo": "O",
+            "vehicleInfo": "X",
+            "paymentInfo": "X",
+            "workingYn": "X"
+        },
+        {
+            "ownerName": "을",
+            "ownerCode": "N0002543",
+            "joinStatus": "승인완료",
+            "businessInfo": "O",
+            "certificateInfo": "O",
+            "vehicleInfo": "O",
+            "paymentInfo": "O",
+            "workingYn": "O"
+        },
+        {
+            "ownerName": "병",
+            "ownerCode": "N0001253",
+            "joinStatus": "미제출",
+            "businessInfo": "O",
+            "certificateInfo": "X",
+            "vehicleInfo": "X",
+            "paymentInfo": "O",
+            "workingYn": "X"
+        }
+    ];
+
+    // 더미 데이터 세팅 ---------------------------------------------------------
+    const setData = (userSeq) => {
+        switch(userSeq) {
+            case 0:
+                setInputs((state) => ({
+                    ...inputs,
+                    ownerName: array[userSeq].ownerName,
+                    ownerCode: array[userSeq].ownerCode,
+                    ownerPhoneNumber: "010-1234-5678",
+                    joinStatus: array[userSeq].joinStatus
+                }));
+                break;
+            case 1:
+                setInputs((state) => ({
+                    ...inputs,
+                    ownerName: array[userSeq].ownerName,
+                    ownerCode: array[userSeq].ownerCode,
+                    ownerPhoneNumber: "010-1541-1119",
+                    joinStatus: array[userSeq].joinStatus
+                }));
+                break;
+            case 2:
+                setInputs((state) => ({
+                    ...inputs,
+                    ownerName: array[userSeq].ownerName,
+                    ownerCode: array[userSeq].ownerCode,
+                    ownerPhoneNumber: "010-5525-5257",
+                    joinStatus: array[userSeq].joinStatus
+                }));
+                break;
+            case 3:
+                setInputs((state) => ({
+                    ...inputs,
+                    ownerName: array[userSeq].ownerName,
+                    ownerCode: array[userSeq].ownerCode,
+                    ownerPhoneNumber: "010-5252-5252",
+                    joinStatus: array[userSeq].joinStatus
+                }));
+                break;
+        };
+    };
+    // --------------------------------------------------------------------------
   
     return (
         <main>

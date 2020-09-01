@@ -4,11 +4,15 @@ function CarrierInfoPayment(props) {
     
     useEffect(() => {
         console.log("컴포넌트 마운트");
+        setData(userSeq-1);
 
         return () => {
             console.log("컴포넌트 언마운트");
         }
-    })
+    }, []);
+
+    // CarrierInfoCommon에서 가져옴
+    const userSeq = props.userSeq;
 
     // inputs
     const [ inputs, setInputs ] = useState({
@@ -42,6 +46,56 @@ function CarrierInfoPayment(props) {
         });
     };
 
+    // 더미 데이터 -----------------------------------------------------------------
+    const array = [
+        {
+            "bankName": "nh",
+            "bankAccountNumber": "123-456-789",
+            "bankAccountOwner": "홍길동"
+        },
+        {
+            "bankName": "sh",
+            "bankAccountNumber": "53-41112-900",
+            "bankAccountOwner": "고길동"
+        },
+        {
+            "bankName": "kb",
+            "bankAccountNumber": "110-4355-78981",
+            "bankAccountOwner": "대길동"
+        }
+    ];
+
+    // 더미 데이터 세팅
+    const setData = (userSeq) => {
+        switch(userSeq) {
+            case 0:
+                setInputs((state) => ({
+                    ...inputs,
+                    bankName: array[userSeq].bankName,
+                    bankAccountNumber: array[userSeq].bankAccountNumber,
+                    bankAccountOwner: array[userSeq].bankAccountOwner
+                }));
+                break;
+            case 1:
+                setInputs((state) => ({
+                    ...inputs,
+                    bankName: array[userSeq].bankName,
+                    bankAccountNumber: array[userSeq].bankAccountNumber,
+                    bankAccountOwner: array[userSeq].bankAccountOwner
+                }));
+                break;
+            case 2:
+                setInputs((state) => ({
+                    ...inputs,
+                    bankName: array[userSeq].bankName,
+                    bankAccountNumber: array[userSeq].bankAccountNumber,
+                    bankAccountOwner: array[userSeq].bankAccountOwner
+                }));
+                break;
+        };
+    };
+    // ------------------------------------------------------------------------------------
+
     return (
         <Fragment>
             <div className="form-row my-2 mb-3">
@@ -53,16 +107,16 @@ function CarrierInfoPayment(props) {
                                 <tr>
                                     <td style={{ width: "8rem" }}>계좌번호</td>
                                     <td style={{ width: "5rem" }}>
-                                        <select id="bankName" name="bankName" onChange={handleChange}>
+                                        <select id="bankName" name="bankName" value={bankName} onChange={handleChange}>
                                             <option>은행선택</option>
-                                            <option>농협</option>
-                                            <option>국민</option>
-                                            <option>신한</option>
+                                            <option value="nh">농협</option>
+                                            <option value="kb">국민</option>
+                                            <option value="sh">신한</option>
                                         </select>
                                     </td>
-                                    <td style={{ width: "15rem" }}><input type="text" id="bankAccountNumber" name="bankAccountNumber" onChange={handleChange} /></td>
+                                    <td style={{ width: "15rem" }}><input type="text" id="bankAccountNumber" name="bankAccountNumber" value={bankAccountNumber} onChange={handleChange} /></td>
                                     <td style={{ width: "4rem" }}>예금주</td>
-                                    <td><input type="text" id="bankAccountOwner" name="bankAccountOwner" onChange={handleChange} /></td>
+                                    <td><input type="text" id="bankAccountOwner" name="bankAccountOwner" value={bankAccountOwner} onChange={handleChange} /></td>
                                 </tr>
                             </tbody>
                         </table>
