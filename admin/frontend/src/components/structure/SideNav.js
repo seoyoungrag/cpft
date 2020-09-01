@@ -185,7 +185,7 @@ class SideNav extends Component {
 								onClick={() => store.handleClick("button3")}
 							>
 								<i className="fas fa-fw fa-chalkboard-teacher"></i>
-								<Link className="collapse-item" to="/carrier/carrierInfo">
+								<Link className="collapse-item" to="/carrier/carrierInfoList">
 									<span>운송사관리</span>
 								</Link>
 							</a>
@@ -198,7 +198,7 @@ class SideNav extends Component {
 								onClick={() => store.handleClick("button4")}
 							>
 								<i className="fas fa-fw fa-truck"></i>
-								<Link className="collapse-item" to="/truckOwner/truckOwnerInfo">
+								<Link className="collapse-item" to="/truckOwner/truckOwnerInfoList">
 									<span>차주관리</span>
 								</Link>
 							</a>

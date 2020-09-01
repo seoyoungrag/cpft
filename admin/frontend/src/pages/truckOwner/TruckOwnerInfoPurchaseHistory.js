@@ -15,49 +15,79 @@ function TruckOwnerInfoPurchaseHistory(props) {
     useEffect(() => {
         console.log("컴포넌트 마운트");
 
+        // DataTables
+        // $("#purchaseHistoryList").DataTable({
+        //     serverSide: false,
+        //     processing: true,
+        //     responsive: true,
+        //     autoWidth: false,
+        //     width: "100%",
+        //     ordering: false,
+        //     select: false,
+        //     dom:
+        //         "<'row'<'col-sm-12'rt>>" +
+        //         "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+        //     ajax: {
+        //         url: "/v1/truckOwner/truckOwnerInfoList",
+        //         type: "GET",
+        //         data: { length: 100 },
+        //         dataSrc: function (res) {
+        //             var data = res.data;
+        //             return data;
+        //         }
+        //     },
+        //     columnDefs: [
+        //         {
+        //             defaultContent: "-",
+        //             targets: "_all",
+        //         },
+        //         {
+        //             targets: [0],
+        //             createdCell: function (td, cellData, rowData, row, col) {
+        //                 $(td).text(row + 1);
+        //             }
+        //         }
+        //     ],
+        //     columns: [
+        //         { title: "no.", data: null },
+        //         { title: "구매상품 종류", data: "carrierNm" },
+        //         { title: "구매일", data: "userNm" },
+        //         { title: "판매코드", data: null },
+        //         { title: "구매금액", data: null },
+        //         { title: "지불금액", data: "crqfcs.2" },
+        //         { title: "미수금액", data: "crqfcs.1" },
+        //     ],
+        //     createdRow: function (row, data) {
+        //         $(row).attr("id", data.userSeq);
+        //     }
+        // });
+
+        // 더미 테이블
         $("#purchaseHistoryList").DataTable({
-            serverSide: false,
-            processing: true,
-            responsive: true,
-            autoWidth: false,
-            width: "100%",
-            ordering: false,
-            select: false,
-            dom:
-                "<'row'<'col-sm-12'rt>>" +
-                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-            ajax: {
-                url: "/v1/truckOwner/truckOwnerInfoList",
-                type: "GET",
-                data: { length: 100 },
-                dataSrc: function (res) {
-                    var data = res.data;
-                    return data;
-                }
-            },
+            data: array,
+            columns: [
+                { data: null },
+                { data: "purchaseKindOf" },
+                { data: "purchaseDate" },
+                { data: "sellCode" },
+                { data: "price" },
+                { data: "pay" },
+                { data: "notReceived" },
+            ],
             columnDefs: [
                 {
                     defaultContent: "-",
-                    targets: "_all",
+                    targets: "_all"
                 },
                 {
                     targets: [0],
-                    createdCell: function (td, cellData, rowData, row, col) {
+                    createdCell: function(td, cellData, rowData, row, col) {
                         $(td).text(row + 1);
                     }
                 }
             ],
-            columns: [
-                { title: "no.", data: null },
-                { title: "구매상품 종류", data: "carrierNm" },
-                { title: "구매일", data: "userNm" },
-                { title: "판매코드", data: null },
-                { title: "구매금액", data: null },
-                { title: "지불금액", data: "crqfcs.2" },
-                { title: "미수금액", data: "crqfcs.1" },
-            ],
-            createdRow: function (row, data) {
-                $(row).attr("id", data.userSeq);
+            createdRow: function(row, data, dataIndex, cells) {
+                $(row).attr("id", dataIndex + 1);
             }
         });
 
@@ -67,15 +97,63 @@ function TruckOwnerInfoPurchaseHistory(props) {
         }
     }, []);
 
-    // 검색옵션, 날짜옵션
+    // 더미 데이터
+    const array = [
+        {
+            purchaseKindOf: "세금계산서 발급",
+            purchaseDate: "2020/08/13",
+            sellCode: "XR000001",
+            price: "90,000원",
+            pay: "90,000원",
+            notReceived: "0원"
+        },
+        {
+            purchaseKindOf: "세금계산서 발급",
+            purchaseDate: "2020/08/14",
+            sellCode: "XR000001",
+            price: "90,000원",
+            pay: "90,000원",
+            notReceived: "0원"
+        },
+        {
+            purchaseKindOf: "세금계산서 발급",
+            purchaseDate: "2020/08/15",
+            sellCode: "XR000001",
+            price: "90,000원",
+            pay: "90,000원",
+            notReceived: "0원"
+        },
+        {
+            purchaseKindOf: "세금계산서 발급",
+            purchaseDate: "2020/08/16",
+            sellCode: "XR000001",
+            price: "90,000원",
+            pay: "90,000원",
+            notReceived: "0원"
+        },
+        {
+            purchaseKindOf: "세금계산서 발급",
+            purchaseDate: "2020/08/17",
+            sellCode: "XR000001",
+            price: "90,000원",
+            pay: "90,000원",
+            notReceived: "0원"
+        },
+    ];
+
+    // inputs
     const [ inputs, setInputs ] = useState({
+        // 검색옵션
         searchOption: "-",
+        // 시작 날짜
         startDate: "-",
+        // 끝 날짜
         endDate: "-"
     });
 
     const { searchOption, startDate, endDate } = inputs;
 
+    // inputs값 세팅
     const handleChange = (e) => {
         setInputs({
             ...inputs,
@@ -83,6 +161,7 @@ function TruckOwnerInfoPurchaseHistory(props) {
         })
     }
 
+    // 조회 버튼 클릭
     const handleClick = () => {
         console.log("조회 버튼 클릭");
     }
@@ -136,7 +215,20 @@ function TruckOwnerInfoPurchaseHistory(props) {
                         role="grid"
                         aria-describedby="dataTable_info"
                         style={{ textAlign: "center" }}
-                    />
+                    >
+                        <thead>
+                            <tr>
+                                <th>no.</th>
+                                <th>구매상품 종류</th>
+                                <th>구매일</th>
+                                <th>판매코드</th>
+                                <th>구매금액</th>
+                                <th>지불금액</th>
+                                <th>미수금액</th>
+                            </tr>
+                        </thead>
+                        
+                    </table>
                 </div>
             </div>
         </Fragment>

@@ -32,9 +32,7 @@ import DashBoard from "pages/dashboard/Dashboard";
 import TransportList from "pages/calculate/TranspoertList";
 import CarrierCalc from "pages/calculate/CarrierCalc"
 import TruckOwnerCalc from "pages/calculate/TruckOwnerCalc"
-import CarrierInfo from "pages/carrier/CarrierInfo";
 import CarrierService from "pages/carrier/CarrierService";
-import TruckOwnerInfo from "pages/truckOwner/TruckOwnerInfo";
 import TruckOwnerService from "pages/truckOwner/TruckOwnerService";
 import OrderBoard from "pages/board/OrderBoard";
 import CarrierAccount from "pages/account/CarrierAccount";
@@ -46,12 +44,13 @@ import AdminAccountDetail from "pages/account/AdminAccountDetail";
 import CsInfo from "pages/customerCenter/CsInfo";
 import NoticeList from "pages/notice/NoticeList";
 import ServiceTerms from "pages/serviceTerms/ServiceTerms";
-import TruckOwnerInfoDetail from "pages/truckOwner/TruckOwnerInfoDetail";
-import TruckOwnerInfoTransferHistory from "pages/truckOwner/TruckOwnerInfoTransferHistory";
+// 차주관리
+import TruckOwnerInfoList from "pages/truckOwner/TruckOwnerInfoList";
 import TruckOwnerInfoContainer from "pages/truckOwner/truckOwnerInfoContainer";
 
-
-import TruckOwnerList from "pages/truckOwner/TruckOwnerList";
+// 운송사 관리
+import CarrierInfoList from "pages/carrier/CarrierInfoList";
+import CarrierInfoContainer from "pages/carrier/CarrierInfoContainer";
 
 import BlackList from "pages/order/BlackList";
 //import "tabler-react/dist/Tabler.css";
@@ -82,9 +81,7 @@ class App extends React.Component {
      <Route exact path="/calculate/transportList" component={TransportList} />
      <Route exact path="/calculate/carrierCalc" component={CarrierCalc} />
      <Route exact path="/calculate/truckOwnerCalc" component={TruckOwnerCalc} />
-     <Route exact path="/carrier/CarrierInfo" component={CarrierInfo} />
      <Route exact path="/carrier/carrierService" component={CarrierService} />
-     <Route exact path="/truckOwner/truckOwnerInfo" component={TruckOwnerInfo} />
      <Route exact path="/truckOwner/carrierService" component={CarrierService} />
      <Route exact path="/truckOwner/truckOwnerService" component={TruckOwnerService} />
      <Route exact path="/board/orderBoard" component={OrderBoard} />
@@ -98,9 +95,14 @@ class App extends React.Component {
      <Route exact path="/notice/noticeList" component={NoticeList} />
      <Route exact path="/serviceTerms/serviceTerms" component={ServiceTerms} />
      
-     <Route exact path="/truckOwner/truckOwnerList" component={TruckOwnerList} />
+     {/* 차주 관리 */}
+     <Route exact path="/truckOwner/truckOwnerInfoList" component={TruckOwnerInfoList} />
      <Route exact path="/truckOwner/truckOwnerInfoDetail" component={TruckOwnerInfoContainer} />
-     <Route exact path="/truckOwner/TruckOwnerInfoTransferHistory" component={TruckOwnerInfoContainer} />
+     
+     {/* 운송사 관리 */}
+     <Route exact path="/carrier/carrierInfoList" component={CarrierInfoList}/>
+     <Route exact path="/carrier/carrierInfoDetail" component={CarrierInfoContainer}/>
+
 
      <Route exact path="/400" component={Error400} />
      <Route exact path="/401" component={Error401} />

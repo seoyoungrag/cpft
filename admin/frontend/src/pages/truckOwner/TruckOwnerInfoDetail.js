@@ -14,40 +14,121 @@ function TruckOwnerInfoDetail(props) {
 
     useEffect(() => {
         console.log("컴포넌트 마운트");
+        setData(userSeq-1);
          
         return () => {
             console.log("컴포넌트 언마운트");
         }
-    }, []); 
+    }, []);
+
+    const userSeq = props.userSeq;
 
     // inputs
     const [inputs, setInputs] = useState({
-        // 사업자정보
+        // 사업자등록번호
         registrationNumber: "-",
+        // 과세유형
         taxType: "-",
+        // 휴폐업유무
         corpState: "-",
+        // 간이과세자 주민번호
         personalNumber: "-",
+        // 상호
         companyName: "-",
-        ownerName: "-",
+        // 성명
+        companyOwnerName: "-",
+        // 업태
         businessCondition: "-",
+        // 종목
         businessOption: "-",
-        // 자격정보
+        // 자격번호
         businessNumber: "-",
-        // 차량등록 정보
+        // 차량번호
         vehicleNumber: "-",
+        // 차량톤수
         tonType: "-",
+        // 차량종류
         carType: "-",
-        // 결제정보
+        // 은행
         bankName: "-",
+        // 계좌번호
         bankAccount: "-",
+        // 세금계산서 유형
         taxBillType: "-"
     });
 
     const { registrationNumber, taxType, corpState, personalNumber, 
-            companyName, ownerName, businessCondition, businessOption,
+            companyName, companyOwnerName, businessCondition, businessOption,
             businessNumber, vehicleNumber, tonType, carType, bankName,
             bankAccount, taxBillType } = inputs;
 
+    // 더미 데이터 세팅
+    const setData = (userSeq) => {
+        switch(userSeq) {
+            case 0:
+                setInputs((state) => ({
+                    ...inputs,
+                    registrationNumber: "561-88-01138",
+                    taxType: "일반과세자",
+                    corpState: "사업중",
+                    personalNumber: "20200901",
+                    companyName: "팀프레시",
+                    companyOwnerName: "이성일",
+                    businessCondition: "운송업",
+                    businessOption: "화물",
+                    businessNumber: "1-14-146139",
+                    vehicleNumber: "서울 10배 1234",
+                    tonType: "1t",
+                    carType: "cold",
+                    bankName: "nh",
+                    bankAccount: "40625-21-454891",
+                    taxBillType: "1"
+                }));
+                break;
+            case 1:
+                setInputs((state) => ({
+                    ...inputs,
+                    registrationNumber: "812-13-51128",
+                    taxType: "특급과세자",
+                    corpState: "사업정지",
+                    personalNumber: "20200304",
+                    companyName: "활빈당",
+                    companyOwnerName: "홍길동",
+                    businessCondition: "해운업",
+                    businessOption: "크루즈선",
+                    businessNumber: "101-0-239",
+                    vehicleNumber: "조선 1배 0001",
+                    tonType: "100t",
+                    carType: "hot",
+                    bankName: "kb",
+                    bankAccount: "20213-51-171814",
+                    taxBillType: "2"
+                }));
+                break;
+            case 2:
+                setInputs((state) => ({
+                    ...inputs,
+                    registrationNumber: "210-14-55128",
+                    taxType: "일반과세자",
+                    corpState: "사업중",
+                    personalNumber: "20200505",
+                    companyName: "OO운수",
+                    companyOwnerName: "링컨",
+                    businessCondition: "철도업",
+                    businessOption: "무궁화호",
+                    businessNumber: "200-57-255",
+                    vehicleNumber: "미국 1철 5252",
+                    tonType: "100t",
+                    carType: "hot",
+                    bankName: "sh",
+                    bankAccount: "45213-339-1814",
+                    taxBillType: "2"
+                }));
+                break;
+        };
+    };
+
+    // inputs값 세팅
     const handleChange = (e) => {
         setInputs({
             ...inputs,
@@ -56,7 +137,7 @@ function TruckOwnerInfoDetail(props) {
 
     };
 
-    // 제출 서류
+    // files
     const [files, setFiles] = useState({
         buinessLicenseImg: "",
         truckLicenseImg: "",
@@ -66,6 +147,7 @@ function TruckOwnerInfoDetail(props) {
 
     const { buinessLicenseImg, truckLicenseImg, carLicenseImg, bankAccountImg } = files;
 
+    // files값 세팅
     const handleFileChange = (e) => {
         setFiles({
             ...files,
@@ -166,7 +248,7 @@ function TruckOwnerInfoDetail(props) {
                                         </tr>
                                         <tr>
                                             <td width="195px">성명</td>
-                                            <td><input type="text" onChange={handleChange} name="ownerName" id="ownerName" value={ownerName} /></td>
+                                            <td><input type="text" onChange={handleChange} name="ownerName" id="ownerName" value={companyOwnerName} /></td>
                                         </tr>
                                         <tr>
                                             <td width="195px">업태</td>
