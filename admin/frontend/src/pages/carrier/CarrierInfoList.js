@@ -103,7 +103,7 @@ function CarrierInfoList(props) {
     // 리스트 행 클릭 시 상세보기 이동
     $(document).on("click", "tbody tr", function () {
         var userSeq = $(this).attr("id");
-        var url = "/carrier/CarrierInfoDetail";
+        var url = "/carrier/carrierInfoDetail";
 
         props.history.push(url, { userSeq: userSeq });
     });

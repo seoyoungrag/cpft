@@ -1,15 +1,15 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import $ from "jquery";
 import { Component } from "react";
 import { Link } from "react-router-dom";
 import ReactStore from "ReactStore";
+import { navActive } from "../App";
 
-class SideNav extends Component {
-	constructor(props) {
-		super(props);
-	}
+function SideNav(props) {
 
-	componentDidMount() {
+	const url = useContext(navActive);
+
+	useEffect(() => {
 		// Toggle the side navigation
 		$("#sidebarToggle, #sidebarToggleTop").on("click", function (e) {
 			$("body").toggleClass("sidebar-toggled");
@@ -18,14 +18,14 @@ class SideNav extends Component {
 				$(".sidebar .collapse").collapse("hide");
 			}
 		});
-
+	
 		// Close any open menu accordions when window is resized below 768px
 		$(window).resize(function () {
 			if ($(window).width() < 768) {
 				$(".sidebar .collapse").collapse("hide");
 			}
 		});
-
+	
 		// Prevent the content wrapper from scrolling when the fixed side navigation hovered over
 		$("body.fixed-nav .sidebar").on("mousewheel DOMMouseScroll wheel", function (e) {
 			if ($(window).width() > 768) {
@@ -35,7 +35,7 @@ class SideNav extends Component {
 				e.preventDefault();
 			}
 		});
-
+	
 		// Scroll to top button appear
 		$(document).on("scroll", function () {
 			var scrollDistance = $(this).scrollTop();
@@ -45,7 +45,7 @@ class SideNav extends Component {
 				$(".scroll-to-top").fadeOut();
 			}
 		});
-
+	
 		// Smooth scrolling using jQuery easing
 		$(document).on("click", "a.scroll-to-top", function (e) {
 			var $anchor = $(this);
@@ -59,13 +59,21 @@ class SideNav extends Component {
 					"easeInOutExpo"
 				);
 			e.preventDefault();
-
+	
 		});
 		
-		const url = window.location.href;
-		var key = url.slice(url.lastIndexOf("/")+1, url.length);
-		key = key === "truckOwnerInfoDetail" && "truckOwnerInfo"; 
-
+		// 각 컴포넌트 Detail 주소들 매핑규칙
+		let key = url.slice(url.lastIndexOf("/")+1, url.length);
+		switch(key) {
+			case "truckOwnerInfoDetail":
+				key = "truckOwnerInfoList";
+				break;
+			case "carrierInfoDetail":
+				key = "carrierInfoList";
+				break;
+		}
+	
+		// 동적 sideNav 활성화
 		if(key !== '') {
 			$(".forMobileMenu").each(function() {
 				const tmp1 = $(this)[0].children;
@@ -82,7 +90,8 @@ class SideNav extends Component {
 				}
 			});
 		}
-
+	
+		// 새로 active 하기 전 active값들 초기화
 		$("li[class=nav-item").on("click", function() {
 			const obj = $(this)[0];
 			var arr = new Array();
@@ -91,15 +100,16 @@ class SideNav extends Component {
 					arr.push($(this));
 				}
 			})
-
+	
 			for(var i = 0; i < arr.length; i++) {
 				$(arr[i][0].children[0]).css("color", "");
 			}
 		})
+	
 
 		$("li[class=nav-item]").each(function() {
 			const tmp1 = $(this)[0].children;
-
+	
 			for(var i = 0; i < tmp1.length; i++) {
 				const tmp2 =tmp1[i].children;
 				var text = $(tmp2[tmp2.length-1]).attr("href");
@@ -113,207 +123,203 @@ class SideNav extends Component {
 				}
 			}
 		});
-	}
 
-	//}= ({ children, props }) => {
+		return () => {
+	
+		}
+	}, []);
 
-	render() {
-		return (
-			<ReactStore.Consumer>
-				{(store) => (
-					<ul className="navbar-nav bg-gradient-light sidebar sidebar-dark accordion" id="accordionSidebar">
-						<a className="sidebar-brand d-flex align-items-center justify-content-center" href="/">
-							<div className="sidebar-brand-icon rotate-n-15">
-								<i className="fas fa-truck-moving"></i>
-							</div>
-							<div className="sidebar-brand-text mx-1">
-								용차블루 <sup>관리자1.0</sup>
-							</div>
-						</a>
-
-						<li className="nav-item" id="button1">
-							<a
-								className="nav-link collapsed"
-								href="#"
-								onClick={() => store.handleClick("button1")}
-							>
-								<i className="fas fa-fw fa-chart-line"></i>
-								
-                                <Link className="collapse-item" to="/dashboard/dashboard">
-                                    <span>Dashboard</span>
-                                </Link>
-                                
-							</a>
-						</li>
-						
-						<li className="nav-item" id="buttonn2">
-							<a
-								className="nav-link collapsed"
-								href="#"
-								data-toggle="collapse"
-								data-target="#collapseTwo"
-								aria-expanded="true"
-								aria-controls="collapseTwo"
-								onClick={() => store.handleClick("buttonn2")}
-							>
-								<i className="fas fa-fw fa-krw"></i>
-								<span>정산관리</span>
-							</a>
-							<div id="collapseTwo" className="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-								<div className="bg-white py-2 collapse-inner rounded">
-									<h6 className="collapse-header">정산관리</h6>
-
-									<div className="forMobileMenu">
-										<Link className="collapse-item" to="/calculate/transportList">
-											운송료내역
-										</Link>
-										<Link className="collapse-item" to="/calculate/carrierCalc">
-											운송사정산
-										</Link>
-										<Link className="collapse-item" to="/calculate/truckOwnerCalc">
-											차주정산
-										</Link>
-									</div>
-								</div>
-							</div>
-						</li>
-
-						<li className="nav-item" id="button3">
-							<a
-								className="nav-link collapsed"
-								href="#"
-								onClick={() => store.handleClick("button3")}
-							>
-								<i className="fas fa-fw fa-chalkboard-teacher"></i>
-								<Link className="collapse-item" to="/carrier/carrierInfoList">
-									<span>운송사관리</span>
-								</Link>
-							</a>
-						</li>
-
-						<li className="nav-item" id="button4">
-							<a
-								className="nav-link collapsed"
-								href="#"
-								onClick={() => store.handleClick("button4")}
-							>
-								<i className="fas fa-fw fa-truck"></i>
-								<Link className="collapse-item" to="/truckOwner/truckOwnerInfoList">
-									<span>차주관리</span>
-								</Link>
-							</a>
-						</li>
-
-						<li className="nav-item" id="button5">
-							<a
-								className="nav-link collapsed"
-								href="#"
-								data-toggle="collapse"
-								data-target="#collapseFive"
-								aria-expanded="true"
-								aria-controls="collapseFive"
-								onClick={() => store.handleClick("button5")}
-							>
-								<i className="fas fa-fw fa-list-alt"></i>
-								<span>게시판관리</span>
-							</a>
-							<div id="collapseFive" className="collapse" aria-labelledby="headingFive" data-parent="#accordionSidebar">
-								<div className="bg-white py-2 collapse-inner rounded">
-                                <h6 className="collapse-header">게시판관리</h6>
-                                    <div className="forMobileMenu">
-										<Link to="/board/orderBoard" className="collapse-item">
-											오더게시판
-										</Link>
-									</div>
-								</div>
-							</div>
-						</li>
-
-                        <li className="nav-item" id="button6">
-							<a
-								className="nav-link collapsed"
-								href="#"
-								data-toggle="collapse"
-								data-target="#collapseSix"
-								aria-expanded="true"
-								aria-controls="collapseSix"
-								onClick={() => store.handleClick("button6")}
-							>
-								<i className="fas fa-fw fa-user"></i>
-								<span>계정관리</span>
-							</a>
-							<div id="collapseSix" className="collapse" aria-labelledby="headingSix" data-parent="#accordionSidebar">
-								<div className="bg-white py-2 collapse-inner rounded">
-									<h6 className="collapse-header">계정관리</h6>
-
-									<div className="forMobileMenu">
-										<Link className="collapse-item" to="/account/carrierAccount">
-											운송사계정
-										</Link>
-										<Link className="collapse-item" to="/account/truckOwnerAccount">
-											차주계정
-										</Link>
-										<Link className="collapse-item" to="/account/adminAccount">
-											관리자계정
-										</Link>
-									</div>
-								</div>
-							</div>
-						</li>
-
-						<li className="nav-item" id="button7">
-							<a
-								className="nav-link collapsed"
-								href="#"
-								onClick={() => store.handleClick("button7")}
-							>
-								<i className="fab fa-fw fa-buffer"></i>
-								<Link className="collapse-item" to="/customerCenter/csInfo">
-                                    <span>고객센터CS</span>
-                                </Link>
-							</a>
-						</li>
-
-						<li className="nav-item" id="button8">
-							<a
-								className="nav-link collapsed"
-								href="#"
-								onClick={() => store.handleClick("button8")}
-							>
-								<i className="fas fa-fw fa-bullhorn"></i>
-								<Link className="collapse-item" to="/notice/noticeList">
-                                    <span>공지사항</span>
-                                </Link>
-							</a>
-						</li>
-
-						<li className="nav-item" id="button9">
-							<a
-								className="nav-link collapsed"
-								href="#"
-								onClick={() => store.handleClick("button9")}
-							>
-								<i className="fas fa-fw fa-info"></i>
-								<Link className="collapse-item" to="/serviceTerms/serviceTerms">
-                                    <span>서비스 약관</span>
-                                </Link>
-							</a>
-						</li>
-
-						<hr className="sidebar-divider d-none d-md-block" />
-
-						<div className="text-center d-none d-md-inline">
-							<button className="rounded-circle border-0" id="sidebarToggle"></button>
+	return (
+		<ReactStore.Consumer>
+			{(store) => (
+				<ul className="navbar-nav bg-gradient-light sidebar sidebar-dark accordion" id="accordionSidebar">
+					<a className="sidebar-brand d-flex align-items-center justify-content-center" href="/">
+						<div className="sidebar-brand-icon rotate-n-15">
+							<i className="fas fa-truck-moving"></i>
 						</div>
-					</ul>
-				)}
-			</ReactStore.Consumer>
-		);
+						<div className="sidebar-brand-text mx-1">
+							용차블루 <sup>관리자1.0</sup>
+						</div>
+					</a>
 
-		const mapStateToProps = (state) => ({
-			editing: state.false
-		})
-	}
-}
+					<li className="nav-item" id="button1">
+						<a
+							className="nav-link collapsed"
+							href="#"
+							onClick={() => store.handleClick("button1")}
+						>
+							<i className="fas fa-fw fa-chart-line"></i>
+
+							<Link className="collapse-item" to="/dashboard/dashboard">
+								<span>Dashboard</span>
+							</Link>
+
+						</a>
+					</li>
+
+					<li className="nav-item" id="buttonn2">
+						<a
+							className="nav-link collapsed"
+							href="#"
+							data-toggle="collapse"
+							data-target="#collapseTwo"
+							aria-expanded="true"
+							aria-controls="collapseTwo"
+							onClick={() => store.handleClick("buttonn2")}
+						>
+							<i className="fas fa-fw fa-krw"></i>
+							<span>정산관리</span>
+						</a>
+						<div id="collapseTwo" className="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+							<div className="bg-white py-2 collapse-inner rounded">
+								<h6 className="collapse-header">정산관리</h6>
+
+								<div className="forMobileMenu">
+									<Link className="collapse-item" to="/calculate/transportList">
+										운송료내역
+										</Link>
+									<Link className="collapse-item" to="/calculate/carrierCalc">
+										운송사정산
+										</Link>
+									<Link className="collapse-item" to="/calculate/truckOwnerCalc">
+										차주정산
+										</Link>
+								</div>
+							</div>
+						</div>
+					</li>
+
+					<li className="nav-item" id="button3">
+						<a
+							className="nav-link collapsed"
+							href="#"
+							onClick={() => store.handleClick("button3")}
+						>
+							<i className="fas fa-fw fa-chalkboard-teacher"></i>
+							<Link className="collapse-item" to="/carrier/carrierInfoList">
+								<span>운송사관리</span>
+							</Link>
+						</a>
+					</li>
+
+					<li className="nav-item" id="button4">
+						<a
+							className="nav-link collapsed"
+							href="#"
+							onClick={() => store.handleClick("button4")}
+						>
+							<i className="fas fa-fw fa-truck"></i>
+							<Link className="collapse-item" to="/truckOwner/truckOwnerInfoList">
+								<span>차주관리</span>
+							</Link>
+						</a>
+					</li>
+
+					<li className="nav-item" id="button5">
+						<a
+							className="nav-link collapsed"
+							href="#"
+							data-toggle="collapse"
+							data-target="#collapseFive"
+							aria-expanded="true"
+							aria-controls="collapseFive"
+							onClick={() => store.handleClick("button5")}
+						>
+							<i className="fas fa-fw fa-list-alt"></i>
+							<span>게시판관리</span>
+						</a>
+						<div id="collapseFive" className="collapse" aria-labelledby="headingFive" data-parent="#accordionSidebar">
+							<div className="bg-white py-2 collapse-inner rounded">
+								<h6 className="collapse-header">게시판관리</h6>
+								<div className="forMobileMenu">
+									<Link to="/board/orderBoard" className="collapse-item">
+										오더게시판
+										</Link>
+								</div>
+							</div>
+						</div>
+					</li>
+
+					<li className="nav-item" id="button6">
+						<a
+							className="nav-link collapsed"
+							href="#"
+							data-toggle="collapse"
+							data-target="#collapseSix"
+							aria-expanded="true"
+							aria-controls="collapseSix"
+							onClick={() => store.handleClick("button6")}
+						>
+							<i className="fas fa-fw fa-user"></i>
+							<span>계정관리</span>
+						</a>
+						<div id="collapseSix" className="collapse" aria-labelledby="headingSix" data-parent="#accordionSidebar">
+							<div className="bg-white py-2 collapse-inner rounded">
+								<h6 className="collapse-header">계정관리</h6>
+
+								<div className="forMobileMenu">
+									<Link className="collapse-item" to="/account/carrierAccount">
+										운송사계정
+										</Link>
+									<Link className="collapse-item" to="/account/truckOwnerAccount">
+										차주계정
+										</Link>
+									<Link className="collapse-item" to="/account/adminAccount">
+										관리자계정
+										</Link>
+								</div>
+							</div>
+						</div>
+					</li>
+
+					<li className="nav-item" id="button7">
+						<a
+							className="nav-link collapsed"
+							href="#"
+							onClick={() => store.handleClick("button7")}
+						>
+							<i className="fab fa-fw fa-buffer"></i>
+							<Link className="collapse-item" to="/customerCenter/csInfo">
+								<span>고객센터CS</span>
+							</Link>
+						</a>
+					</li>
+
+					<li className="nav-item" id="button8">
+						<a
+							className="nav-link collapsed"
+							href="#"
+							onClick={() => store.handleClick("button8")}
+						>
+							<i className="fas fa-fw fa-bullhorn"></i>
+							<Link className="collapse-item" to="/notice/noticeList">
+								<span>공지사항</span>
+							</Link>
+						</a>
+					</li>
+
+					<li className="nav-item" id="button9">
+						<a
+							className="nav-link collapsed"
+							href="#"
+							onClick={() => store.handleClick("button9")}
+						>
+							<i className="fas fa-fw fa-info"></i>
+							<Link className="collapse-item" to="/serviceTerms/serviceTerms">
+								<span>서비스 약관</span>
+							</Link>
+						</a>
+					</li>
+
+					<hr className="sidebar-divider d-none d-md-block" />
+
+					<div className="text-center d-none d-md-inline">
+						<button className="rounded-circle border-0" id="sidebarToggle"></button>
+					</div>
+				</ul>
+			)}
+		</ReactStore.Consumer>
+	);
+};
 
 export default SideNav;
