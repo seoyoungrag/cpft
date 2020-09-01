@@ -108,6 +108,14 @@
 			<!-- <scope>system</scope>
 			<systemPath>${basedir}/libs/ojdbc8-12.2.0.1.jar</systemPath> -->
 		</dependency>
+		<dependency>
+			<groupId>baroservice</groupId>
+			<artifactId>baroservice</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/libs/barobill-api-cxf.jar</systemPath>
+		</dependency>
+
 	</dependencies>
 
 	<build>
