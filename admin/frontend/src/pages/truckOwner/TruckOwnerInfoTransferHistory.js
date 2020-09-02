@@ -13,100 +13,154 @@ function TruckOwnerInfoTransferHistory(props) {
     useEffect(() => {
         console.log("컴포넌트 마운트");
         
-        // 고정
+        // DataTables - 고정
+        // $("#fixedTransferList").DataTable({
+        //     serverSide: false,
+        //     processing: true,
+        //     responsive: true,
+        //     autoWidth: false,
+        //     width: "100%",
+        //     ordering: false,
+        //     select: false,
+        //     dom:
+        //         "<'row'<'col-sm-12'rt>>" +
+        //         "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+        //     ajax: {
+        //         url: "/v1/truckOwner/truckOwnerInfoList",
+        //         type: "GET",
+        //         data: { length: 100 },
+        //         dataSrc: function (res) {
+        //             var data = res.data;
+        //             return data;
+        //         }
+        //     },
+        //     columnDefs: [
+        //         {
+        //             defaultContent: "-",
+        //             targets: "_all",
+        //         },
+        //         {
+        //             targets: [0],
+        //             createdCell: function (td, cellData, rowData, row, col) {
+        //                 $(td).text(row + 1);
+        //             }
+        //         }
+        //     ],
+        //     columns: [
+        //         { title: "no.", data: null },
+        //         { title: "운송사", data: "팀프레시" },
+        //         { title: "계약일", data: "2020/08/13" },
+        //         { title: "계약종료일", data: "2020/09/30" },
+        //         { title: "운송상태", data: "근무중" }
+        //     ],
+        //     createdRow: function (row, data) {
+        //         $(row).attr("id", data.userSeq);
+        //     }
+        // });
+
+        // DataTables - 단기
+        // $("#shortTermTransferList").DataTable({
+        //     serverSide: false,
+        //     processing: true,
+        //     responsice: true,
+        //     autoWidth: false,
+        //     width: "100%",
+        //     ordering: false,
+        //     select: false,
+        //     dom:
+        //         "<'row'<'col-sm-12'rt>>" +
+        //         "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+        //     ajax: {
+        //         url: "/v1/truckOwner/truckOwnerInfoList",
+        //         type: "GET",
+        //         data: { length: 100 },
+        //         dataSrc: function (res) {
+        //             var data = res.data;
+        //             return data;
+        //         }
+        //     },
+        //     columnDefs: [
+        //         {
+        //             defaultContent: "-",
+        //             targets: "_all",
+        //         },
+        //         {
+        //             targets: [0],
+        //             createdCell: function (td, cellData, rowData, row, col) {
+        //                 $(td).text(row + 1);
+        //             }
+        //         }
+        //     ],
+        //     columns: [
+        //         { data: null },
+        //         { data: "팀프레시", name: "rowSpan"},
+        //         { data: "userNm" },
+        //         { data: null },
+        //         { data: null },
+        //         { data: "crqfcs.2" },
+        //         { data: null },
+        //         { data: null }
+        //     ],
+        //     createdRow: function (row, data) {
+        //         $(row).attr("id", data.userSeq);
+        //     },
+        // });
+
+        // 더미 고정 테이블
         $("#fixedTransferList").DataTable({
-            serverSide: false,
-            processing: true,
-            responsive: true,
-            autoWidth: false,
-            width: "100%",
-            ordering: false,
-            select: false,
-            dom:
-                "<'row'<'col-sm-12'rt>>" +
-                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-            ajax: {
-                url: "/v1/truckOwner/truckOwnerInfoList",
-                type: "GET",
-                data: { length: 100 },
-                dataSrc: function (res) {
-                    var data = res.data;
-                    return data;
-                }
-            },
+            data: fixedArray,
+            columns: [
+                { data: null },
+                { data: "companyName" },
+                { data: "contractDate" },
+                { data: "contractEndData" },
+                { data: "deliveryStatus" }
+            ],
             columnDefs: [
                 {
                     defaultContent: "-",
-                    targets: "_all",
+                    targets: "_all"
                 },
                 {
                     targets: [0],
-                    createdCell: function (td, cellData, rowData, row, col) {
+                    createdCell: function(td, cellData, rowData, row, col) {
                         $(td).text(row + 1);
                     }
                 }
             ],
-            columns: [
-                { title: "no.", data: null },
-                { title: "운송사", data: "팀프레시" },
-                { title: "계약일", data: "2020/08/13" },
-                { title: "계약종료일", data: "2020/09/30" },
-                { title: "운송상태", data: "근무중" }
-            ],
-            createdRow: function (row, data) {
-                $(row).attr("id", data.userSeq);
+            createdRow: function(row, data, dataIndex, cells) {
+                $(row).attr("id", dataIndex + 1);
             }
         });
 
-        // 단기
+        // 더미 단기 테이블
         $("#shortTermTransferList").DataTable({
-            serverSide: false,
-            processing: true,
-            responsice: true,
-            autoWidth: false,
-            width: "100%",
-            ordering: false,
-            select: false,
-            dom:
-                "<'row'<'col-sm-12'rt>>" +
-                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-            ajax: {
-                url: "/v1/truckOwner/truckOwnerInfoList",
-                type: "GET",
-                data: { length: 100 },
-                dataSrc: function (res) {
-                    var data = res.data;
-                    return data;
-                }
-            },
+            data: shortTermArray ,
+            columns: [
+                { data: null },
+                { data: "companyName" },
+                { data: "matchDate" },
+                { data: "pickupDate" },
+                { data: "startPoint" },
+                { data: "deliveryDate" },
+                { data: "endPoint" },
+                { data: "deliveryStatus" }
+            ],
             columnDefs: [
                 {
                     defaultContent: "-",
-                    targets: "_all",
+                    targets: "_all"
                 },
                 {
                     targets: [0],
-                    createdCell: function (td, cellData, rowData, row, col) {
+                    createdCell: function(td, cellData, rowData, row, col) {
                         $(td).text(row + 1);
                     }
                 }
             ],
-            columns: [
-                { data: null },
-                { data: "팀프레시", name: "rowSpan"},
-                { data: "userNm" },
-                { data: null },
-                { data: null },
-                { data: "crqfcs.2" },
-                { data: null },
-                { data: null }
-            ],
-            createdRow: function (row, data) {
-                $(row).attr("id", data.userSeq);
-            },
-            rowsGroup: [
-                "rowSpan:name"
-            ]
+            createdRow: function(row, data, dataIndex, cells) {
+                $(row).attr("id", dataIndex + 1);
+            }
         });
 
         return () => {
@@ -115,6 +169,9 @@ function TruckOwnerInfoTransferHistory(props) {
             $("#shortTermTransferList").DataTable().destroy(true);
         }
     }, []);
+
+    // TruckOwnerCommon에서 받아옴
+    const userSeq = props.userSeq;
 
     // 데이터 조회
     // const getData = async () => {
@@ -131,16 +188,50 @@ function TruckOwnerInfoTransferHistory(props) {
     //                 userName: data.userNm,
     //                 phoneNumber: data.truckOwner.phone
     //             }));
-
-                
-                
     //         })
     //         .catch(res => {
     //             alert("에러가 발생하였습니다 새로고침 후 다시 이용해주세요.");
     //         });
-            
     //     setIsLoading(false);
     // };
+
+    // 더미 데이터 -----------------------------------------------------------------
+    const fixedArray = [
+        {
+            companyName: "팀프레시",
+            contractDate: "2020/08/13",
+            contractEndData: "2020/08/15",
+            deliveryStatus: "계약종료"
+        },
+        {
+            companyName: "팀프레시",
+            contractDate: "2020/08/17",
+            contractEndData: "-",
+            deliveryStatus: "근무중"
+        }
+    ];
+
+    const shortTermArray = [
+        {
+            companyName: "팀프레시",
+            matchDate: "2020/08/13",
+            pickupDate: "2020/08/13",
+            startPoint: "하남센터",
+            deliveryDate: "2020/08/13",
+            endPoint: "한마을빌딩",
+            deliveryStatus: "이동중"
+        },
+        {
+            companyName: "팀프레시",
+            matchDate: "2020/08/18",
+            pickupDate: "2020/08/19",
+            startPoint: "일산센터",
+            deliveryDate: "2020/08/19",
+            endPoint: "63빌딩",
+            deliveryStatus: "운송종료"
+        },
+    ];
+    // ------------------------------------------------------------------------------
   
     return (
         <Fragment>
@@ -188,7 +279,18 @@ function TruckOwnerInfoTransferHistory(props) {
                                             role="grid"
                                             aria-describedby="dataTable_info"
                                             style={{ textAlign: "center" }}
-                                        />
+                                        >
+                                            <thead>
+                                                <tr>
+                                                    <th>no.</th>
+                                                    <th>운송사</th>
+                                                    <th>계약일</th>
+                                                    <th>계약종료일</th>
+                                                    <th>운송상태</th>
+                                                </tr>
+                                            </thead>
+                                        
+                                        </table>
                                     </div>
                                 </div>
                             </div>
@@ -206,12 +308,12 @@ function TruckOwnerInfoTransferHistory(props) {
                                         >
                                             <thead>
                                                 <tr>
-                                                    <th rowspan="2" style={{ width: "1rem", verticalAlign: "middle" }}>No.</th>
-                                                    <th rowspan="2" style={{ width: "5rem", verticalAlign: "middle" }}>운송사</th>
-                                                    <th rowspan="2" style={{ width: "5rem", verticalAlign: "middle" }}>매칭일</th>
-                                                    <th colspan="2" style={{ width: "6rem" }}>상차</th>
-                                                    <th colspan="2" style={{ width: "6rem" }}>하차</th>
-                                                    <th rowspan="2" style={{ width: "5rem", verticalAlign: "middle" }}>운송상태</th>
+                                                    <th rowSpan="2" style={{ width: "1rem", verticalAlign: "middle" }}>No.</th>
+                                                    <th rowSpan="2" style={{ width: "5rem", verticalAlign: "middle" }}>운송사</th>
+                                                    <th rowSpan="2" style={{ width: "5rem", verticalAlign: "middle" }}>매칭일</th>
+                                                    <th colSpan="2" style={{ width: "6rem" }}>상차</th>
+                                                    <th colSpan="2" style={{ width: "6rem" }}>하차</th>
+                                                    <th rowSpan="2" style={{ width: "5rem", verticalAlign: "middle" }}>운송상태</th>
                                                 </tr>
                                                 <tr>
                                                     <th style={{ width: "3rem" }}>상차일</th>

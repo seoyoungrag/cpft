@@ -14,40 +14,56 @@ function TruckOwnerInfoDetail(props) {
 
     useEffect(() => {
         console.log("컴포넌트 마운트");
+        setData(userSeq-1);
          
         return () => {
             console.log("컴포넌트 언마운트");
         }
-    }, []); 
+    }, []);
+
+    // TruckOwnerCommon에서 받아옴
+    const userSeq = props.userSeq;
 
     // inputs
     const [inputs, setInputs] = useState({
-        // 사업자정보
+        // 사업자등록번호
         registrationNumber: "-",
+        // 과세유형
         taxType: "-",
+        // 휴폐업유무
         corpState: "-",
+        // 간이과세자 주민번호
         personalNumber: "-",
+        // 상호
         companyName: "-",
-        ownerName: "-",
+        // 성명
+        companyOwnerName: "-",
+        // 업태
         businessCondition: "-",
+        // 종목
         businessOption: "-",
-        // 자격정보
+        // 자격번호
         businessNumber: "-",
-        // 차량등록 정보
+        // 차량번호
         vehicleNumber: "-",
+        // 차량톤수
         tonType: "-",
+        // 차량종류
         carType: "-",
-        // 결제정보
+        // 은행
         bankName: "-",
+        // 계좌번호
         bankAccount: "-",
+        // 세금계산서 유형
         taxBillType: "-"
     });
 
     const { registrationNumber, taxType, corpState, personalNumber, 
-            companyName, ownerName, businessCondition, businessOption,
+            companyName, companyOwnerName, businessCondition, businessOption,
             businessNumber, vehicleNumber, tonType, carType, bankName,
             bankAccount, taxBillType } = inputs;
 
+    // inputs값 세팅
     const handleChange = (e) => {
         setInputs({
             ...inputs,
@@ -56,7 +72,7 @@ function TruckOwnerInfoDetail(props) {
 
     };
 
-    // 제출 서류
+    // files
     const [files, setFiles] = useState({
         buinessLicenseImg: "",
         truckLicenseImg: "",
@@ -66,6 +82,7 @@ function TruckOwnerInfoDetail(props) {
 
     const { buinessLicenseImg, truckLicenseImg, carLicenseImg, bankAccountImg } = files;
 
+    // files값 세팅
     const handleFileChange = (e) => {
         setFiles({
             ...files,
@@ -83,7 +100,6 @@ function TruckOwnerInfoDetail(props) {
     // // 데이터 조회
     // const getData = async () => {
     //     setIsLoading(true);
-        
     //     var data = null;
     //     await axios.get(url + userSeq)
     //         .then(res => {
@@ -93,15 +109,78 @@ function TruckOwnerInfoDetail(props) {
     //                 userName: data.userNm,
     //                 phoneNumber: data.truckOwner.phone
     //             }));
-
-                
-                
     //         })
     //         .catch(res => {
     //             alert("에러가 발생하였습니다 새로고침 후 다시 이용해주세요.");
     //         });
-            
     //     setIsLoading(false);
+
+    // 더미 데이터 세팅 ----------------------------------------------------------
+    const setData = (userSeq) => {
+        switch(userSeq) {
+            case 0:
+                setInputs((state) => ({
+                    ...inputs,
+                    registrationNumber: "561-88-01138",
+                    taxType: "일반과세자",
+                    corpState: "사업중",
+                    personalNumber: "20200901",
+                    companyName: "팀프레시",
+                    companyOwnerName: "이성일",
+                    businessCondition: "운송업",
+                    businessOption: "화물",
+                    businessNumber: "1-14-146139",
+                    vehicleNumber: "서울 10배 1234",
+                    tonType: "5t",
+                    carType: "cold",
+                    bankName: "nh",
+                    bankAccount: "40625-21-454891",
+                    taxBillType: "1"
+                }));
+                break;
+            case 1:
+                setInputs((state) => ({
+                    ...inputs,
+                    registrationNumber: "812-13-51128",
+                    taxType: "특급과세자",
+                    corpState: "사업정지",
+                    personalNumber: "20200304",
+                    companyName: "활빈당",
+                    companyOwnerName: "홍길동",
+                    businessCondition: "해운업",
+                    businessOption: "크루즈선",
+                    businessNumber: "101-0-239",
+                    vehicleNumber: "조선 1배 0001",
+                    tonType: "2t",
+                    carType: "hot",
+                    bankName: "kb",
+                    bankAccount: "20213-51-171814",
+                    taxBillType: "2"
+                }));
+                break;
+            case 2:
+                setInputs((state) => ({
+                    ...inputs,
+                    registrationNumber: "210-14-55128",
+                    taxType: "일반과세자",
+                    corpState: "사업중",
+                    personalNumber: "20200505",
+                    companyName: "OO운수",
+                    companyOwnerName: "링컨",
+                    businessCondition: "철도업",
+                    businessOption: "무궁화호",
+                    businessNumber: "200-57-255",
+                    vehicleNumber: "미국 1철 5252",
+                    tonType: "4t",
+                    carType: "hot",
+                    bankName: "sh",
+                    bankAccount: "45213-339-1814",
+                    taxBillType: "2"
+                }));
+                break;
+        };
+    };
+    // ------------------------------------------------------------------------
   
     return (
         <Fragment>
@@ -166,7 +245,7 @@ function TruckOwnerInfoDetail(props) {
                                         </tr>
                                         <tr>
                                             <td width="195px">성명</td>
-                                            <td><input type="text" onChange={handleChange} name="ownerName" id="ownerName" value={ownerName} /></td>
+                                            <td><input type="text" onChange={handleChange} name="ownerName" id="ownerName" value={companyOwnerName} /></td>
                                         </tr>
                                         <tr>
                                             <td width="195px">업태</td>
@@ -221,22 +300,21 @@ function TruckOwnerInfoDetail(props) {
                                     <tr>
                                         <td width="195px">차량톤수</td>
                                         <td>
-                                            <select name="tonType" id="tonType" onChange={handleChange} style={{ width: "100%" }}>
-                                                <option>1t</option>
-                                                <option>2t</option>
-                                                <option>3t</option>
-                                                <option>4t</option>
-                                                <option>5t</option>
+                                            <select name="tonType" id="tonType" value={tonType} onChange={handleChange} style={{ width: "100%" }}>
+                                                <option value="1t">1t</option>
+                                                <option value="2t">2t</option>
+                                                <option value="3t">3t</option>
+                                                <option value="4t">4t</option>
+                                                <option value="5t">5t</option>
                                             </select>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td width="195px">차량종류</td>
                                         <td>
-                                            <select name="carType" id="carType" onChange={handleChange} style={{ width: "100%" }}>
-                                                <option>냉동탑</option>
-                                                <option>석가탑</option>
-                                                <option>다보탑</option>
+                                            <select name="carType" id="carType" value={carType} onChange={handleChange} style={{ width: "100%" }}>
+                                                <option value="cold">냉동탑</option>
+                                                <option value="hot">상온탑</option>
                                             </select>
                                         </td>
                                     </tr>
@@ -260,10 +338,11 @@ function TruckOwnerInfoDetail(props) {
                                     <tr>
                                         <td width="195px">은행</td>
                                         <td>
-                                            <select name="bankName" id="bankName" onChange={handleChange} style={{ width: "100%" }}>
+                                            <select name="bankName" id="bankName" value={bankName} onChange={handleChange} style={{ width: "100%" }}>
                                                 <option>은행선택</option>
-                                                <option>농협</option>
-                                                <option>국민</option>
+                                                <option value="nh">농협</option>
+                                                <option value="kb">국민</option>
+                                                <option value="sh">신한</option>
                                             </select>
                                         </td>
                                         <td><input type="text" onChange={handleChange} name="bankAccount" id="bankAccount" value={bankAccount} /></td>
@@ -272,9 +351,9 @@ function TruckOwnerInfoDetail(props) {
                                     <tr>
                                         <td width="195px">세금계산서 유형</td>
                                         <td>
-                                            <select name="taxBillType" id="taxBillType" onChange={handleChange}>
-                                                <option>전자세금계산서(위수탁 발행)</option>
-                                                <option>수기세금계산서(역발행)</option>
+                                            <select name="taxBillType" id="taxBillType" value={taxBillType} onChange={handleChange}>
+                                                <option value="1">전자세금계산서(위수탁 발행)</option>
+                                                <option value="2">수기세금계산서(역발행)</option>
                                             </select>
                                         </td>
                                     </tr>

@@ -1,3 +1,4 @@
+
 import React, { Component, useEffect, useRef } from 'react';
 import MainStructure from "components/structure/MainStructure";
 import { Link } from "react-router-dom";
@@ -7,8 +8,8 @@ import "vendor/datatables/jquery.dataTables.min.js";
 $.DataTable = require("vendor/datatables/dataTables.bootstrap4.min.js");
 import "datatables.net-dt";
 
-function CarrierCalc({history, location, match}) {
-    const CarrierCalcTbl = useRef();
+function TransportList({history, location, match}) {
+    const TransportListTbl = useRef();
 
     console.log("component did mount");
        
@@ -54,7 +55,7 @@ function CarrierCalc({history, location, match}) {
         });
 
 
-        $("#CarrierCalcTbl").DataTable({
+        $("#TransportListTbl").DataTable({
             //language: DataTable_language,
             serverSide: false,
             processing: true,
@@ -106,15 +107,15 @@ function CarrierCalc({history, location, match}) {
         });
         return () => {
             console.log("component unmount");
-            $("#CarrierCalcTbl").DataTable().destroy(true);
+            $("#TransportListTbl").DataTable().destroy(true);
         }
     }, []);
 
     $(document).on("click", "tbody tr", function() {
-        var carrierCalcSeq = $(this).attr("id");
-        var url = "/calculate/CarrierCalcDetail";
+        var TransportListSeq = $(this).attr("id");
+        var url = "/calculate/TransportListDetail";
         
-        history.push(url, {carrierCalcSeq: carrierCalcSeq});
+        history.push(url, {TransportListSeq: TransportListSeq});
     });
 
     $(document).on("mouseenter", "tbody tr", function() {
@@ -145,10 +146,10 @@ function CarrierCalc({history, location, match}) {
            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
           </svg>
          </div>
-         <span>운송사 정산</span>
+         <span>운송그룹 리스트</span>
         </h1>
         <div className="page-header-subtitle">
-          운송사 정산 내역을 조회합니다.
+        	운송그룹 리스트를 조회합니다.
         </div>
        </div>
       </div>
@@ -161,18 +162,18 @@ function CarrierCalc({history, location, match}) {
 		           <ul className="nav nav-tabs" data-tabs="tabs">
 		               <li className="nav-item">
 		                   <a
-		                       className="nav-link d-flex align-items-center active"
+		                       className="nav-link d-flex align-items-center"
 		                   >
-			                   <Link to="/calculate/CarrierCalc">
-		                  			<span className="sm-display-none">운송사 정산</span>
-		                       </Link>
+		                   		<Link to="/calculate/CarrierCalc">
+		                   			<span className="sm-display-none">운송사 정산</span>
+		                        </Link>
 		                       <div className="ripple-container"></div>
 		                   </a>
 		               </li>
 		               <li className="nav-item">
 		                   <a
-		                       className="nav-link d-flex align-items-center"
-		                    >
+		                       className="nav-link d-flex align-items-center active"
+		                   >
 			                   <Link to="/calculate/TransportList">
 			                   		<span className="sm-display-none">운송그룹 리스트</span>
 								</Link>
@@ -186,8 +187,8 @@ function CarrierCalc({history, location, match}) {
        <div className="card-body">
         <div className="datatable table-responsive">
          <table
-          id="CarrierCalcTbl"
-          ref={CarrierCalcTbl}
+          id="TransportListTbl"
+          ref={TransportListTbl}
           className="table table-bordered table-hover"
           width="100%"
           cellSpacing="0"
@@ -202,4 +203,4 @@ function CarrierCalc({history, location, match}) {
    </MainStructure>
   )
  }
-export default CarrierCalc;
+export default TransportList;
