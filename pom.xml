@@ -26,8 +26,20 @@
 		<module>model</module>
 		<module>repository</module>
 		<module>common</module>
-		<module>carrier</module>
-		<module>admin</module>
   </modules>
+	<profiles>
+		<profile>
+			<id>carrier</id>
+			<modules>
+				<module>carrier</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>admin</id>
+			<modules>
+				<module>admin</module>
+			</modules>
+		</profile>
+	</profiles>
 
 </project>
