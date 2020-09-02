@@ -7,6 +7,7 @@ import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -21,11 +22,11 @@ import com.baroservice.api.BarobillApiService;
 @SpringBootConfiguration
 @EnableCaching
 @EntityScan("kr.co.teamfresh.cpft.model.entity")
-@EnableJpaRepositories("kr.co.teamfresh.cpft.repository")
 @ComponentScan({"kr.co.teamfresh.cpft"})
+@EnableJpaRepositories("kr.co.teamfresh.cpft.repository")
+@ServletComponentScan(basePackages = "kr.co.teamfresh.cpft.common.config")
 @EnableJpaAuditing
 @SpringBootApplication
-@EnableAutoConfiguration
 public class CarrierBackendApplication {
 
 	public static void main(String[] args) {
