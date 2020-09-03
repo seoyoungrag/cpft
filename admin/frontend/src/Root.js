@@ -9,17 +9,17 @@ import { Component } from "react";
 class Root extends Component {
  constructor(props) {
   super(props);
-  this._initButton = () => {
-   this.state.buttonIdsArray.forEach((button) => {
-    document.getElementById(button).classList.remove("active");
-   });
-  };
+  // this._initButton = () => {
+  //  this.state.buttonIdsArray.forEach((button) => {
+  //   document.getElementById(button).classList.remove("active");
+  //  });
+  // };
   this._handleClick = (id) => {
    var isClicked = false;
    if (document.getElementById(id).classList.contains("active")) {
     isClicked = true;
    }
-   this._initButton();
+  //  this._initButton();
    if (isClicked) {
     document.getElementById(id).classList.remove("active");
     this.setState({
@@ -47,7 +47,7 @@ class Root extends Component {
     return false;
    }
 
-   this._initButton();
+  //  this._initButton();
 
    this.state.buttonIdsArray.forEach((button) => {
     document.getElementById(button).classList.remove("active");
@@ -74,7 +74,7 @@ class Root extends Component {
    active: true,
    buttonIdsArray: ["button1", "button2", "button3"],
    clickedButton: localStorage.getItem("clickedButton") || "",
-   initButton: this._initButton,
+  //  initButton: this._initButton,
    handleClick: this._handleClick,
    initNav: this._initNav,
   };

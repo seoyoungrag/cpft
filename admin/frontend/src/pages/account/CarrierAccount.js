@@ -99,6 +99,20 @@ function CarrierAccount({history, location, match}) {
 
             createdRow: function(row, data) {
                 $(row).attr("id", data.userSeq);
+            },
+
+            initComplete: function(settings, json) {
+                $("#CarrierAccountTbl tbody tr").on("click", function() {
+                    var userSeq = $(this).attr("id");
+                    var url = "/account/carrierAccountDetail";
+                    
+                    history.push(url, {userSeq: userSeq});
+                });
+            
+                $("#CarrierAccountTbl tbody tr").on("mouseenter", function() {
+                    $(this).css("cursor", "pointer");
+                })
+
             }
         });
         return () => {
@@ -107,16 +121,6 @@ function CarrierAccount({history, location, match}) {
         }
     }, []);
 
-    $(document).on("click", "tbody tr", function() {
-        var userSeq = $(this).attr("id");
-        var url = "/account/carrierAccountDetail";
-        
-        history.push(url, {userSeq: userSeq});
-    });
-
-    $(document).on("mouseenter", "tbody tr", function() {
-        $(this).css("cursor", "pointer");
-    })
 
   return (
    <MainStructure>
