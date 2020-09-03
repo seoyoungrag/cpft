@@ -167,9 +167,6 @@ function SideNav(props) {
 									<Link className="collapse-item" to="/calculate/transportList">
 										운송료내역
 										</Link>
-									<Link className="collapse-item" to="/calculate/carrierCalc">
-										운송사정산
-										</Link>
 									<Link className="collapse-item" to="/calculate/truckOwnerCalc">
 										차주정산
 										</Link>

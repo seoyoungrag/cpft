@@ -8,7 +8,7 @@ import "vendor/datatables/jquery.dataTables.min.js";
 $.DataTable = require("vendor/datatables/dataTables.bootstrap4.min.js");
 import "datatables.net-dt";
 
-function TransportList({history, location, match}) {
+function TransportList(props) {
     const TransportListTbl = useRef();
 
     console.log("component did mount");
@@ -89,16 +89,17 @@ function TransportList({history, location, match}) {
                     }
                 }
             ],
-            
+            data : array,
             columns : [
-                { title: "no", data: null, width: "10%" },
-                { title: "운송사", data: "ordersComplete", width: "10%" },
-                { title: "운송그룹", data: "ordersComplete", width: "10%" },
-                { title: "업무형태", data: "ordersComplete", width: "10%" },
-                { title: "정산마감일시", data: "ordersComplete", width: "15%" },
-                { title: "플랫폼 정산상태값", data: "ordersComplete", width: "15%" },
-                { title: "운송사 지출완료 금액", data: "ordersComplete", width: "15%" },
-                { title: "플랫폼 지출완료 금액", data: "ordersComplete", width: "15%" },
+            	{ title: "no", data: null, width: "5%" },
+                { title: "운송사", data: "1", width: "8%" },
+                { title: "운송그룹", data: "2", width: "8%" },
+                { title: "업무형태", data: "3", width: "8%" },
+                { title: "운송사 정산 상태", data: "4", width: "15%" },
+                { title: "운송사 정산 마감일", data: "5", width: "15%" },
+                { title: "플랫폼 정산 상태", data: "6", width: "15%" },
+                { title: "운송사 지출완료 금액", data: "7", width: "15%" },
+                { title: "플랫폼 지출완료 금액", data: "8", width: "15%" }
             ],
 
             createdRow: function(row, data) {
@@ -109,14 +110,15 @@ function TransportList({history, location, match}) {
                 // 리스트 클릭 시 페이지 이동
                 $("#TransportListTbl tbody tr").on("click", function() {
                     const userSeq = $(this).attr("id");
-                    const url = "/calculate/TransportListDetail";
+                    const url = "/calculate/TransportDetail";
+                    
                     props.history.push(url, { userSeq: userSeq });
                 });
 
                 // 리스트 마우스 hover시 포인터 모양 변경
                 $("#TransportListTbl tbody tr").on("mouseenter", function() {
                     $(this).css("cursor", "pointer");
-                })
+                });
             },
         });
         return () => {
@@ -125,6 +127,61 @@ function TransportList({history, location, match}) {
         }
     }, []);
 
+ // 더미 데이터 ---------------------------------------------------------------------
+    const array = [
+        {
+            "1": "(주)팀프레시",
+            "2": "TS1",
+            "3": "고정",
+            "4": "완료",
+            "5": "2020/08/03",
+            "6": "진행중",
+            "7": "410,000,000",
+            "8": "400,000,000"
+        },
+        {
+        	"1": "(주)팀프레시",
+            "2": "TS2",
+            "3": "단기",
+            "4": "완료",
+            "5": "2020/08/04",
+            "6": "진행중",
+            "7": "430,000,000",
+            "8": "400,000,000"
+        },
+        {
+        	"1": "(주)팀프레시",
+            "2": "TS3",
+            "3": "고정",
+            "4": "완료",
+            "5": "2020/08/09",
+            "6": "완료",
+            "7": "420,000,000",
+            "8": "400,000,000"
+        },
+        {
+        	"1": "(주)팀프레시",
+            "2": "LF1",
+            "3": "단기",
+            "4": "완료",
+            "5": "2020/08/22",
+            "6": "진행중",
+            "7": "420,000,000",
+            "8": "400,000,000"
+        },
+        {
+        	"1": "(주)팀프레시",
+            "2": "LF2",
+            "3": "단기",
+            "4": "완료",
+            "5": "2020/08/28",
+            "6": "완료",
+            "7": "400,000,000",
+            "8": "400,000,000"
+        }
+    ];
+    //--------------------------------------------
+    
   return (
    <MainStructure>
     <main>
@@ -160,24 +217,15 @@ function TransportList({history, location, match}) {
      <div className="container-fluid mt-n10">
       <div className="card mb-4">
        <div className="card-header row">
-	       <div className="nav-tabs-navigation">
-		       <div className="nav-tabs-wrapper">
-		           <ul className="nav nav-tabs" data-tabs="tabs">
-		               <li className="nav-item">
-		                   	<Link to="/calculate/CarrierCalc" className="nav-link d-flex align-items-center">
-		                   		<span className="sm-display-none">운송사 정산</span>
-		                    </Link>
-		                    <div className="ripple-container"></div>
-		               </li>
-		               <li className="nav-item">
-			                <Link to="/calculate/TransportList" className="nav-link d-flex align-items-center">
-			                   	<span className="sm-display-none">운송그룹 리스트</span>
-							</Link>
-		                    <div className="ripple-container"></div>
-		               </li>
-		           </ul>
-		       </div>
-		   </div>
+       		<div className="col-4 d-flex justify-content-start">
+	       <input
+	        className="form-control datepicker col-4"
+	        id="date"
+	        type="text"
+	        placeholder="2020-08"
+	       />
+	       <button className="btn btn-info ml-5">조회</button>
+	      </div>
        </div>
        <div className="card-body">
         <div className="datatable table-responsive">
