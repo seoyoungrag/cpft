@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import $ from "jquery";
 import "vendor/datatables/dataTables.bootstrap4.min.css";
 import "vendor/datatables/jquery.dataTables.min.js";
@@ -46,13 +46,13 @@ function TruckOwnerInfoCommon(props) {
     const { ownerName, ownerCode, ownerPhoneNumber, joinStatus, carrierSeq } = inputs;
 
     // 데이터 조회
-    const getData = async () => {
+    const getData = useCallback(async () => {
         await axios.get(url + userSeq)
             .then(res => {
                 let data = res.data.data;
                 console.log(data);
-                setInputs((state) => ({
-                    ...inputs,
+                setInputs(prevInputs => ({
+                    ...prevInputs,
                     userName: data.userName,
                     phoneNumber: data.phone,
                     ownerCode: data.ownerCode,
@@ -64,23 +64,22 @@ function TruckOwnerInfoCommon(props) {
                 alert("에러가 발생하였습니다 새로고침 후 다시 이용해주세요.");
                 console.log("에러: " + res);
         });
-    };
+    }, []);
 
     // inputs값 세팅
-    const handleChange = (e) => {
-        setInputs({
-            ...inputs,
-            [e.target.name]: e.target.value
-        });
-
-    };
+    const handleChange = useCallback(e => {
+        const { name, value } = e.target;
+        setInputs(prevInputs => ({
+            ...prevInputs,
+            [name]: value
+        }));
+    }, []);
 
     // 수정 버튼
-    const handleClick = (e) => {
-        var infoType = e.target.name;   // ~~~info
-        var saveType = e.target.id;     // state, commit
-        
-    };
+    const handleClick = useCallback(e => {
+        let infoType = e.target.name;   // ~~~info
+        let saveType = e.target.id;     // state, commit
+    }, []);
 
     // 더미 데이터 -------------------------------------------------------------
     const array = [
@@ -117,11 +116,11 @@ function TruckOwnerInfoCommon(props) {
     ];
 
     // 더미 데이터 세팅 ---------------------------------------------------------
-    const setData = (userSeq) => {
+    const setData = useCallback(userSeq => {
         switch(userSeq) {
             case 0:
-                setInputs((state) => ({
-                    ...inputs,
+                setInputs(prevInputs => ({
+                    ...prevInputs,
                     ownerName: array[userSeq].ownerName,
                     ownerCode: array[userSeq].ownerCode,
                     ownerPhoneNumber: "010-1234-5678",
@@ -129,8 +128,8 @@ function TruckOwnerInfoCommon(props) {
                 }));
                 break;
             case 1:
-                setInputs((state) => ({
-                    ...inputs,
+                setInputs(prevInputs => ({
+                    ...prevInputs,
                     ownerName: array[userSeq].ownerName,
                     ownerCode: array[userSeq].ownerCode,
                     ownerPhoneNumber: "010-1541-1119",
@@ -138,8 +137,8 @@ function TruckOwnerInfoCommon(props) {
                 }));
                 break;
             case 2:
-                setInputs((state) => ({
-                    ...inputs,
+                setInputs(prevInputs => ({
+                    ...prevInputs,
                     ownerName: array[userSeq].ownerName,
                     ownerCode: array[userSeq].ownerCode,
                     ownerPhoneNumber: "010-5525-5257",
@@ -147,7 +146,7 @@ function TruckOwnerInfoCommon(props) {
                 }));
                 break;
             case 3:
-                setInputs((state) => ({
+                setInputs(prevInputs => ({
                     ...inputs,
                     ownerName: array[userSeq].ownerName,
                     ownerCode: array[userSeq].ownerCode,
@@ -156,7 +155,7 @@ function TruckOwnerInfoCommon(props) {
                 }));
                 break;
         };
-    };
+    }, []);
     // --------------------------------------------------------------------------
   
     return (
@@ -208,7 +207,7 @@ function TruckOwnerInfoCommon(props) {
                                 <span id="userName" style={{ fontSize: "25px", heigth: "70px", lineHeight: "70px", marginRight: "50px" }}>{ownerName}</span>
                                 <span style={{ fontSize: "15px", marginRight: "50px" }}>
                                     <b>연락처</b>&nbsp;&nbsp;
-                                            <input type="text" id="phoneNumber" name="phoneNumber" onChange={handleChange} value={ownerPhoneNumber} style={{ width: "130px" }} />
+                                            <input type="text" id="ownerPhoneNumber" name="ownerPhoneNumber" onChange={handleChange} value={ownerPhoneNumber} style={{ width: "130px" }} />
                                 </span>
                                 <span id="" style={{ fontSize: "15px", marginRight: "50px" }}><b>가입 상태</b>&nbsp;&nbsp;{joinStatus}</span>
                                 <span style={{ fontSize: "15px", marginRight: "50px" }}>
@@ -304,4 +303,4 @@ function TruckOwnerInfoCommon(props) {
     )
 }
 
-export default TruckOwnerInfoCommon;
+export default React.memo(TruckOwnerInfoCommon);

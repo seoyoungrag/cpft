@@ -6,7 +6,6 @@ import CarrierInfoCommon from "pages/carrier/CarrierInfoCommon";
 function CarrierInfoContainer(props) {
 
     const userSeq = props.location.state.userSeq;
-    const url = props.location.pathname;
 
     return (
         <MainStructrue>

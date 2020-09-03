@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Fragment } from "react";
+import React, { useEffect, useState, useCallback, Fragment } from "react";
 
 function CarrierInfoContract(props) {
 
@@ -35,20 +35,22 @@ function CarrierInfoContract(props) {
     const { serviceUseAgreement } = files;
     
     // inputs 값 세팅
-    const handleChange = (e) => {
-        setInputs({
-            ...inputs,
-            [e.target.name]: e.target.value
-        });
-    };
+    const handleChange = useCallback(e => {
+        const { name, value } = e.target;
+        setInputs(prevInputs => ({
+            ...prevInputs,
+            [name]: value
+        }));
+    }, []);
 
     // files 값 세팅
-    const handleFildChange = (e) => {
-        setFiles({
-            ...files,
-            [e.target.name]: e.target.value
-        });
-    };
+    const handleFildChange = useCallback(e => {
+        const { name, value } = e.target;
+        setFiles(prevFiles => ({
+            ...prevFiles,
+            [name]: value
+        }));
+    }, []);
 
     // 더미 데이터 ---------------------------------------------------------------------
     const array = [
@@ -70,34 +72,14 @@ function CarrierInfoContract(props) {
     ];
 
     // 더미 데이터 세팅
-    const setData = (userSeq) => {
-        switch(userSeq) {
-            case 0:
-                setInputs((state) => ({
-                    ...inputs,
-                    serviceYn: array[userSeq].serviceYn,
-                    contractStartDate: array[userSeq].contractStartDate,
-                    contractEndDate: array[userSeq].contractEndDate
-                }));
-                break;
-            case 1:
-                setInputs((state) => ({
-                    ...inputs,
-                    serviceYn: array[userSeq].serviceYn,
-                    contractStartDate: array[userSeq].contractStartDate,
-                    contractEndDate: array[userSeq].contractEndDate
-                }));
-                break;
-            case 2:
-                setInputs((state) => ({
-                    ...inputs,
-                    serviceYn: array[userSeq].serviceYn,
-                    contractStartDate: array[userSeq].contractStartDate,
-                    contractEndDate: array[userSeq].contractEndDate
-                }));
-                break;
-        };
-    };
+    const setData = useCallback(userSeq => {
+        setInputs(prevInputs => ({
+            ...prevInputs,
+            serviceYn: array[userSeq].serviceYn,
+            contractStartDate: array[userSeq].contractStartDate,
+            contractEndDate: array[userSeq].contractEndDate
+        }));
+    }, []);
     // --------------------------------------------------------------------------------------
     
     return (
@@ -143,4 +125,4 @@ function CarrierInfoContract(props) {
     );
 };
 
-export default CarrierInfoContract;
+export default React.memo(CarrierInfoContract);

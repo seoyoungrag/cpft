@@ -90,6 +90,18 @@ function CarrierInfoList(props) {
             ],
             createdRow: function(row, data, dataIndex, cells) {
                 $(row).attr("id", dataIndex + 1);
+            },
+            initComplete: function (settings, json) {
+                // 리스트 행 클릭 시 상세보기 이동
+                $("#carrierInfoList tbody tr").on("click", function() {
+                    const userSeq = $(this).attr("id");
+                    const url = "/carrier/carrierInfoDetail";
+                    props.history.push(url, { userSeq: userSeq });
+                });
+                // 리스트 마우스 hover시 포인터 변경
+                $("#carrierInfoList tbody tr").on("mouseenter", function() {
+                    $(this).css("cursor", "pointer");
+                });
             }
         });
 
@@ -99,19 +111,6 @@ function CarrierInfoList(props) {
             $("#carrierInfoList").DataTable().destroy(true);
         }
     }, []);
-
-    // 리스트 행 클릭 시 상세보기 이동
-    $(document).on("click", "tbody tr", function () {
-        var userSeq = $(this).attr("id");
-        var url = "/carrier/carrierInfoDetail";
-
-        props.history.push(url, { userSeq: userSeq });
-    });
-
-    // 리스트 마우스 hover시 포인터 변경
-    $(document).on("mouseenter", "tbody tr", function () {
-        $(this).css("cursor", "pointer");
-    })
 
     // 더미 데이터 ---------------------------------------------------------------------
     const array = [

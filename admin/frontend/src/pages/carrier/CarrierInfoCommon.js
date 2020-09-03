@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import $ from "jquery";
 import "vendor/datatables/dataTables.bootstrap4.min.css";
 import "vendor/datatables/jquery.dataTables.min.js";
@@ -14,6 +14,7 @@ import CarrierInfoAccountManagement from "pages/carrier/CarrierInfoAccountManage
 
 function CarrierInfoCommon(props) {
 
+    // 컴포넌트 마운트, 언마운트시 실행
     useEffect(() => {
         console.log("컴포넌트 마운트");
         setData(userSeq-1);
@@ -45,19 +46,20 @@ function CarrierInfoCommon(props) {
     const { carrierName, registrationNumber, serviceYn, carrierCode } = inputs;
 
     // inputs 값 세팅
-    const handleChange = (e) => {
-        setInputs({
-            ...inputs,
-            [e.target.name]: e.target.value
-        });
-    };
+    const handleChange = useCallback(e => {
+        const { name, value } = e.target;
+        setInputs(prevInputs => ({
+            ...prevInputs,
+            [name]: value
+        }));
+    }, []);
 
     // 데이터 조회
-    const getDate = async () => { 
+    const getDate = useCallback(async () => { 
         await axios.get(url + userSeq)
         .then(res => {
             let data = res.data.data;
-            setInputs((state) => ({
+            setInputs(prevInputs => ({
                 
             }));
         })
@@ -65,7 +67,7 @@ function CarrierInfoCommon(props) {
             alert("에러가 발생하였습니다 새로고침 후 다시 이용해주세요.");
             console.log("에러: " + res);
         });
-    };
+    }, []);
 
     // 더미 데이터 ------------------------------------------------------------------------
     const array = [
@@ -90,37 +92,15 @@ function CarrierInfoCommon(props) {
     ];
 
     // 더미 데이터 세팅
-    const setData = (userSeq) => {
-        switch(userSeq) {
-            case 0:
-                setInputs((state) => ({
-                    ...inputs,
-                    carrierName: array[userSeq].carrierName,
-                    registrationNumber: array[userSeq].registrationNumber,
-                    serviceYn: array[userSeq].serviceYn,
-                    carrierCode: array[userSeq].carrierCode
-                }));
-                break;
-            case 1:
-                setInputs((state) => ({
-                    ...inputs,
-                    carrierName: array[userSeq].carrierName,
-                    registrationNumber: array[userSeq].registrationNumber,
-                    serviceYn: array[userSeq].serviceYn,
-                    carrierCode: array[userSeq].carrierCode
-                }));
-                break;
-            case 2:
-                setInputs((state) => ({
-                    ...inputs,
-                    carrierName: array[userSeq].carrierName,
-                    registrationNumber: array[userSeq].registrationNumber,
-                    serviceYn: array[userSeq].serviceYn,
-                    carrierCode: array[userSeq].carrierCode
-                }));
-                break;
-        };
-    };
+    const setData = useCallback(userSeq => {
+        setInputs(prevInputs => ({
+            ...prevInputs,
+            carrierName: array[userSeq].carrierName,
+            registrationNumber: array[userSeq].registrationNumber,
+            serviceYn: array[userSeq].serviceYn,
+            carrierCode: array[userSeq].carrierCode
+        }));
+    }, []);
     // ---------------------------------------------------------------------------------
 
     return (
@@ -259,4 +239,4 @@ function CarrierInfoCommon(props) {
     )
 }
 
-export default CarrierInfoCommon;
+export default React.memo(CarrierInfoCommon);

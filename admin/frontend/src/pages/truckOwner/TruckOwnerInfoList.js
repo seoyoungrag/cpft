@@ -92,7 +92,20 @@ function TruckOwnerInfoList(props) {
             ],
             createdRow: function(row, data, dataIndex, cells) {
                 $(row).attr("id", dataIndex + 1);
-            }
+            },
+            initComplete: function(settings, json) {
+                // 리스트 클릭 시 페이지 이동
+                $("#truckOwnerInfoList tbody tr").on("click", function() {
+                    const userSeq = $(this).attr("id");
+                    const url = "/truckOwner/truckOwnerInfoDetail";
+                    props.history.push(url, { userSeq: userSeq });
+                });
+
+                // 리스트 마우스 hover시 포인터 모양 변경
+                $("#truckOwnerInfoList tbody tr").on("mouseenter", function() {
+                    $(this).css("cursor", "pointer");
+                })
+            },
         });
 
         return () => {
@@ -136,19 +149,6 @@ function TruckOwnerInfoList(props) {
     ];
     // ----------------------------------------------------------------------
 
-    // 리스트 클릭 시 페이지 이동
-    $(document).on("click", "tbody tr", function () {
-        let userSeq = $(this).attr("id");
-        let url = "/truckOwner/truckOwnerInfoDetail";
-
-        props.history.push(url, { userSeq: userSeq });
-    });
-
-    // 리스트 마우스 hover시 포인터 모양 변경
-    $(document).on("mouseenter", "tbody tr", function () {
-        $(this).css("cursor", "pointer");
-    })
-
     return (
         <MainStructure>
             <main>
@@ -187,7 +187,7 @@ function TruckOwnerInfoList(props) {
                             <div className="col-6">전체 차주 리스트</div>
                             <div className="col-sm-12 col-md-6 row">
                                 <div className="col-12 d-flex justify-content-end">
-                                    <button className="btn btn-info">
+                                    <button className="btn btn-info" onClick={() => console.log(window.location)}>
                                         <span>관리</span>
                                     </button>
                                 </div>

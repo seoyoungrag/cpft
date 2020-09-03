@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useRef, useState, Fragment } from 'react';
+import React, { Component, useEffect, useCallback, useState, Fragment } from 'react';
 import MainStructure from "components/structure/MainStructure";
 import $, { expr } from "jquery";
 import "vendor/datatables/dataTables.bootstrap4.min.css";
@@ -116,17 +116,18 @@ function TruckOwnerInfoCalculateHistory(props) {
     const { startDate, endDate } = inputs;
 
     // inputs값 세팅
-    const handleChange = (e) => {
-        setInputs({
-            ...inputs,
-            [e.target.name]: e.target.value
-        });
-    };
+    const handleChange = useCallback(e => {
+        const { name, value } = e.target;
+        setInputs(prevInpus => ({
+            ...prevInpus,
+            [name]: value
+        }));
+    }, []);
 
     // 조회 버튼 클릭
-    const handleClick = () => {
+    const handleClick = useCallback(() => {
         console.log("조회 버튼 클릭");
-    };
+    }, []);
 
     // 더미 데이터 --------------------------------------------------------------------------
     const array = [
@@ -222,4 +223,4 @@ function TruckOwnerInfoCalculateHistory(props) {
     )
 }
 
-export default TruckOwnerInfoCalculateHistory;
+export default React.memo(TruckOwnerInfoCalculateHistory);

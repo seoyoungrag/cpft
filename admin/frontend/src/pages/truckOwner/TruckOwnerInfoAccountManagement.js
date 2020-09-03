@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useRef, useState, Fragment } from 'react';
+import React, { Component, useEffect, useCallback, useState, Fragment } from 'react';
 import MainStructure from "components/structure/MainStructure";
 import $, { expr } from "jquery";
 import "vendor/datatables/dataTables.bootstrap4.min.css";
@@ -32,12 +32,13 @@ function TruckOwnerInfoAccountManagement(props) {
     const { registDate, registPath, lastLoginDate } = inputs;
 
     // inputs값 세팅
-    const handleChange = (e) => {
-        setInputs({
-            ...inputs,
-            [e.target.name]: e.target.value
-        });
-    };
+    const handleChange = useCallback(e => {
+        const { name, value } = e.target;
+        setInputs(prevInputs => ({
+            ...prevInputs,
+            [name]: value
+        }));
+    }, []);
 
     // 차주 계정 관리 탭에서는 더미데이터 사용 X - 보여줄 컬럼이 얼마 없으므로...
 
@@ -68,4 +69,4 @@ function TruckOwnerInfoAccountManagement(props) {
     );
 };
 
-export default TruckOwnerInfoAccountManagement;
+export default React.memo(TruckOwnerInfoAccountManagement);

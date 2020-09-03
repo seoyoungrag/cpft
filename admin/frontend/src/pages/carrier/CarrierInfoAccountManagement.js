@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Fragment } from "react";
+import React, { useEffect, useState, useCallback, Fragment } from "react";
 
 function CarrierInfoAccountManagement(props) {
 
@@ -27,12 +27,13 @@ function CarrierInfoAccountManagement(props) {
     const { userId, userType, userPw, userPwChk, userName, userEmail } = inputs;
 
     // inputs 값 세팅
-    const handleChange = (e) => {
-        setInputs({
-            ...inputs,
-            [e.target.name]: e.target.value
-        });
-    };
+    const handleChange = useCallback(e => {
+        const { name, value } = e.target;
+        setInputs(prevInputs => ({
+            ...prevInputs,
+            [name]: value
+        }));
+    }, []);
 
     // 더미 데이터 --------------------------------------------------------------------
     const array = [
@@ -60,40 +61,16 @@ function CarrierInfoAccountManagement(props) {
     ];
 
     // 더미 데이터 세팅
-    const setData = (userSeq) => {
-        switch(userSeq) {
-            case 0:
-                setInputs((state) => ({
-                    ...inputs,
-                    userId: array[userSeq].userId,
-                    userType: array[userSeq].userType,
-                    userPw: array[userSeq].userPw,
-                    userName: array[userSeq].userName,
-                    userEmail: array[userSeq].userEmail,
-                }));
-                break;
-            case 1:
-                setInputs((state) => ({
-                    ...inputs,
-                    userId: array[userSeq].userId,
-                    userType: array[userSeq].userType,
-                    userPw: array[userSeq].userPw,
-                    userName: array[userSeq].userName,
-                    userEmail: array[userSeq].userEmail,
-                }));
-                break;
-            case 2:
-                setInputs((state) => ({
-                    ...inputs,
-                    userId: array[userSeq].userId,
-                    userType: array[userSeq].userType,
-                    userPw: array[userSeq].userPw,
-                    userName: array[userSeq].userName,
-                    userEmail: array[userSeq].userEmail,
-                }));
-                break;
-        };
-    };
+    const setData = useCallback(userSeq => {
+        setInputs(prevInputs => ({
+            ...prevInputs,
+            userId: array[userSeq].userId,
+            userType: array[userSeq].userType,
+            userPw: array[userSeq].userPw,
+            userName: array[userSeq].userName,
+            userEmail: array[userSeq].userEmail,
+        }));
+    }, []);
     // --------------------------------------------------------------------
 
     return (
@@ -139,4 +116,4 @@ function CarrierInfoAccountManagement(props) {
     );
 }
 
-export default CarrierInfoAccountManagement;
+export default React.memo(CarrierInfoAccountManagement);
