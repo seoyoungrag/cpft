@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useRef, useState, Fragment } from 'react';
+import React, { Component, useEffect, useCallback, useState, Fragment } from 'react';
 import MainStructure from "components/structure/MainStructure";
 import $ from "jquery";
 import "vendor/datatables/dataTables.bootstrap4.min.css";
@@ -64,13 +64,13 @@ function TruckOwnerInfoDetail(props) {
             bankAccount, taxBillType } = inputs;
 
     // inputs값 세팅
-    const handleChange = (e) => {
-        setInputs({
-            ...inputs,
-            [e.target.name]: e.target.value
-        });
-
-    };
+    const handleChange = useCallback(e => {
+        const { name, value } = e.target;
+        setInputs(prevInputs => ({
+            ...prevInputs,
+            [name]: value
+        }));
+    }, []);
 
     // files
     const [files, setFiles] = useState({
@@ -83,19 +83,20 @@ function TruckOwnerInfoDetail(props) {
     const { buinessLicenseImg, truckLicenseImg, carLicenseImg, bankAccountImg } = files;
 
     // files값 세팅
-    const handleFileChange = (e) => {
-        setFiles({
-            ...files,
-            [e.target.name]: e.target.value
-        });
-    };
+    const handleFileChange = useCallback(e => {
+        const { name, value } = e.target;
+        setFiles(prevFiles => ({
+            ...prevFiles,
+            [name]: value
+        }));
+    }, []);
 
     // 저장, 완료 버튼
-    const handleClick = (e) => {
-        var infoType = e.target.name;   // ~~~info
-        var saveType = e.target.id;     // state, commit
-        
-    };
+    const handleClick = useCallback(e => {
+        let infoType = e.target.name;   // ~~~info
+        let saveType = e.target.id;     // state, commit
+
+    }, []);
 
     // // 데이터 조회
     // const getData = async () => {
@@ -116,11 +117,11 @@ function TruckOwnerInfoDetail(props) {
     //     setIsLoading(false);
 
     // 더미 데이터 세팅 ----------------------------------------------------------
-    const setData = (userSeq) => {
+    const setData = useCallback(userSeq => {
         switch(userSeq) {
             case 0:
-                setInputs((state) => ({
-                    ...inputs,
+                setInputs(prevInputs => ({
+                    ...prevInputs,
                     registrationNumber: "561-88-01138",
                     taxType: "일반과세자",
                     corpState: "사업중",
@@ -139,8 +140,8 @@ function TruckOwnerInfoDetail(props) {
                 }));
                 break;
             case 1:
-                setInputs((state) => ({
-                    ...inputs,
+                setInputs(prevInputs => ({
+                    ...prevInputs,
                     registrationNumber: "812-13-51128",
                     taxType: "특급과세자",
                     corpState: "사업정지",
@@ -159,8 +160,8 @@ function TruckOwnerInfoDetail(props) {
                 }));
                 break;
             case 2:
-                setInputs((state) => ({
-                    ...inputs,
+                setInputs(prevInputs => ({
+                    ...prevInputs,
                     registrationNumber: "210-14-55128",
                     taxType: "일반과세자",
                     corpState: "사업중",
@@ -179,7 +180,7 @@ function TruckOwnerInfoDetail(props) {
                 }));
                 break;
         };
-    };
+    }, []);
     // ------------------------------------------------------------------------
   
     return (
@@ -245,7 +246,7 @@ function TruckOwnerInfoDetail(props) {
                                         </tr>
                                         <tr>
                                             <td width="195px">성명</td>
-                                            <td><input type="text" onChange={handleChange} name="ownerName" id="ownerName" value={companyOwnerName} /></td>
+                                            <td><input type="text" onChange={handleChange} name="companyOwnerName" id="companyOwnerName" value={companyOwnerName} /></td>
                                         </tr>
                                         <tr>
                                             <td width="195px">업태</td>
@@ -373,4 +374,4 @@ function TruckOwnerInfoDetail(props) {
     )
 }
 
-export default TruckOwnerInfoDetail;
+export default React.memo(TruckOwnerInfoDetail);

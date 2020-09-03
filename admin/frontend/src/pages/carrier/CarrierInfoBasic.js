@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, Fragment } from 'react';
+import React, { useEffect, useState, useRef, useCallback, Fragment } from 'react';
 import $, { data } from "jquery";
 import "vendor/datatables/dataTables.bootstrap4.min.css";
 import "vendor/datatables/jquery.dataTables.min.js";
@@ -36,7 +36,7 @@ function CarrierInfoBasic(props) {
         customerCenterNumber: "-",
         // 고객센터 운영시간
         customerCenterTime: "-",
-    })
+    });
 
     const { corporationName, ceoName, registrationNumberData,
             carrierCodeData, customerCenterNumber, customerCenterTime } = inputs;
@@ -47,30 +47,32 @@ function CarrierInfoBasic(props) {
         businessLicenseImg: "-",
         // 직인
         seal: "-"
-    })
+    });
 
     const { businessLicenseImg, seal } = files;
 
     // 저장버튼 
-    const handleClick = () => {
-         
-    }
+    const handleClick = useCallback(e => {
+        // inputs 값들을 다룰 예정
+    }, []);
 
     // input값 세팅
-    const handleChange = (e) => {
-        setInputs({
-            ...inputs,
-            [e.target.name]: e.target.value
-        });
-    };
+    const handleChange = useCallback(e => {
+        const { name, value } = e.target;
+        setInputs(prevInputs => ({
+            ...prevInputs,
+            [name]: value
+        }));
+    }, []);
 
     // files값 세팅
-    const handleFileChange = (e) => {
-        setFiles({
-            ...files,
-            [e.target.name]: e.target.value
-        });
-    };
+    const handleFileChange = useCallback(e => {
+        const { name, value } = e.target;
+        setFiles(prevFiles => ({
+            ...prevFiles,
+            [name]: value
+        }));
+    }, []);
 
     // // 데이터 조회
     // const getData = async () => {
@@ -119,73 +121,36 @@ function CarrierInfoBasic(props) {
     ];
 
     // 더미 데이터 세팅
-    const setData = (userSeq) => {
-        switch (userSeq) {
-            case 0:
-                setInputs((state) => ({
-                    ...inputs,
-                    corporationName: array[userSeq].corporationName,
-                    ceoName: array[userSeq].ceoName,
-                    registrationNumberData: array[userSeq].registrationNumberData,
-                    carrierCodeData: array[userSeq].carrierCodeData,
-                    customerCenterNumber: array[userSeq].customerCenterNumber,
-                    customerCenterTime: array[userSeq].customerCenterTime
-                }));
-                break;
-            case 1:
-                setInputs((state) => ({
-                    ...inputs,
-                    corporationName: array[userSeq].corporationName,
-                    ceoName: array[userSeq].ceoName,
-                    registrationNumberData: array[userSeq].registrationNumberData,
-                    carrierCodeData: array[userSeq].carrierCodeData,
-                    customerCenterNumber: array[userSeq].customerCenterNumber,
-                    customerCenterTime: array[userSeq].customerCenterTime
-                }));
-                break;
-            case 2:
-                setInputs((state) => ({
-                    ...inputs,
-                    corporationName: array[userSeq].corporationName,
-                    ceoName: array[userSeq].ceoName,
-                    registrationNumberData: array[userSeq].registrationNumberData,
-                    carrierCodeData: array[userSeq].carrierCodeData,
-                    customerCenterNumber: array[userSeq].customerCenterNumber,
-                    customerCenterTime: array[userSeq].customerCenterTime
-                }));
-                break;
-            case 3:
-                setInputs((state) => ({
-                    ...inputs,
-                    corporationName: array[userSeq].corporationName,
-                    ceoName: array[userSeq].ceoName,
-                    registrationNumberData: array[userSeq].registrationNumberData,
-                    carrierCodeData: array[userSeq].carrierCodeData,
-                    customerCenterNumber: array[userSeq].customerCenterNumber,
-                    customerCenterTime: array[userSeq].customerCenterTime
-                }));
-                break;
-        };
-    };
+    const setData = useCallback(userSeq => {
+        setInputs(prevInputs => ({
+            ...prevInputs,
+            corporationName: array[userSeq].corporationName,
+            ceoName: array[userSeq].ceoName,
+            registrationNumberData: array[userSeq].registrationNumberData,
+            carrierCodeData: array[userSeq].carrierCodeData,
+            customerCenterNumber: array[userSeq].customerCenterNumber,
+            customerCenterTime: array[userSeq].customerCenterTime
+        }));
+    }, []);
 
     // 담당자 정보(배열) - 더미데이터
     const [ datas, setDatas ] = useState([
         { 
-            key: 1,
+            id: 1,
             managerName: "갑",
             managerPhoneNumber: "010-0001-0001",
             managerEmail: "naver.com",
             comment: "동해물과"
         },
         { 
-            key: 2,
+            id: 2,
             managerName: "을",
             managerPhoneNumber: "010-0002-0002",
             managerEmail: "google.com",
             comment: "백두산이"
         },
         { 
-            key: 3,
+            id: 3,
             managerName: "병",
             managerPhoneNumber: "010-0003-0003",
             managerEmail: "daum.com",
@@ -193,28 +158,42 @@ function CarrierInfoBasic(props) {
         }
     ]);
 
+    // 담당자 정보(배열) 세팅
+    const managerRowChange = useCallback(e => {
+        const { name, value, id } = e.target;
+        setDatas(prevDatas => (
+            prevDatas.map(data => data.id === parseInt(id) ? {
+                ...data,
+                [name]: value
+            }: {...data})
+        ));
+    }, []);
+
     // 버튼 추가시 사용할 key값 (굳이 ref 안해도 됨)
     const nextKey = useRef(data.length);
 
     // 담당자 정보 + 버튼
-    const addRow = () => {
+    const addRow = useCallback(() => {
         // 새로운 객체를 만든다
         const data = {
-            key: nextKey.current += 1,
-            name
+            id: nextKey.current += 1,
+            managerName: "-",
+            managerPhoneNumber: "-",
+            managerEmail: "-",
+            comment: "-"
         };
         // 생성된 객체를 배열에 추가한다 (2가지 방법 모두 가능)
         // setDatas([...datas, data]);
-        setDatas(datas.concat(data));
-    }
+        setDatas(prevDatas => prevDatas.concat(data));
+    }, []);
 
     // ManagerRow에 전달할 onRemove 함수 - X버튼
     // 굳이 ManagerRow에서 handleRemove를 만들지 않고 함수를 전달하는 이유 
     // => 컴포넌트 최적화? 그냥 보여주기만 할 컴포넌트는 굳이 안에서 함수를 새로 정의할 필요 없을듯
-    const onRemove = (key) => {
+    const onRemove = useCallback(id => {
         // 삭제하려는 key 값이 아닌 것들만 새로 배열 생성 = 삭제하려는 key값에 해당하는 배열요소만 제외하고 새로 생성
-        setDatas(datas.filter(data => data.key !== key));
-    }
+        setDatas(prevDatas => prevDatas.filter(data => data.id !== id));
+    }, []);
     // ------------------------------------------------------------------------------------------------------------------------
   
     return (
@@ -273,7 +252,7 @@ function CarrierInfoBasic(props) {
                     <div className="tableArea">
                         <table style={{ width: "100%" }}>
                             <tbody id="targetBody">
-                                { datas.map(data => <ManagerRow data={data} onRemove={onRemove}  />) }
+                                { datas.map((data, index) => <ManagerRow data={data} key={index} onRemove={onRemove} onChange={managerRowChange} />) }
                             </tbody>
                         </table>
                     </div>
@@ -286,4 +265,4 @@ function CarrierInfoBasic(props) {
     )
 }
 
-export default CarrierInfoBasic;
+export default React.memo(CarrierInfoBasic);

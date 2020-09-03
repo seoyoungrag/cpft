@@ -102,24 +102,27 @@ function CarrierCalc({history, location, match}) {
 
             createdRow: function(row, data) {
                 $(row).attr("id", data.userSeq);
-            }
+            },
+
+            initComplete: function(settings, json) {
+                // 리스트 클릭 시 페이지 이동
+                $("#CarrierCalcTbl tbody tr").on("click", function() {
+                    const userSeq = $(this).attr("id");
+                    const url = "/calculate/CarrierCalcDetail";
+                    props.history.push(url, { userSeq: userSeq });
+                });
+
+                // 리스트 마우스 hover시 포인터 모양 변경
+                $("#CarrierCalcTbl tbody tr").on("mouseenter", function() {
+                    $(this).css("cursor", "pointer");
+                })
+            },
         });
         return () => {
             console.log("component unmount");
             $("#CarrierCalcTbl").DataTable().destroy(true);
         }
     }, []);
-
-    $(document).on("click", "tbody tr", function() {
-        var carrierCalcSeq = $(this).attr("id");
-        var url = "/calculate/CarrierCalcDetail";
-        
-        history.push(url, {carrierCalcSeq: carrierCalcSeq});
-    });
-
-    $(document).on("mouseenter", "tbody tr", function() {
-        $(this).css("cursor", "pointer");
-    })
 
   return (
    <MainStructure>

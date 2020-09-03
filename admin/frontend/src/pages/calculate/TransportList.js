@@ -103,24 +103,27 @@ function TransportList({history, location, match}) {
 
             createdRow: function(row, data) {
                 $(row).attr("id", data.userSeq);
-            }
+            },
+
+            initComplete: function(settings, json) {
+                // 리스트 클릭 시 페이지 이동
+                $("#TransportListTbl tbody tr").on("click", function() {
+                    const userSeq = $(this).attr("id");
+                    const url = "/calculate/TransportListDetail";
+                    props.history.push(url, { userSeq: userSeq });
+                });
+
+                // 리스트 마우스 hover시 포인터 모양 변경
+                $("#TransportListTbl tbody tr").on("mouseenter", function() {
+                    $(this).css("cursor", "pointer");
+                })
+            },
         });
         return () => {
             console.log("component unmount");
             $("#TransportListTbl").DataTable().destroy(true);
         }
     }, []);
-
-    $(document).on("click", "tbody tr", function() {
-        var TransportListSeq = $(this).attr("id");
-        var url = "/calculate/TransportListDetail";
-        
-        history.push(url, {TransportListSeq: TransportListSeq});
-    });
-
-    $(document).on("mouseenter", "tbody tr", function() {
-        $(this).css("cursor", "pointer");
-    })
 
   return (
    <MainStructure>
@@ -161,24 +164,16 @@ function TransportList({history, location, match}) {
 		       <div className="nav-tabs-wrapper">
 		           <ul className="nav nav-tabs" data-tabs="tabs">
 		               <li className="nav-item">
-		                   <a
-		                       className="nav-link d-flex align-items-center"
-		                   >
-		                   		<Link to="/calculate/CarrierCalc">
-		                   			<span className="sm-display-none">운송사 정산</span>
-		                        </Link>
-		                       <div className="ripple-container"></div>
-		                   </a>
+		                   	<Link to="/calculate/CarrierCalc" className="nav-link d-flex align-items-center">
+		                   		<span className="sm-display-none">운송사 정산</span>
+		                    </Link>
+		                    <div className="ripple-container"></div>
 		               </li>
 		               <li className="nav-item">
-		                   <a
-		                       className="nav-link d-flex align-items-center active"
-		                   >
-			                   <Link to="/calculate/TransportList">
-			                   		<span className="sm-display-none">운송그룹 리스트</span>
-								</Link>
-		                       <div className="ripple-container"></div>
-		                   </a>
+			                <Link to="/calculate/TransportList" className="nav-link d-flex align-items-center">
+			                   	<span className="sm-display-none">운송그룹 리스트</span>
+							</Link>
+		                    <div className="ripple-container"></div>
 		               </li>
 		           </ul>
 		       </div>

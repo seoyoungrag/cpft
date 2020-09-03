@@ -5,12 +5,10 @@ import TruckOwnerInfoCommon from "pages/truckOwner/TruckOwnerInfoCommon";
 function TruckOwnerInfoContainer(props) {
 
     const userSeq = props.location.state.userSeq;
-    const array = props.location.state.array;
-    const url = props.location.pathname;
     
     return (
         <MainStructure>
-            <TruckOwnerInfoCommon userSeq={userSeq} />
+            <TruckOwnerInfoCommon userSeq={userSeq} /> 
         </MainStructure>
     );
 }

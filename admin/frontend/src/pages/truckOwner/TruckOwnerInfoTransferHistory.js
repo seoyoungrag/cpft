@@ -8,6 +8,7 @@ import "datatables.net-dt";
 import axios from "axios";
 import imgSrc from "../../styles/캡처.png";
 import Loader from "../../util/Loader";
+
 function TruckOwnerInfoTransferHistory(props) {
 
     useEffect(() => {
@@ -334,4 +335,4 @@ function TruckOwnerInfoTransferHistory(props) {
     )
 }
 
-export default TruckOwnerInfoTransferHistory;
+export default React.memo(TruckOwnerInfoTransferHistory);
