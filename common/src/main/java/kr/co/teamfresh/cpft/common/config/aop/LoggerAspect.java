@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.google.gson.Gson;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -48,7 +49,10 @@ public class LoggerAspect {
             } catch (Exception e) {
                 log.error("LoggerAspect error", e);
             }
-            log.info("params : {}", params); // param에 담긴 정보들을 한번에 로깅한다.
+            //log.info("params : {}", params); // param에 담긴 정보들을 한번에 로깅한다.
+            Gson gson = new Gson();
+            String json = gson.toJson(params);
+            log.info(json);
 
             return result;
 
