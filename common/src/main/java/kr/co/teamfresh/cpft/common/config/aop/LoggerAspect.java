@@ -39,19 +39,21 @@ public class LoggerAspect {
 
             Map<String, Object> params = new HashMap<>();
 
+            Gson gson = new Gson();
+            String json = null;
             try {
-                params.put("controller", controllerName);
-                params.put("method", methodName);
-                params.put("params", getParams(request));
-                params.put("log_time", new Date());
-                params.put("request_uri", request.getRequestURI());
-                params.put("http_method", request.getMethod());
+                params.put("req_controller", controllerName);
+                params.put("req_method", methodName);
+                params.put("req_log_time", new Date());
+                params.put("req_request_uri", request.getRequestURI());
+                params.put("req_http_method", request.getMethod());
+                params.put("req_params", getParamsJson(request));
+                json = gson.toJson(params);
             } catch (Exception e) {
                 log.error("LoggerAspect error", e);
             }
             //log.info("params : {}", params); // param에 담긴 정보들을 한번에 로깅한다.
-            Gson gson = new Gson();
-            String json = gson.toJson(params);
+            //log.info("params : {}", json);
             log.info(json);
 
             return result;
@@ -66,14 +68,42 @@ public class LoggerAspect {
      * @param request
      * @return
      */
-    private static JSONObject getParams(HttpServletRequest request) {
+    private static JSONObject getParamsJson(HttpServletRequest request) {
         JSONObject jsonObject = new JSONObject();
         Enumeration<String> params = request.getParameterNames();
         while (params.hasMoreElements()) {
             String param = params.nextElement();
             String replaceParam = param.replaceAll("\\.", "-");
+            replaceParam = replaceParam.replaceAll("\\[", "-");
+            replaceParam = replaceParam.replaceAll("\\]", "");
             jsonObject.put(replaceParam, request.getParameter(param));
+            /*jsonObject.put(param, request.getParameter(param));*/
         }
         return jsonObject;
+    }
+
+    /**
+     * request 에 담긴 정보를 JSONObject 형태로 반환한다.
+     * @param request
+     * @return
+     */
+    private static String getParamsObj(HttpServletRequest request) {
+        Map<String, Object> tmpParams = new HashMap<>();
+        Gson gson = new Gson();
+        String json = null;
+        Enumeration<String> params = request.getParameterNames();
+        while (params.hasMoreElements()) {
+            String param = params.nextElement();
+            String replaceParam = param.replaceAll("\\.", "-");
+            replaceParam = replaceParam.replaceAll("\\[", "-");
+            replaceParam = replaceParam.replaceAll("\\]", "");
+            tmpParams.put(replaceParam, request.getParameter(param));
+            /*
+            String replaceParam = param.replaceAll("\\.", "-");
+            object.put(replaceParam, request.getParameter(param));
+             */
+        }
+        json = gson.toJson(tmpParams);
+        return json;
     }
 }
