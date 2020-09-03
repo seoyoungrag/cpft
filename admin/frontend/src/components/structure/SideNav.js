@@ -75,14 +75,12 @@ function SideNav(props) {
 	
 		// 계단 sideNav 활성화
 		if(key !== '') {
-			console.log("active url: " + key);
 			$(".forMobileMenu").each(function() {
-				const tmp1 = $(this)[0].children;
+				const tmp1 = $(this).children();
 				for(var i = 0; i < tmp1.length; i++) {
 					if(JSON.stringify(tmp1[i].href).includes(key)) {
 						$(tmp1[i]).attr("class", $(tmp1[i]).attr("class") + " active");
-	
-						const tmp2 = $(this).parents("li")[0].children;
+						const tmp2 = $(this).parents("li").children();
 						$(tmp2[0]).attr("class", "nav-link");
 						$(tmp2[0]).attr("aria-expanded", "true");
 						$(tmp2[0]).css("color", "#0061f2");
@@ -95,9 +93,11 @@ function SideNav(props) {
 		// 단일 sideNav 활성화
 		$("li[class=nav-item]").each(function() {
 			const targetMenu = $(this).children().attr("href");
-			if(targetMenu.includes(key)) {
-				$(this).find("span").css("color", "#0061f2");
-			}
+			if(targetMenu !== undefined && targetMenu !== "#") {
+				if(targetMenu.includes(key)) {
+					$(this).find("span").css("color", "#0061f2");
+				};
+			};
 		});
 
 		// 새로 active 하기 전 active값들 초기화
