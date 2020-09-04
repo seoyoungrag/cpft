@@ -46,7 +46,7 @@ import NoticeList from "pages/notice/NoticeList";
 import ServiceTerms from "pages/serviceTerms/ServiceTerms";
 // 차주관리
 import TruckOwnerInfoList from "pages/truckOwner/TruckOwnerInfoList";
-import TruckOwnerInfoContainer from "pages/truckOwner/truckOwnerInfoContainer";
+import TruckOwnerInfoContainer from "pages/truckOwner/TruckOwnerInfoContainer";
 
 // 운송사 관리
 import CarrierInfoList from "pages/carrier/CarrierInfoList";
