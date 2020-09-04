@@ -91,10 +91,10 @@ function TruckOwnerCalc(props) {
             data : array,
             columns : [
             	{ title: "no", data: null, width: "5%" },
-                { title: "차주명", data:"1", width: "15%" },
-                { title: "차주코드", data:"2", width: "15%" },
-                { title: "세금계산서 발행", data:"3", width: "15%" },
-                { title: "총판매금액", data:"4", width: "15%" }
+                { title: "차주명", data:"truckOwnerNm", width: "15%" },
+                { title: "차주코드", data:"truckOwnerCode", width: "15%" },
+                { title: "세금계산서 발행", data:"taxBillYn", width: "15%" },
+                { title: "총판매금액", data:"totalPayment", width: "15%" }
             ],
 
             
@@ -127,58 +127,58 @@ function TruckOwnerCalc(props) {
  // 더미 데이터 ---------------------------------------------------------------------
     const array = [
         {
-            "1": "김차주",
-            "2": "N0002643",
-            "3": "100",
-            "4": "100"
+            "truckOwnerNm": "김차주",
+            "truckOwnerCode": "N0002643",
+            "taxBillYn": "100",
+            "totalPayment": "100"
         },
         {
-            "1": "유아름",
-            "2": "N0002644",
-            "3": "900",
-            "4": "900"
+            "truckOwnerNm": "유아름",
+            "truckOwnerCode": "N0002644",
+            "taxBillYn": "900",
+            "totalPayment": "900"
         },
         {
-            "1": "김재하",
-            "2": "N0002645",
-            "3": "800",
-            "4": "800"
+            "truckOwnerNm": "김재하",
+            "truckOwnerCode": "N0002645",
+            "taxBillYn": "800",
+            "totalPayment": "800"
         },
         {
-            "1": "양민규",
-            "2": "N0002646",
-            "3": "700",
-            "4": "700"
+            "truckOwnerNm": "양민규",
+            "truckOwnerCode": "N0002646",
+            "taxBillYn": "700",
+            "totalPayment": "700"
         },
         {
-            "1": "서영락",
-            "2": "N0002647",
-            "3": "1000",
-            "4": "1000"
+            "truckOwnerNm": "서영락",
+            "truckOwnerCode": "N0002647",
+            "taxBillYn": "1000",
+            "totalPayment": "1000"
         },
         {
-            "1": "최수정",
-            "2": "N0002648",
-            "3": "500",
-            "4": "500"
+            "truckOwnerNm": "최수정",
+            "truckOwnerCode": "N0002648",
+            "taxBillYn": "500",
+            "totalPayment": "500"
         },
         {
-            "1": "유차주",
-            "2": "N0002649",
-            "3": "400",
-            "4": "400"
+            "truckOwnerNm": "유차주",
+            "truckOwnerCode": "N0002649",
+            "taxBillYn": "400",
+            "totalPayment": "400"
         },
         {
-            "1": "양차주",
-            "2": "N0002650",
-            "3": "200",
-            "4": "200"
+            "truckOwnerNm": "양차주",
+            "truckOwnerCode": "N0002650",
+            "taxBillYn": "200",
+            "totalPayment": "200"
         },
         {
-            "1": "서차주",
-            "2": "N0002651",
-            "3": "1000",
-            "4": "1000"
+            "truckOwnerNm": "서차주",
+            "truckOwnerCode": "N0002651",
+            "taxBillYn": "1000",
+            "totalPayment": "1000"
         }
     ];
     //--------------------------------------------
@@ -209,9 +209,6 @@ function TruckOwnerCalc(props) {
          </div>
          <span>차주 정산</span>
         </h1>
-        <div className="page-header-subtitle">
-          차주 정산 내역을 조회합니다.
-        </div>
        </div>
       </div>
      </div>

@@ -29,9 +29,13 @@ import CarOwnerList from "pages/truckOwner/TruckOwnerList";
 import DtStmnList from "pages/truckOwner/DtStmnList";
 import ElctrnTaxBill from "pages/elctrnTaxBill/ElctrnTaxBill";
 import DashBoard from "pages/dashboard/Dashboard";
+
+//정산관리
 import TransportList from "pages/calculate/TransportList";
+import TransportDetail from "pages/calculate/TransportDetail";
 import CarrierCalc from "pages/calculate/CarrierCalc"
 import TruckOwnerCalc from "pages/calculate/TruckOwnerCalc"
+
 import CarrierService from "pages/carrier/CarrierService";
 import TruckOwnerService from "pages/truckOwner/TruckOwnerService";
 import OrderBoard from "pages/board/OrderBoard";
@@ -83,7 +87,10 @@ class App extends React.Component {
                         <Route exact path="/dtStmn/list" component={DtStmnList} />
                         <Route exact path="/elctrnTaxBill/list" component={ElctrnTaxBill} />
                         <Route exact path="/dashboard/dashboard" component={DashBoard} />
+                        
+                        /* 정산관리 */
                         <Route exact path="/calculate/transportList" component={TransportList} />
+                        <Route exact path="/calculate/transportDetail" component={TransportDetail} />
                         <Route exact path="/calculate/carrierCalc" component={CarrierCalc} />
                         <Route exact path="/calculate/truckOwnerCalc" component={TruckOwnerCalc} />
                         <Route exact path="/carrier/carrierService" component={CarrierService} />

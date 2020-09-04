@@ -1,16 +1,39 @@
-
-import React, { Component, useEffect, useRef } from 'react';
+import React, { useEffect, useState, useCallback } from "react";
 import MainStructure from "components/structure/MainStructure";
-import { Link } from "react-router-dom";
 import $ from "jquery";
 import "vendor/datatables/dataTables.bootstrap4.min.css";
 import "vendor/datatables/jquery.dataTables.min.js";
 $.DataTable = require("vendor/datatables/dataTables.bootstrap4.min.js");
 import "datatables.net-dt";
 
-function TransportList(props) {
+function TransportDetail(props) {
+
     console.log("component did mount");
-       
+   
+    // 컴포넌트 마운트, 언마운트시 실행
+    useEffect(() => {
+        console.log("컴포넌트 마운트");
+        setData(userSeq-1);
+        return () => {
+            console.log("컴포넌트 언마운트");
+        }
+    }, []);
+    
+    const userSeq = props.location.state.userSeq;
+    const [ inputs, setInputs ] = useState({
+    	carrierNm: "-",
+    	workGroupNm: "-",
+    	workType: "-",
+    	carrierCalcStatus: "-",
+    	carrierCalcEndDate: "-",
+    	platformCalcStatus: "-",
+    	carrierPayment: "-",
+    	platformPayment: "-"
+    });
+
+    const { carrierNm, workGroupNm, workType, carrierCalcStatus, carrierCalcEndDate, platformCalcStatus, carrierPayment, platformPayment } = inputs;
+
+    
     const DataTable_language = {
         decimal: ",",
         thousands: ".",
@@ -53,7 +76,7 @@ function TransportList(props) {
         });
 
 
-        $("#TransportListTbl").DataTable({
+        $("#TransportDetailTbl").DataTable({
             //language: DataTable_language,
             serverSide: false,
             processing: true,
@@ -89,43 +112,87 @@ function TransportList(props) {
             ],
             data : array,
             columns : [
-            	{ title: "no", data: null, width: "5%" },
-                { title: "운송사", data: "carrierNm", width: "8%" },
-                { title: "운송그룹", data: "workGroupNm", width: "8%" },
-                { title: "업무형태", data: "workType", width: "8%" },
-                { title: "운송사 정산 상태", data: "carrierCalcStatus", width: "15%" },
-                { title: "운송사 정산 마감일", data: "carrierCalcEndDate", width: "15%" },
-                { title: "플랫폼 정산 상태", data: "platformCalcStatus", width: "15%" },
-                { title: "운송사 지출완료 금액", data: "carrierPayment", width: "15%" },
-                { title: "플랫폼 지출완료 금액", data: "platformPayment", width: "15%" }
+            	{ data: null, width: "5%" },
+                { data: "truckOwnerNm", width: "8%" },
+                { data: "truckOwnerCode", width: "10%" },
+                { data: "transportCode", width: "15%" },
+                { data: "shippingCharge", width: "15%" },
+                { data: "shippingServiceCharge", width: "15%" },
+                { data: "totalPayment", width: "15%" }
             ],
 
-            createdRow: function(row, data, dataIndex, cells) {
-                $(row).attr("id", dataIndex + 1);
+            createdRow: function(row, data) {
+                $(row).attr("id", data.userSeq);
             },
 
             initComplete: function(settings, json) {
-                // 리스트 클릭 시 페이지 이동
-                $("#TransportListTbl tbody tr").on("click", function() {
-                    const userSeq = $(this).attr("id");
-                    const url = "/calculate/transportDetail";
-                    props.history.push(url, { userSeq: userSeq });
-                });
-
-                // 리스트 마우스 hover시 포인터 모양 변경
-                $("#TransportListTbl tbody tr").on("mouseenter", function() {
-                    $(this).css("cursor", "pointer");
-                });
-            },
+            
+            }
         });
         return () => {
             console.log("component unmount");
-            $("#TransportListTbl").DataTable().destroy(true);
+            $("#TransportDetailTbl").DataTable().destroy(true);
         }
     }, []);
 
- // 더미 데이터 ---------------------------------------------------------------------
- 	const array = [
+ // 더미 데이터 세팅 ----------------------------------------------------------
+    
+    
+
+    const array = [
+        {
+            "truckOwnerNm": "김차주",
+            "truckOwnerCode": "N0002643",
+            "transportCode": "W00001",
+            "shippingCharge": "3,000,000",
+            "shippingServiceCharge": "100,000",
+            "totalPayment": "7,000,000",
+        },
+        {
+            "truckOwnerNm": "김차주",
+            "truckOwnerCode": "N0002643",
+            "transportCode": "W00001",
+            "shippingCharge": "3,000,000",
+            "shippingServiceCharge": "100,000",
+            "totalPayment": "7,000,000",
+        },
+        {
+            "truckOwnerNm": "양차주",
+            "truckOwnerCode": "N0002643",
+            "transportCode": "W00001",
+            "shippingCharge": "3,000,000",
+            "shippingServiceCharge": "100,000",
+            "totalPayment": "7,000,000",
+        },
+        {
+            "truckOwnerNm": "서차주",
+            "truckOwnerCode": "N0002643",
+            "transportCode": "W00001",
+            "shippingCharge": "3,000,000",
+            "shippingServiceCharge": "100,000",
+            "totalPayment": "7,000,000",
+        },
+        {
+            "truckOwnerNm": "최차주",
+            "truckOwnerCode": "N0002643",
+            "transportCode": "W00001",
+            "shippingCharge": "3,000,000",
+            "shippingServiceCharge": "100,000",
+            "totalPayment": "7,000,000",
+        },
+        {
+            "truckOwnerNm": "유차주",
+            "truckOwnerCode": "N0002643",
+            "transportCode": "W00001",
+            "shippingCharge": "3,000,000",
+            "shippingServiceCharge": "100,000",
+            "totalPayment": "7,000,000",
+        }
+    ];
+    //--------------------------------------------
+    
+    
+    const listArrayData = [
         {
             "carrierNm": "(주)팀프레시",
             "workGroupNm": "TS1",
@@ -177,7 +244,22 @@ function TransportList(props) {
             "platformPayment": "420,000,000"
         }
     ];
-    //--------------------------------------------
+    
+    // 더미 데이터 세팅
+    
+    const setData = useCallback(userSeq => {
+        setInputs(prevInputs => ({
+            ...prevInputs,
+            carrierNm: listArrayData[userSeq].carrierNm,
+            workGroupNm: listArrayData[userSeq].workGroupNm,
+            workType: listArrayData[userSeq].workType,
+            carrierCalcStatus: listArrayData[userSeq].carrierCalcStatus,
+            carrierCalcEndDate: listArrayData[userSeq].carrierCalcEndDate,
+            platformCalcStatus: listArrayData[userSeq].platformCalcStatus,
+            carrierPayment: listArrayData[userSeq].carrierPayment,
+            platformPayment: listArrayData[userSeq].platformPayment
+        }));
+    }, []);
     
   return (
    <MainStructure>
@@ -203,13 +285,36 @@ function TransportList(props) {
            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
           </svg>
          </div>
-         <span>운송료 관리</span>
+         <span>팀프레시 운송료 내역</span>
         </h1>
        </div>
       </div>
      </div>
+
+     
+     
      <div className="container-fluid mt-n10">
       <div className="card mb-4">
+        <div className="card-body">
+        <table className="table col-12">
+            <tbody className="col-12">
+            <tr>
+                <td>운송그룹</td>
+                <td>업무형태</td>
+                <td>정산마감 일시</td>
+                <td>운송사 정산상태</td>
+                <td>플랫폼 정산상태</td>
+            </tr>
+            <tr>
+            	<td> <span id="workGroupNm"><b>{workGroupNm}</b></span></td>
+            	<td> <span id="workType"><b>{workType}</b></span></td>
+            	<td> <span id="carrierCalcEndDate"><b>{carrierCalcEndDate}</b></span></td>
+            	<td> <span id="carrierCalcStatus"><b>{carrierCalcStatus}</b></span></td>
+            	<td> <span id="platformCalcStatus"><b>{platformCalcStatus}</b></span></td>
+            </tr>
+            </tbody>
+        </table>            
+        </div>
        <div className="card-header row">
        		<div className="col-4 d-flex justify-content-start">
 	       <input
@@ -224,13 +329,34 @@ function TransportList(props) {
        <div className="card-body">
         <div className="datatable table-responsive">
          <table
-          id="TransportListTbl"
+          id="TransportDetailTbl"
           className="table table-bordered table-hover"
           width="100%"
           cellSpacing="0"
           role="grid"
           aria-describedby="dataTable_info"
-         />
+         >
+             <thead>
+                <tr>
+                    <th>no</th>
+                    <th>차주명</th>
+                    <th>차주코드</th>
+                    <th>운송카드코드</th>
+                    <th>지급 운송료</th>
+                    <th>운송 상품 사용 내역</th>
+                    <th>최종 지출 금액</th>
+                </tr>
+             </thead>
+             <tr>
+                <td>합계</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>18,000,000</td>
+                <td>700,000</td>
+                <td>420,000,000</td>
+             </tr> 
+        </table>
         </div>
        </div>
       </div>
@@ -239,4 +365,4 @@ function TransportList(props) {
    </MainStructure>
   )
  }
-export default TransportList;
+export default TransportDetail;

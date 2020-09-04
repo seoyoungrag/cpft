@@ -21,9 +21,6 @@ function TruckOwnerInfoDetail(props) {
         }
     }, []);
 
-    // TruckOwnerCommon에서 받아옴
-    const userSeq = props.userSeq;
-
     // inputs
     const [inputs, setInputs] = useState({
         // 사업자등록번호

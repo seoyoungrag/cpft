@@ -165,7 +165,7 @@ function SideNav(props) {
 
 								<div className="forMobileMenu">
 									<Link className="collapse-item" to="/calculate/transportList">
-										운송료내역
+										운송료관리
 										</Link>
 									<Link className="collapse-item" to="/calculate/truckOwnerCalc">
 										차주정산
