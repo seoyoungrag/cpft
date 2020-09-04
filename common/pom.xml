@@ -73,6 +73,10 @@
 			<version>2.0.0</version>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>net.rakugakibox.util</groupId>
 			<artifactId>yaml-resource-bundle</artifactId>
 			<version>1.1</version>
@@ -99,12 +103,12 @@
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
-			<version>RELEASE</version>
+			<version>2.6</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>RELEASE</version>
+			<version>2.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
@@ -128,4 +132,47 @@
 			<artifactId>gson</artifactId>
 		</dependency>
     </dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-install-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>install-external1</id>
+						<phase>clean</phase>
+						<configuration>
+							<file>${basedir}/libs/ojdbc8-12.2.0.1.jar</file>
+							<repositoryLayout>default</repositoryLayout>
+							<groupId>com.oracle.jdbc</groupId>
+							<artifactId>ojdbc8</artifactId>
+							<version>12.2.0.1</version>
+							<packaging>jar</packaging>
+							<generatePom>true</generatePom>
+						</configuration>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>install-external2</id>
+						<phase>clean</phase>
+						<configuration>
+							<file>${basedir}/libs/barobill-api-cxf.jar</file>
+							<repositoryLayout>default</repositoryLayout>
+							<groupId>com.baroservice</groupId>
+							<artifactId>api</artifactId>
+							<version>1.0</version>
+							<packaging>jar</packaging>
+							<generatePom>true</generatePom>
+						</configuration>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>

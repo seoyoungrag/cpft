@@ -40,6 +40,12 @@
 				<module>admin</module>
 			</modules>
 		</profile>
+		<profile>
+			<id>truckowner</id>
+			<modules>
+				<module>truckowner</module>
+			</modules>
+		</profile>
 	</profiles>
 
 </project>

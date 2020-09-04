@@ -28,25 +28,9 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>org.junit.vintage</groupId>
-					<artifactId>junit-vintage-engine</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
       <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -83,10 +67,6 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>net.rakugakibox.util</groupId>
 			<artifactId>yaml-resource-bundle</artifactId>
 			<version>1.1</version>
@@ -101,19 +81,16 @@
 			<artifactId>p6spy-spring-boot-starter</artifactId>
 			<version>1.6.1</version>
 		</dependency>
+
 		<dependency>
 			<groupId>com.oracle.jdbc</groupId>
 			<artifactId>ojdbc8</artifactId>
 			<version>12.2.0.1</version>
-			<!-- <scope>system</scope>
-			<systemPath>${basedir}/libs/ojdbc8-12.2.0.1.jar</systemPath> -->
 		</dependency>
 		<dependency>
-			<groupId>baroservice</groupId>
-			<artifactId>baroservice</artifactId>
+			<groupId>com.baroservice</groupId>
+			<artifactId>api</artifactId>
 			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/libs/barobill-api-cxf.jar</systemPath>
 		</dependency>
 
 		<dependency>
@@ -141,28 +118,6 @@
 
 	<build>
 		<plugins>
-			<plugin>
-			  <groupId>org.apache.maven.plugins</groupId>
-			  <artifactId>maven-install-plugin</artifactId>
-			  <executions>
-			    <execution>
-			      <id>install-external1</id>
-			      <phase>clean</phase>
-			      <configuration>
-			        <file>${basedir}/libs/ojdbc8-12.2.0.1.jar</file>
-			        <repositoryLayout>default</repositoryLayout>
-			        <groupId>com.oracle.jdbc</groupId>
-			        <artifactId>ojdbc8</artifactId>
-			        <version>12.2.0.1</version>
-			        <packaging>jar</packaging>
-			        <generatePom>true</generatePom>
-			      </configuration>
-			      <goals>
-			        <goal>install-file</goal>
-			      </goals>
-			    </execution>
-			  </executions>
-			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
