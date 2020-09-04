@@ -7,7 +7,8 @@ import { navActive } from "../App";
 
 function SideNav(props) {
 
-	const url = useContext(navActive);
+	const { actives, dispatch } = useContext(navActive);
+	const { activeTab, url } = actives;
 
 	useEffect(() => {
 		// Toggle the side navigation
@@ -85,10 +86,10 @@ function SideNav(props) {
 						$(tmp2[0]).attr("aria-expanded", "true");
 						$(tmp2[0]).css("color", "#0061f2");
 						$(tmp2[1]).attr("class", "collapse show");
-					}
-				}
+					};
+				};
 			});
-		}
+		};
 	
 		// 단일 sideNav 활성화
 		$("li[class=nav-item]").each(function() {
