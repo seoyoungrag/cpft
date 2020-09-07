@@ -215,18 +215,19 @@ function TruckOwnerCalc(props) {
      <div className="container-fluid mt-n10">
       <div className="card mb-4">
 	      <div className="card-header row">
-	 		<div className="col-4 d-flex justify-content-start">
+	      	<div className="col-6">차주 정산</div>
+	     </div>
+       <div className="card-body">
+	       <div className="col-12 d-flex justify-content-end">
 		     <input
-		      className="form-control datepicker col-4"
+		      className="form-control datepicker col-1"
 		      id="date"
 		      type="text"
 		      placeholder="2020-08"
 		     />
-		     <button className="btn btn-info ml-5">조회</button>
-		    </div>
-		 </div>
-       <div className="card-body">
-        <div className="datatable table-responsive">
+		     <button className="btn btn-info ml-4">조회</button>
+		   </div>
+       	<div className="datatable table-responsive">
          <table
           id="TruckOwnerCalcTbl"
           ref={TruckOwnerCalcTbl}
