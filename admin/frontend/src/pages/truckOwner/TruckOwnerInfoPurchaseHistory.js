@@ -66,7 +66,15 @@ function TruckOwnerInfoPurchaseHistory(props) {
 		// 더미 테이블
 		const dummyTable = $("#purchaseHistoryList").DataTable({
 			data: array,
-			columns: [{ data: null }, { data: "purchaseKindOf" }, { data: "purchaseDate" }, { data: "sellCode" }, { data: "price" }, { data: "pay" }, { data: "notReceived" }],
+			columns: [
+				{ data: null },
+				{ data: "purchaseKindOf" },
+				{ data: "purchaseDate" },
+				{ data: "sellCode" },
+				{ data: "price" },
+				{ data: "pay" },
+				{ data: "notReceived" },
+			],
 			columnDefs: [
 				{
 					defaultContent: "-",
@@ -97,33 +105,34 @@ function TruckOwnerInfoPurchaseHistory(props) {
 					.each(function (data, j) {
 						select.append("<option>" + data + "</option>");
 					});
+
+				$.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+					if (settings.nTable.id !== "purchaseHistoryList") return true;
+
+					const from = $("#fromDateA").datepicker("getDate");
+					const to = $("#toDateA").datepicker("getDate");
+					const carrierCalculateDate = new Date(data[2]);
+
+					if (from === null && to === null) return true;
+					if (from === null && carrierCalculateDate <= to) return true;
+					if (to === null && carrierCalculateDate >= from) return true;
+					if (carrierCalculateDate <= to && carrierCalculateDate >= from) return true;
+
+					return false;
+				});
 			},
 		});
 
-		const extraSearchTab = $.fn.dataTable.ext.search;
-		extraSearchTab.push(function (settings, data, dataIndex) {
-			let from = $("#fromDate").datepicker("getDate");
-			let to = $("#toDate").datepicker("getDate");
-			let carrierCalculateDate = new Date(data[2]);
+		$("#fromDateA, #toDateA").datepicker();
 
-			if (from === null && to === null) return true;
-			if (from === null && carrierCalculateDate <= to) return true;
-			if (to === null && carrierCalculateDate >= from) return true;
-			if (carrierCalculateDate <= to && carrierCalculateDate >= from) return true;
-
-			return false;
-		});
-
-		$("#fromDate, #toDate").datepicker();
-
-		$("#fromDate, #toDate").change(function () {
+		$("#fromDateA, #toDateA").change(function () {
 			dummyTable.draw();
 		});
 
 		return () => {
 			console.log("컴포넌트 언마운트");
+			$.fn.dataTable.ext.search.pop();
 			dummyTable.destroy(true);
-			extraSearchTab.pop();
 		};
 	}, []);
 
@@ -157,7 +166,7 @@ function TruckOwnerInfoPurchaseHistory(props) {
 	const array = [
 		{
 			purchaseKindOf: "세금계산서 발급",
-			purchaseDate: "2020/08/13",
+			purchaseDate: "2020/08/31",
 			sellCode: "XR000001",
 			price: "90,000원",
 			pay: "90,000원",
@@ -165,7 +174,7 @@ function TruckOwnerInfoPurchaseHistory(props) {
 		},
 		{
 			purchaseKindOf: "세금계산서 발급",
-			purchaseDate: "2020/08/14",
+			purchaseDate: "2020/09/05",
 			sellCode: "XR000001",
 			price: "90,000원",
 			pay: "90,000원",
@@ -173,7 +182,7 @@ function TruckOwnerInfoPurchaseHistory(props) {
 		},
 		{
 			purchaseKindOf: "세금계산서 발급",
-			purchaseDate: "2020/08/15",
+			purchaseDate: "2020/09/07",
 			sellCode: "XR000001",
 			price: "90,000원",
 			pay: "90,000원",
@@ -181,7 +190,7 @@ function TruckOwnerInfoPurchaseHistory(props) {
 		},
 		{
 			purchaseKindOf: "매칭수수료",
-			purchaseDate: "2020/08/16",
+			purchaseDate: "2020/09/12",
 			sellCode: "XR000001",
 			price: "90,000원",
 			pay: "90,000원",
@@ -189,7 +198,7 @@ function TruckOwnerInfoPurchaseHistory(props) {
 		},
 		{
 			purchaseKindOf: "매칭수수료",
-			purchaseDate: "2020/08/17",
+			purchaseDate: "2020/09/17",
 			sellCode: "XR000001",
 			price: "90,000원",
 			pay: "90,000원",
@@ -215,9 +224,23 @@ function TruckOwnerInfoPurchaseHistory(props) {
 					</div>
 					<div className="col-5 d-flex justify-content-center"></div>
 					<div className="form-group row col-4 d-flex justify-content-end m-auto p-auto">
-						<input className="form-control datepicker col-3" id="fromDate" name="fromDate" type="text" placeholder="2020-01-01" onChange={handleChange} />
+						<input
+							className="form-control datepicker col-3"
+							id="fromDateA"
+							name="fromDateA"
+							type="text"
+							placeholder="2020-01-01"
+							onChange={handleChange}
+						/>
 						<label className="col-form-label ml-3 mr-3">~</label>
-						<input className="form-control datepicker col-3" id="toDate" name="toDate" type="text" placeholder="2020-12-31" onChange={handleChange} />
+						<input
+							className="form-control datepicker col-3"
+							id="toDateA"
+							name="toDateA"
+							type="text"
+							placeholder="2020-12-31"
+							onChange={handleChange}
+						/>
 					</div>
 				</div>
 			</div>

@@ -66,20 +66,19 @@ function OrderBoard(props) {
 					}
 					setModalShow(true);
 				});
+
+				$.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+					const from = $("#fromDate").datepicker("getDate");
+					const to = $("#toDate").datepicker("getDate");
+					const carrierCalculateDate = new Date(data[1]);
+
+					if (from === null && to === null) return true;
+					if (from === null && carrierCalculateDate <= to) return true;
+					if (to === null && carrierCalculateDate >= from) return true;
+					if (carrierCalculateDate <= to && carrierCalculateDate >= from) return true;
+					return false;
+				});
 			},
-		});
-
-		const extraSearchTab = $.fn.dataTable.ext.search;
-		extraSearchTab.push(function (settings, data, dataIndex) {
-			let from = $("#fromDate").datepicker("getDate");
-			let to = $("#toDate").datepicker("getDate");
-			let carrierCalculateDate = new Date(data[1]);
-
-			if (from === null && to === null) return true;
-			if (from === null && carrierCalculateDate <= to) return true;
-			if (to === null && carrierCalculateDate >= from) return true;
-			if (carrierCalculateDate <= to && carrierCalculateDate >= from) return true;
-			return false;
 		});
 
 		$("#fromDate, #toDate").datepicker();
@@ -90,7 +89,7 @@ function OrderBoard(props) {
 
 		return () => {
 			dummyTable.destroy(true);
-			extraSearchTab.pop();
+			$.fn.dataTable.ext.search.pop();
 			$("button[name=boardDetail]").unbind();
 		};
 	}, []);
