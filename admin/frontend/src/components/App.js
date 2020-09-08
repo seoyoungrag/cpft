@@ -42,7 +42,13 @@ import AdminAccount from "pages/account/AdminAccount";
 import CarrierAccountDetail from "pages/account/CarrierAccountDetail";
 import TruckOwnerAccountDetail from "pages/account/TruckOwnerAccountDetail";
 import AdminAccountDetail from "pages/account/AdminAccountDetail";
+
+//고객센터관리
 import CsInfo from "pages/customerCenter/CsInfo";
+import VocManage from "pages/customerCenter/VocManage";
+import CsInfoDetail from "pages/customerCenter/CsInfoDetail";
+import VocManageDetail from "pages/customerCenter/VocManageDetail";
+
 import NoticeList from "pages/notice/NoticeList";
 import ServiceTerms from "pages/serviceTerms/ServiceTerms";
 // 차주관리
@@ -119,7 +125,12 @@ function App(props) {
                     <Route exact path="/account/carrierAccountDetail" component={CarrierAccountDetail} />
                     <Route exact path="/account/truckOwnerAccountDetail" component={TruckOwnerAccountDetail} />
                     <Route exact path="/account/adminAccountDetail" component={AdminAccountDetail} />
+                    
+                    {/* 고객센터VOC 관리 */}
                     <Route exact path="/customerCenter/csInfo" component={CsInfo} />
+                    <Route exact path="/customerCenter/vocManage" component={VocManage} />
+                    <Route exact path="/customerCenter/csInfoDetail" component={CsInfoDetail} />
+                    <Route exact path="/customerCenter/vocManageDetail" component={VocManageDetail} />
                     <Route exact path="/notice/noticeList" component={NoticeList} />
                     <Route exact path="/serviceTerms/serviceTerms" component={ServiceTerms} />
 

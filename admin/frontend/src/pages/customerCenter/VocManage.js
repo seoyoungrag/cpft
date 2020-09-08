@@ -8,7 +8,7 @@ import "vendor/datatables/jquery.dataTables.min.js";
 $.DataTable = require("vendor/datatables/dataTables.bootstrap4.min.js");
 import "datatables.net-dt";
 
-function CsInfo(props) {
+function VocManage(props) {
     console.log("component did mount");
        
     const DataTable_language = {
@@ -53,7 +53,7 @@ function CsInfo(props) {
         });
 
 
-        $("#CsInfoTbl").DataTable({
+        $("#VocManageTbl").DataTable({
             //language: DataTable_language,
             serverSide: false,
             processing: true,
@@ -90,14 +90,19 @@ function CsInfo(props) {
             data : array,
             columns : [
             	{ title: "no", data: null, width: "5%" },
-                { title: "문의번호", data: "csNumber", width: "8%" },
-                { title: "카테고리", data: "csCategory", width: "8%" },
                 { title: "고객분류", data: "customerType", width: "8%" },
-                { title: "제목", data: "csTitle", width: "15%" },
-                { title: "작성자", data: "csWriter", width: "15%" },
-                { title: "작성일", data: "regDate", width: "15%" },
-                { title: "처리상태", data: "csStatus", width: "15%" }
-            ],
+                { title: "작성일", data: "vocRegDate", width: "10%" },
+                { title: "VOC상태", data: "vocStatus", width: "10%" },
+                { title: "인입채널", data: "vocChannel", width: "10%" },
+                { title: "접수자", data: "vocReceiver", width: "10%" },
+                { title: "처리자", data: "vocContactor", width: "10%" },
+                { title: "작성자", data: "vocWriter", width: "10%" },
+                { title: "문의번호", data: "csNumber", width: "10%" },
+                { title: "상세보기", data: "vocDetailBtn", width: "10%", render: function ( data, type, row ) {
+                    return '<button className="btn btn-info ml-2">보기</button>';
+                },
+                }
+              ],
 
             createdRow: function(row, data, dataIndex, cells) {
                 $(row).attr("id", dataIndex + 1);
@@ -105,61 +110,69 @@ function CsInfo(props) {
 
             initComplete: function(settings, json) {
                 // 리스트 클릭 시 페이지 이동
-                $("#CsInfoTbl tbody tr").on("click", function() {
+                $("#VocManageTbl tbody tr").on("click", function() {
                     const userSeq = $(this).attr("id");
-                    const url = "/customerCenter/csInfoDetail";
+                    const url = "/customerCenter/vocManageDetail";
                     props.history.push(url, { userSeq: userSeq });
                 });
 
                 // 리스트 마우스 hover시 포인터 모양 변경
-                $("#CsInfoTbl tbody tr").on("mouseenter", function() {
+                $("#VocManageTbl tbody tr").on("mouseenter", function() {
                     $(this).css("cursor", "pointer");
                 });
             },
         });
         return () => {
             console.log("component unmount");
-            $("#CsInfoTbl").DataTable().destroy(true);
+            $("#VocManageTbl").DataTable().destroy(true);
         }
     }, []);
 
  // 더미 데이터 ---------------------------------------------------------------------
  	const array = [
  		{
-            "csNumber": "M00001",
-            "csCategory": "문의사항",
             "customerType": "차주",
-            "csTitle": "서류제출 어떻게 하나요?",
-            "csWriter": "김차주",
-            "regDate": "2020-08-05",
-            "csStatus": "처리완료"
-        },
-        {
-            "csNumber": "M00002",
-            "csCategory": "문의사항",
-            "customerType": "차주",
-            "csTitle": "어플 사용법 좀 가르쳐 주세요.",
-            "csWriter": "유차주",
-            "regDate": "2020-08-08",
-            "csStatus": "확인중"
-        },
-        {
-            "csNumber": "M00003",
-            "csCategory": "문의사항",
-            "customerType": "차주",
-            "csTitle": "돈은 어디로 입금되나요?",
-            "csWriter": "서차주",
-            "regDate": "2020-08-17",
-            "csStatus": "확인중"
-        },
-        {
+            "vocRegDate": "2020-08-30",
+            "vocStatus": "확인중",
+            "vocChannel": "게시판",
+            "vocReceiver": "유아름",
+            "vocContactor": "김재하",
+            "vocWriter": "양차주",
             "csNumber": "M00004",
-            "csCategory": "문의사항",
+            "vocDetailBtn": "보기"
+        },
+        {
             "customerType": "차주",
-            "csTitle": "이거 어떻게 쓰는 건가요?",
-            "csWriter": "양차주",
-            "regDate": "2020-08-30",
-            "csStatus": "확인중"
+            "vocRegDate": "2020-08-17",
+            "vocStatus": "확인중",
+            "vocChannel": "전화",
+            "vocReceiver": "유아름",
+            "vocContactor": "김재하",
+            "vocWriter": "서차주",
+            "csNumber": "M00003",
+            "vocDetailBtn": "보기"
+        },
+        {
+            "customerType": "차주",
+            "vocRegDate": "2020-08-08",
+            "vocStatus": "확인중",
+            "vocChannel": "기타",
+            "vocReceiver": "유아름",
+            "vocContactor": "김재하",
+            "vocWriter": "유차주",
+            "csNumber": "M00002",
+            "vocDetailBtn": "보기"
+        },
+        {
+            "customerType": "차주",
+            "vocRegDate": "2020-08-05",
+            "vocStatus": "처리완료",
+            "vocChannel": "기타",
+            "vocReceiver": "유아름",
+            "vocContactor": "김재하",
+            "vocWriter": "김차주",
+            "csNumber": "M00001",
+            "vocDetailBtn": "보기"
         }
     ];
     //--------------------------------------------
@@ -188,7 +201,7 @@ function CsInfo(props) {
            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
           </svg>
          </div>
-         <span>고객센터</span>
+         <span>VOC관리</span>
         </h1>
        </div>
       </div>
@@ -286,21 +299,7 @@ function CsInfo(props) {
 	      </div>
 	      <div className="col-2">
 	        <div className="d-flex justify-content-end">
-		        <label
-		        htmlFor="csStatus"
-		        className="col-12 col-sm-5 col-form-label"
-		         >
-		          처리상태
-		        </label>
-		        <select
-		         className="form-control col-12 col-sm-6"
-		         id="csStatus"
-		         name="csStatus"
-		        >
-		          <option>전체</option>
-		          <option>확인중</option>
-		          <option>처리완료</option>
-		        </select>
+	        <button className="btn btn-info ml-2">VOC추가</button>
 	        </div>
 	      </div>
 	     </div>
@@ -311,7 +310,7 @@ function CsInfo(props) {
 	    
         <div className="datatable table-responsive">
          <table
-          id="CsInfoTbl"
+          id="VocManageTbl"
           className="table table-bordered table-hover"
           width="100%"
           cellSpacing="0"
@@ -326,4 +325,4 @@ function CsInfo(props) {
    </MainStructure>
   )
  }
-export default CsInfo;
+export default VocManage;

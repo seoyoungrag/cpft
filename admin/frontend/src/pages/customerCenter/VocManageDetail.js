@@ -90,13 +90,14 @@ function CsInfo(props) {
             data : array,
             columns : [
             	{ title: "no", data: null, width: "5%" },
-                { title: "문의번호", data: "csNumber", width: "8%" },
-                { title: "카테고리", data: "csCategory", width: "8%" },
-                { title: "고객분류", data: "customerType", width: "8%" },
-                { title: "제목", data: "csTitle", width: "15%" },
-                { title: "작성자", data: "csWriter", width: "15%" },
-                { title: "작성일", data: "regDate", width: "15%" },
-                { title: "처리상태", data: "csStatus", width: "15%" }
+                { title: "운송사", data: "carrierNm", width: "8%" },
+                { title: "운송그룹", data: "workGroupNm", width: "8%" },
+                { title: "업무형태", data: "workType", width: "8%" },
+                { title: "운송사 정산 상태", data: "carrierCalcStatus", width: "15%" },
+                { title: "운송사 정산 마감일", data: "carrierCalcEndDate", width: "15%" },
+                { title: "플랫폼 정산 상태", data: "platformCalcStatus", width: "15%" },
+                { title: "운송사 지출완료 금액", data: "carrierPayment", width: "15%" },
+                { title: "플랫폼 지출완료 금액", data: "platformPayment", width: "15%" }
             ],
 
             createdRow: function(row, data, dataIndex, cells) {
@@ -125,41 +126,55 @@ function CsInfo(props) {
 
  // 더미 데이터 ---------------------------------------------------------------------
  	const array = [
- 		{
-            "csNumber": "M00001",
-            "csCategory": "문의사항",
-            "customerType": "차주",
-            "csTitle": "서류제출 어떻게 하나요?",
-            "csWriter": "김차주",
-            "regDate": "2020-08-05",
-            "csStatus": "처리완료"
+        {
+            "carrierNm": "(주)팀프레시",
+            "workGroupNm": "TS1",
+            "workType": "고정",
+            "carrierCalcStatus": "완료",
+            "carrierCalcEndDate": "2020/08/03",
+            "platformCalcStatus": "진행중",
+            "carrierPayment": "420,000,000",
+            "platformPayment": "420,000,000"
         },
         {
-            "csNumber": "M00002",
-            "csCategory": "문의사항",
-            "customerType": "차주",
-            "csTitle": "어플 사용법 좀 가르쳐 주세요.",
-            "csWriter": "유차주",
-            "regDate": "2020-08-08",
-            "csStatus": "확인중"
+        	"carrierNm": "(주)팀프레시",
+            "workGroupNm": "TS2",
+            "workType": "단기",
+            "carrierCalcStatus": "완료",
+            "carrierCalcEndDate": "2020/08/04",
+            "platformCalcStatus": "진행중",
+            "carrierPayment": "420,000,000",
+            "platformPayment": "420,000,000"
         },
         {
-            "csNumber": "M00003",
-            "csCategory": "문의사항",
-            "customerType": "차주",
-            "csTitle": "돈은 어디로 입금되나요?",
-            "csWriter": "서차주",
-            "regDate": "2020-08-17",
-            "csStatus": "확인중"
+        	"carrierNm": "(주)팀프레시",
+            "workGroupNm": "TS3",
+            "workType": "고정",
+            "carrierCalcStatus": "완료",
+            "carrierCalcEndDate": "2020/08/09",
+            "platformCalcStatus": "완료",
+            "carrierPayment": "420,000,000",
+            "platformPayment": "420,000,000"
         },
         {
-            "csNumber": "M00004",
-            "csCategory": "문의사항",
-            "customerType": "차주",
-            "csTitle": "이거 어떻게 쓰는 건가요?",
-            "csWriter": "양차주",
-            "regDate": "2020-08-30",
-            "csStatus": "확인중"
+        	"carrierNm": "(주)팀프레시",
+            "workGroupNm": "LF1",
+            "workType": "단기",
+            "carrierCalcStatus": "완료",
+            "carrierCalcEndDate": "2020/08/22",
+            "platformCalcStatus": "진행중",
+            "carrierPayment": "420,000,000",
+            "platformPayment": "420,000,000"
+        },
+        {
+        	"carrierNm": "(주)팀프레시",
+            "workGroupNm": "LF2",
+            "workType": "단기",
+            "carrierCalcStatus": "완료",
+            "carrierCalcEndDate": "2020/08/28",
+            "platformCalcStatus": "완료",
+            "carrierPayment": "420,000,000",
+            "platformPayment": "420,000,000"
         }
     ];
     //--------------------------------------------
@@ -188,24 +203,21 @@ function CsInfo(props) {
            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
           </svg>
          </div>
-         <span>고객센터</span>
+         <span>고객센터VOC</span>
         </h1>
        </div>
       </div>
      </div>
      <div className="container-fluid mt-n10">
       <div className="card mb-4">
+       <div className="card-header row">
+       	<div className="col-6">고객센터VOC</div>
+       </div>
        <div className="card-body">
        <div className="col-12 row">
        <div className="col-3">
        	<div className="d-flex justify-content-start">
-	       <label
-	        htmlFor="csRegDate"
-	        className="col-12 col-sm-3 col-form-label"
-	       >
-	        작성일 
-	       </label>
-	        <button type="button" className="btn btn-secondary ml-0 mr-1">
+	       <button type="button" className="btn btn-secondary ml-0 mr-1">
 	        <span>1주일</span>
 	       </button>
 	       <button type="button" className="btn btn-secondary mx-1">
@@ -214,19 +226,22 @@ function CsInfo(props) {
 	       <button type="button" className="btn btn-secondary  mx-1">
 	        <span>3개월</span>
 	       </button>
+	       <button type="button" className="btn btn-secondary  ml-1 mr-0">
+	        <span>6개월</span>
+	       </button>
 	     </div>
 	    </div>
-	    <div className="col-4">
-         <div className="d-flex justify-content-start">
+	    <div className="col-9">
+         <div className="d-flex justify-content-end">
 	       <input
-	        className="form-control datepicker col-4"
+	        className="form-control datepicker col-2"
 	        id="date"
 	        type="text"
 	        placeholder="2020-08-01"
 	       />
 	        	<label className="col-form-label ml-3 mr-3">~</label>
 	        <input
-	        className="form-control datepicker col-4"
+	        className="form-control datepicker col-2"
 	        id="date"
 	        type="text"
 	        placeholder="2020-08-30"
@@ -235,80 +250,6 @@ function CsInfo(props) {
 	      </div>
 	     </div>
 	    </div>
-	    
-	    <br/>
-	    
-       <div className="col-12 row">
-        <div className="col-3">
-       	 <div className="d-flex justify-content-start">
-	       	<label
-	        htmlFor="csCategory"
-	        className="col-12 col-sm-3 col-form-label"
-	        >
-	        카테고리
-	        </label>
-		       <select
-	            className="form-control col-12 col-sm-8"
-	            id="orderRegisWorkGroup"
-	            name="workGroupNm"
-	           >
-	           	<option>문의사항</option>
-	           	<option>불편사항</option>
-	           	<option>기타사항</option>
-	           </select>
-           </div>
-	     </div>
-	     
-	     <div className="col-7">
-           <div className="d-flex justify-content-start">
-         	<label
-	        htmlFor="csCategory"
-	        className="col-12 col-sm-2 col-form-label"
-	         >
-	          조건별 검색
-	        </label>
-		    <select
-	         className="form-control col-12 col-sm-2"
-	         id="orderRegisWorkGroup"
-	         name="workGroupNm"
-	        >
-	          <option>제목</option>
-	          <option>문의번호</option>
-	        </select>
-           <input
-	        className="form-control datepicker col-6 col-sm-4"
-	        id="date"
-	        type="text"
-	        placeholder="검색"
-	       />
-           	 <button className="btn btn-info ml-2">조회</button>
-	       </div>
-	      </div>
-	      <div className="col-2">
-	        <div className="d-flex justify-content-end">
-		        <label
-		        htmlFor="csStatus"
-		        className="col-12 col-sm-5 col-form-label"
-		         >
-		          처리상태
-		        </label>
-		        <select
-		         className="form-control col-12 col-sm-6"
-		         id="csStatus"
-		         name="csStatus"
-		        >
-		          <option>전체</option>
-		          <option>확인중</option>
-		          <option>처리완료</option>
-		        </select>
-	        </div>
-	      </div>
-	     </div>
-
-	    
-	     <br/>
-	    
-	    
         <div className="datatable table-responsive">
          <table
           id="CsInfoTbl"

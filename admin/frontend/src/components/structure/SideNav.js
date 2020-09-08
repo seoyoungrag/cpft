@@ -260,16 +260,32 @@ function SideNav(props) {
 					</li>
 
 					<li className="nav-item" id="button7">
-						{/* <a
+						<a
 							className="nav-link collapsed"
 							href="#"
-							onClick={() => store.handleClick("button7")}
-						> */}
-							<Link className="nav-link collapsed" to="/customerCenter/csInfo">
+							data-toggle="collapse"
+							data-target="#collapseSeven"
+							aria-expanded="true"
+							aria-controls="collapseSeven"
+							// onClick={() => store.handleClick("buttonn2")}
+						>
 							<i className="fab fa-fw fa-buffer"></i>
-								<span>고객센터CS</span>
-							</Link>
-						{/* </a> */}
+							<span>고객센터VOC</span>
+						</a>
+						<div id="collapseSeven" className="collapse" aria-labelledby="headingSeven" data-parent="#accordionSidebar">
+							<div className="bg-white py-2 collapse-inner rounded">
+								<h6 className="collapse-header">고객센터VOC</h6>
+	
+								<div className="forMobileMenu">
+									<Link className="collapse-item" to="/customerCenter/csInfo">
+										고객센터
+									</Link>
+									<Link className="collapse-item" to="/customerCenter/vocManage">
+										VOC관리
+									</Link>
+								</div>
+							</div>
+						</div>
 					</li>
 
 					<li className="nav-item" id="button8">
