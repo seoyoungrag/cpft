@@ -95,7 +95,7 @@ function CsInfo(props) {
                 { title: "고객분류", data: "customerType", width: "8%" },
                 { title: "제목", data: "csTitle", width: "15%" },
                 { title: "작성자", data: "csWriter", width: "15%" },
-                { title: "작성일", data: "regDate", width: "15%" },
+                { title: "작성일", data: "csRegDate", width: "15%" },
                 { title: "처리상태", data: "csStatus", width: "15%" }
             ],
 
