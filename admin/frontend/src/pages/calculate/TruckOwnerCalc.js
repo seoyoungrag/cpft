@@ -214,9 +214,6 @@ function TruckOwnerCalc(props) {
      </div>
      <div className="container-fluid mt-n10">
       <div className="card mb-4">
-	      <div className="card-header row">
-	      	<div className="col-6">차주 정산</div>
-	     </div>
        <div className="card-body">
 	       <div className="col-12 d-flex justify-content-end">
 		     <input

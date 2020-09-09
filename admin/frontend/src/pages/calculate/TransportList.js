@@ -210,9 +210,6 @@ function TransportList(props) {
      </div>
      <div className="container-fluid mt-n10">
       <div className="card mb-4">
-       <div className="card-header row">
-       	<div className="col-6">운송료 관리</div>
-       </div>
        <div className="card-body">
 	       <div className="col-12 d-flex justify-content-end">
 		       <input

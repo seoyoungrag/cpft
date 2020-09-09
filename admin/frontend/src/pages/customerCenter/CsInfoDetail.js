@@ -1,270 +1,343 @@
-
-import React, { Component, useEffect, useRef } from 'react';
+import React, { useEffect, useState, useCallback } from "react";
 import MainStructure from "components/structure/MainStructure";
-import { Link } from "react-router-dom";
 import $ from "jquery";
 import "vendor/datatables/dataTables.bootstrap4.min.css";
 import "vendor/datatables/jquery.dataTables.min.js";
 $.DataTable = require("vendor/datatables/dataTables.bootstrap4.min.js");
 import "datatables.net-dt";
 
-function CsInfo(props) {
+function CsInfoDetail(props) {
     console.log("component did mount");
-       
-    const DataTable_language = {
-        decimal: ",",
-        thousands: ".",
-        paginate: {
-         first: "",
-         last: "",
-         previous: "<",
-         next: ">",
-        },
-        processing: "처리 중 입니다.",
-        emptyTable: "처리할 내용이 없습니다.",
-        info: "총 _PAGES_페이지/_TOTAL_개 중 (_START_ ~ _END_) ",
-    };
-    
+
+    // 컴포넌트 마운트, 언마운트시 실행
+    useEffect(() => {
+        console.log("컴포넌트 마운트");
+        setData(userSeq - 1);
+        return () => {
+            console.log("컴포넌트 언마운트");
+        };
+    }, []);
+
+    const userSeq = props.location.state.userSeq;
+    const [items, setItems] = useState({
+        csNumber: "-",
+        csCategory: "-",
+        customerType: "-",
+        csTitle: "-",
+        csWriter: "-",
+        csRegDate: "-",
+        csStatus: "-",
+        csContents: "-",
+        csReply: "-",
+        truckOwnerHp: "-",
+    });
+
+    const { csNumber, csCategory, customerType, csTitle, csWriter, csRegDate, csStatus, csContents, csReply, truckOwnerHp } = items;
+
     useEffect(() => {
         attachJiraIssueColletor();
-            // Activate Bootstrap scrollspy for the sticky nav component
+        // Activate Bootstrap scrollspy for the sticky nav component
         $("body").scrollspy({
             target: "#stickyNav",
             offset: 0,
         });
         // Scrolls to an offset anchor when a sticky nav link is clicked
         $('.nav-sticky a.nav-link[href*="#"]:not([href="#"])').click(function () {
-        if (
-            location.pathname.replace(/^\//, "") == this.pathname.replace(/^\//, "") &&
-            location.hostname == this.hostname
-        ) {
-            var target = $(this.hash);
-            target = target.length ? target : $("[name=" + this.hash.slice(1) + "]");
-            if (target.length) {
-            $("html, body").animate(
-            {
-            scrollTop: target.offset().top - 81,
-            },
-            200
-            );
-            return false;
-            }
-        }
-        });
-
-
-        $("#CsInfoTbl").DataTable({
-            //language: DataTable_language,
-            serverSide: false,
-            processing: true,
-            responsice: true,
-            autoWidth: false,
-            width: "100%",
-            ordering: false,
-            select: false,
-            dom:
-             "<'row'<'col-sm-12'rt>>" +
-             "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-//            ajax: {
-//                url: "/v1/user/accountList/ROLE_TRUCKOWNER",
-//                type: "GET",
-//                data: { length: 100 }, 
-//                dataSrc: function(res) {
-//                    var data  = res.data;
-//                    console.log(data);
-//                    return data;
-//                }
-//            },
-            columnDefs: [
-                {
-                 defaultContent: "-",
-                 targets: "_all",
-                },
-                {
-                    targets: [0],
-                    createdCell: function(td, cellData, rowData, row, col) {
-                        $(td).text(row+1);
-                    }
+            if (location.pathname.replace(/^\//, "") == this.pathname.replace(/^\//, "") && location.hostname == this.hostname) {
+                var target = $(this.hash);
+                target = target.length ? target : $("[name=" + this.hash.slice(1) + "]");
+                if (target.length) {
+                    $("html, body").animate(
+                        {
+                            scrollTop: target.offset().top - 81,
+                        },
+                        200
+                    );
+                    return false;
                 }
-            ],
-            data : array,
-            columns : [
-            	{ title: "no", data: null, width: "5%" },
-                { title: "운송사", data: "carrierNm", width: "8%" },
-                { title: "운송그룹", data: "workGroupNm", width: "8%" },
-                { title: "업무형태", data: "workType", width: "8%" },
-                { title: "운송사 정산 상태", data: "carrierCalcStatus", width: "15%" },
-                { title: "운송사 정산 마감일", data: "carrierCalcEndDate", width: "15%" },
-                { title: "플랫폼 정산 상태", data: "platformCalcStatus", width: "15%" },
-                { title: "운송사 지출완료 금액", data: "carrierPayment", width: "15%" },
-                { title: "플랫폼 지출완료 금액", data: "platformPayment", width: "15%" }
-            ],
-
-            createdRow: function(row, data, dataIndex, cells) {
-                $(row).attr("id", dataIndex + 1);
-            },
-
-            initComplete: function(settings, json) {
-                // 리스트 클릭 시 페이지 이동
-                $("#CsInfoTbl tbody tr").on("click", function() {
-                    const userSeq = $(this).attr("id");
-                    const url = "/customerCenter/csInfoDetail";
-                    props.history.push(url, { userSeq: userSeq });
-                });
-
-                // 리스트 마우스 hover시 포인터 모양 변경
-                $("#CsInfoTbl tbody tr").on("mouseenter", function() {
-                    $(this).css("cursor", "pointer");
-                });
-            },
+            }
         });
-        return () => {
-            console.log("component unmount");
-            $("#CsInfoTbl").DataTable().destroy(true);
-        }
-    }, []);
+    });
 
- // 더미 데이터 ---------------------------------------------------------------------
- 	const array = [
+    // 더미 데이터 세팅 ----------------------------------------------------------
+
+    const array = [
         {
-            "carrierNm": "(주)팀프레시",
-            "workGroupNm": "TS1",
-            "workType": "고정",
-            "carrierCalcStatus": "완료",
-            "carrierCalcEndDate": "2020/08/03",
-            "platformCalcStatus": "진행중",
-            "carrierPayment": "420,000,000",
-            "platformPayment": "420,000,000"
+            csNumber: "M00001",
+            csCategory: "불편사항",
+            customerType: "차주",
+            csTitle: "서류제출 어떻게 하나요?",
+            csWriter: "김차주",
+            csRegDate: "2020-08-05",
+            csStatus: "처리완료",
+            csContents: "서류 제출을 어디서 하는지 모르겠어요. 어디서 찾으면 되나요?",
+            csReply: "마이페이지 > 내 정보 수정에 들어가면 있습니다. 4개 모두 올려주세요.",
+            truckOwnerHp: "01012345678",
         },
         {
-        	"carrierNm": "(주)팀프레시",
-            "workGroupNm": "TS2",
-            "workType": "단기",
-            "carrierCalcStatus": "완료",
-            "carrierCalcEndDate": "2020/08/04",
-            "platformCalcStatus": "진행중",
-            "carrierPayment": "420,000,000",
-            "platformPayment": "420,000,000"
+            csNumber: "M00002",
+            csCategory: "문의사항",
+            customerType: "차주",
+            csTitle: "어플 사용법 좀 가르쳐 주세요.",
+            csWriter: "유차주",
+            csRegDate: "2020-08-08",
+            csStatus: "확인중",
+            csContents: "어플 사용법을 모르겠어요 알려주세요!",
+            csReply: "해당 화주사에 유선 문의 부탁드립니다.",
+            truckOwnerHp: "01012345678",
         },
         {
-        	"carrierNm": "(주)팀프레시",
-            "workGroupNm": "TS3",
-            "workType": "고정",
-            "carrierCalcStatus": "완료",
-            "carrierCalcEndDate": "2020/08/09",
-            "platformCalcStatus": "완료",
-            "carrierPayment": "420,000,000",
-            "platformPayment": "420,000,000"
+            csNumber: "M00003",
+            csCategory: "문의사항",
+            customerType: "차주",
+            csTitle: "돈은 어디로 입금되나요?",
+            csWriter: "서차주",
+            csRegDate: "2020-08-17",
+            csStatus: "확인중",
+            csContents: "돈이 어디로 입금되는 지 모르겠어요.",
+            csReply: "지정된 계좌번호로 입금 됩니다.",
+            truckOwnerHp: "01012345678",
         },
         {
-        	"carrierNm": "(주)팀프레시",
-            "workGroupNm": "LF1",
-            "workType": "단기",
-            "carrierCalcStatus": "완료",
-            "carrierCalcEndDate": "2020/08/22",
-            "platformCalcStatus": "진행중",
-            "carrierPayment": "420,000,000",
-            "platformPayment": "420,000,000"
+            csNumber: "M00004",
+            csCategory: "문의사항",
+            customerType: "차주",
+            csTitle: "이거 어떻게 쓰는 건가요?",
+            csWriter: "양차주",
+            csRegDate: "2020-08-30",
+            csStatus: "확인중",
+            csContents: "이거 어떻게 쓰는건가요?",
+            csReply: "질문을 상세하게 말씀 부탁드립니다.",
+            truckOwnerHp: "01012345678",
         },
-        {
-        	"carrierNm": "(주)팀프레시",
-            "workGroupNm": "LF2",
-            "workType": "단기",
-            "carrierCalcStatus": "완료",
-            "carrierCalcEndDate": "2020/08/28",
-            "platformCalcStatus": "완료",
-            "carrierPayment": "420,000,000",
-            "platformPayment": "420,000,000"
-        }
     ];
-    //--------------------------------------------
-    
-  return (
-   <MainStructure>
-    <main>
-     <div className="page-header pb-10 page-header-dark bg-gradient-primary-to-secondary">
-      <div className="container-fluid">
-       <div className="page-header-content">
-        <h1 className="page-header-title">
-         <div className="page-header-icon">
-          <svg
-           xmlns="http://www.w3.org/2000/svg"
-           width="24"
-           height="24"
-           viewBox="0 0 24 24"
-           fill="none"
-           stroke="currentColor"
-           strokeWidth="2"
-           strokeLinecap="round"
-           strokeLinejoin="round"
-           className="feather feather-edit-3"
-          >
-           <path d="M12 20h9"></path>
-           <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
-          </svg>
-         </div>
-         <span>고객센터VOC</span>
-        </h1>
-       </div>
-      </div>
-     </div>
-     <div className="container-fluid mt-n10">
-      <div className="card mb-4">
-       <div className="card-header row">
-       	<div className="col-6">고객센터VOC</div>
-       </div>
-       <div className="card-body">
-       <div className="col-12 row">
-       <div className="col-3">
-       	<div className="d-flex justify-content-start">
-	       <button type="button" className="btn btn-secondary ml-0 mr-1">
-	        <span>1주일</span>
-	       </button>
-	       <button type="button" className="btn btn-secondary mx-1">
-	        <span>1개월</span>
-	       </button>
-	       <button type="button" className="btn btn-secondary  mx-1">
-	        <span>3개월</span>
-	       </button>
-	       <button type="button" className="btn btn-secondary  ml-1 mr-0">
-	        <span>6개월</span>
-	       </button>
-	     </div>
-	    </div>
-	    <div className="col-9">
-         <div className="d-flex justify-content-end">
-	       <input
-	        className="form-control datepicker col-2"
-	        id="date"
-	        type="text"
-	        placeholder="2020-08-01"
-	       />
-	        	<label className="col-form-label ml-3 mr-3">~</label>
-	        <input
-	        className="form-control datepicker col-2"
-	        id="date"
-	        type="text"
-	        placeholder="2020-08-30"
-	       />
-	       <button className="btn btn-info ml-2">조회</button>
-	      </div>
-	     </div>
-	    </div>
-        <div className="datatable table-responsive">
-         <table
-          id="CsInfoTbl"
-          className="table table-bordered table-hover"
-          width="100%"
-          cellSpacing="0"
-          role="grid"
-          aria-describedby="dataTable_info"
-         />
-        </div>
-       </div>
-      </div>
-     </div>
-    </main>
-   </MainStructure>
-  )
- }
-export default CsInfo;
+
+    // 더미 데이터 세팅
+
+    const setData = useCallback((userSeq) => {
+        setItems((prevItems) => ({
+            ...prevItems,
+            csNumber: array[userSeq].csNumber,
+            csCategory: array[userSeq].csCategory,
+            customerType: array[userSeq].customerType,
+            csTitle: array[userSeq].csTitle,
+            csWriter: array[userSeq].csWriter,
+            csRegDate: array[userSeq].csRegDate,
+            csStatus: array[userSeq].csStatus,
+            csContents: array[userSeq].csContents,
+            csReply: array[userSeq].csReply,
+            truckOwnerHp: array[userSeq].truckOwnerHp,
+        }));
+    });
+
+    return (
+        <MainStructure>
+            <main>
+                <div className="page-header pb-10 page-header-dark bg-gradient-primary-to-secondary">
+                    <div className="container-fluid">
+                        <div className="page-header-content">
+                            <h1 className="page-header-title">
+                                <div className="page-header-icon">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        className="feather feather-edit-3"
+                                    >
+                                        <path d="M12 20h9"></path>
+                                        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                                    </svg>
+                                </div>
+                                <span>고객센터</span>
+                            </h1>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="container-fluid mt-n10">
+                    <div className="card mb-4">
+                        <div className="card-body">
+                            <div className="sbp-preview">
+                                <div className="sbp-preview-content">
+                                    <div className="form-group row">
+                                        <table style={{ border: "1px solid #818380" }} className="table col-12">
+                                            <tbody className="col-12">
+                                                <tr>
+                                                    <td
+                                                        style={{
+                                                            border: "1px solid #818380",
+                                                            padding: "10px",
+                                                            textAlign: "center",
+                                                        }}
+                                                    >
+                                                        <b>카테고리</b>
+                                                    </td>
+                                                    <td
+                                                        colSpan="5"
+                                                        style={{
+                                                            border: "1px solid #818380",
+                                                            padding: "10px",
+                                                        }}
+                                                    >
+                                                        <span id="csCategory">{csCategory}</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td
+                                                        style={{
+                                                            border: "1px solid #818380",
+                                                            padding: "10px",
+                                                            textAlign: "center",
+                                                        }}
+                                                    >
+                                                        <b>제목</b>
+                                                    </td>
+                                                    <td
+                                                        colSpan="3"
+                                                        style={{
+                                                            border: "1px solid #818380",
+                                                            padding: "10px",
+                                                        }}
+                                                    >
+                                                        <span id="csTitle">{csTitle}</span>
+                                                    </td>
+                                                    <td
+                                                        style={{
+                                                            border: "1px solid #818380",
+                                                            padding: "10px",
+                                                            textAlign: "center",
+                                                        }}
+                                                    >
+                                                        <b>작성일</b>
+                                                    </td>
+                                                    <td
+                                                        style={{
+                                                            border: "1px solid #818380",
+                                                            padding: "10px",
+                                                            textAlign: "center",
+                                                        }}
+                                                    >
+                                                        <span id="csRegDate">{csRegDate}</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td
+                                                        style={{
+                                                            border: "1px solid #818380",
+                                                            padding: "10px",
+                                                            textAlign: "center",
+                                                        }}
+                                                    >
+                                                        <b>작성자</b>
+                                                    </td>
+                                                    <td
+                                                        style={{
+                                                            border: "1px solid #818380",
+                                                            padding: "10px",
+                                                            textAlign: "center",
+                                                        }}
+                                                    >
+                                                        <span id="csWriter">{csWriter}</span>
+                                                    </td>
+                                                    <td
+                                                        style={{
+                                                            border: "1px solid #818380",
+                                                            padding: "10px",
+                                                            textAlign: "center",
+                                                        }}
+                                                    >
+                                                        <b>연락처</b>
+                                                    </td>
+                                                    <td
+                                                        style={{
+                                                            border: "1px solid #818380",
+                                                            padding: "10px",
+                                                            textAlign: "center",
+                                                        }}
+                                                    >
+                                                        <span id="truckOwnerHp">{truckOwnerHp}</span>
+                                                    </td>
+                                                    <td
+                                                        style={{
+                                                            border: "1px solid #818380",
+                                                            padding: "10px",
+                                                            textAlign: "center",
+                                                        }}
+                                                    >
+                                                        <b>처리상태</b>
+                                                    </td>
+                                                    <td
+                                                        style={{
+                                                            border: "1px solid #818380",
+                                                            padding: "10px",
+                                                            textAlign: "center",
+                                                        }}
+                                                    >
+                                                        <span id="csStatus">
+                                                            <select
+                                                                className="form-control col-12 col-sm-8"
+                                                                id="csStatus"
+                                                                name="csStatus"
+                                                                value={csStatus}
+                                                                disabled
+                                                            >
+                                                                <option value="처리상태 전체">처리상태 전체</option>
+                                                                <option value="처리완료">처리완료</option>
+                                                                <option value="확인중">확인중</option>
+                                                            </select>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div className="form-group row">
+                                        <label htmlFor="csContents" className="text-sm-left col-form-label">
+                                            <b>내용</b>
+                                        </label>
+                                        <textarea
+                                            className="form-control col-12 col-sm-12"
+                                            id="csContents"
+                                            name="csContents"
+                                            rows="10"
+                                            value={csContents}
+                                            required
+                                            readOnly
+                                        ></textarea>
+                                    </div>
+
+                                    <div className="form-group row">
+                                        <label htmlFor="csReply" className="col-form-label">
+                                            <b>답변 작성</b>
+                                        </label>
+                                        <textarea
+                                            className="form-control col-12 col-sm-12"
+                                            id="csReply"
+                                            name="csReply"
+                                            rows="3"
+                                            required
+                                        ></textarea>
+                                    </div>
+
+                                    <div className="d-flex flex-row-reverse">
+                                        <button className="btn btn-primary" type="button">
+                                            저장
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </MainStructure>
+    );
+}
+export default CsInfoDetail;
