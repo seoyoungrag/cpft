@@ -15,4 +15,5 @@ public interface TruckOwnerJpaRepo extends JpaRepository<TruckOwner, Integer> {
 	Page<TruckOwner> findAllByOrdersStatusAndOrdersOrderTruckOwnerPKOrderStatusOrderByUserUserSeq(String orderTruckOwnerStatus, String orderStatus,  Pageable page);
 
 	TruckOwner findByUserUserSeq(Integer userSeq);
+	
 }

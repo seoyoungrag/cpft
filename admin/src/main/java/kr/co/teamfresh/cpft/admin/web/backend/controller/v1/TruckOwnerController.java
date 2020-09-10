@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import kr.co.teamfresh.cpft.admin.web.backend.dto.truckOwner.TruckOwnerForTruckOwnerListDTO;
 import kr.co.teamfresh.cpft.admin.web.backend.dto.truckOwner.TruckOwnerCommonInfoDTO;
+import kr.co.teamfresh.cpft.admin.web.backend.dto.truckOwner.TruckOwnerForTruckOwnerListDTO;
 import kr.co.teamfresh.cpft.admin.web.backend.service.truckOwner.TruckOwnerService;
 import kr.co.teamfresh.cpft.common.model.response.PageReqRes;
 import kr.co.teamfresh.cpft.common.model.response.SingleResult;
 import kr.co.teamfresh.cpft.common.service.ResponseService;
 import kr.co.teamfresh.cpft.model.entity.TruckOwner;
-import kr.co.teamfresh.cpft.model.entity.User;
 import kr.co.teamfresh.cpft.repository.UserJpaRepo;
+import kr.co.teamfresh.cpft.repository.TruckOwner.TruckOwnerJpaRepo;
 import lombok.RequiredArgsConstructor;
 
 @Api(tags = { "6. TruckOwner" })
@@ -34,6 +34,7 @@ public class TruckOwnerController {
 	private final ResponseService responseService;
 	private final TruckOwnerService truckOwnerService;
 	private final UserJpaRepo userJpaRepo;
+	private final TruckOwnerJpaRepo truckOwnerJpaRepo;
 
 	@ApiOperation(value = "오더가 있는 지원자(차주) 조회", notes = "차주 중 특정 오더를 지원한 사용자를 조회한다.")
 	@GetMapping("/order/{orderSeq}")
@@ -69,6 +70,14 @@ public class TruckOwnerController {
 	@GetMapping("/truckOwnerInfoDetail/{userSeq}")
 	public SingleResult<TruckOwnerCommonInfoDTO> truckOwnerInfoDetail(@ApiParam(value = "유저SEQ", required = true) @PathVariable Integer userSeq) {
 		return responseService.getSingleResult(truckOwnerService.findTruckOwnerCommonInfo(userSeq));
+	}
+	
+	@ApiOperation(value = "test업데이트", notes = "업데이트")
+	@GetMapping("/truckOwnerInfoUpdate")
+	public  SingleResult<TruckOwner> update() {
+		TruckOwner truck = TruckOwner.builder().phone("454545").userSeq(2).build();
+		truckOwnerJpaRepo.save(truck);
+		return responseService.getSingleResult(truck);
 	}
 	
 }

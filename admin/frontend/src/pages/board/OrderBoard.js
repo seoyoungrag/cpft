@@ -1,7 +1,7 @@
 import React from "react";
 import MainStructure from "components/structure/MainStructure";
 import Modal from "react-bootstrap/Modal";
-import * as dateCalc from "util/dateCalc";
+import * as DateCalc from "util/DateCalc";
 
 function OrderBoard(props) {
 	React.useEffect(() => {
@@ -395,10 +395,10 @@ function OrderBoard(props) {
 							<div className="col-12 row mt-3">
 								<div className="col-3">
 									<div className="d-flex justify-content-start">
-										<button onClick={dateCalc.getLastWeek}>1주일</button>
-										<button onClick={dateCalc.getLastMonth}>1개월</button>
-										<button onClick={dateCalc.getLast3Month}>3개월</button>
-										<button onClick={dateCalc.getLast6Month}>6개월</button>
+										<button onClick={DateCalc.getLastWeek}>1주일</button>
+										<button onClick={DateCalc.getLastMonth}>1개월</button>
+										<button onClick={DateCalc.getLast3Month}>3개월</button>
+										<button onClick={DateCalc.getLast6Month}>6개월</button>
 									</div>
 								</div>
 								<div className="col-5 d-flex justify-content-center"></div>

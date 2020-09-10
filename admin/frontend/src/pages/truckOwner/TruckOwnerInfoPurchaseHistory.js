@@ -212,15 +212,7 @@ function TruckOwnerInfoPurchaseHistory(props) {
 			<div className="card-header row">
 				<div className="col-12 row mt-3">
 					<div className="col-3">
-						<div className="d-flex justify-content-start" id="searchTab">
-							{/* <select id="searchOption" name="searchOption" onChange={handleChange}> */}
-							{/* <option>전체</option>
-								<option>세금계산서 발급</option>
-								<option>매칭수수료</option>
-								<option>보험</option>
-								<option>바로입금</option> */}
-							{/* </select> */}
-						</div>
+						<div className="d-flex justify-content-start" id="searchTab"></div>
 					</div>
 					<div className="col-5 d-flex justify-content-center"></div>
 					<div className="form-group row col-4 d-flex justify-content-end m-auto p-auto">

@@ -3,13 +3,8 @@ import $ from "jquery";
 import { Component } from "react";
 import { Link } from "react-router-dom";
 import ReactStore from "ReactStore";
-import { navActive } from "../App";
 
 function SideNav(props) {
-
-	const { actives, dispatch } = useContext(navActive);
-	const { activeTab, url } = actives;
-
 	useEffect(() => {
 		// Toggle the side navigation
 		$("#sidebarToggle, #sidebarToggleTop").on("click", function (e) {
@@ -19,14 +14,14 @@ function SideNav(props) {
 				$(".sidebar .collapse").collapse("hide");
 			}
 		});
-	
+
 		// Close any open menu accordions when window is resized below 768px
 		$(window).resize(function () {
 			if ($(window).width() < 768) {
 				$(".sidebar .collapse").collapse("hide");
 			}
 		});
-	
+
 		// Prevent the content wrapper from scrolling when the fixed side navigation hovered over
 		$("body.fixed-nav .sidebar").on("mousewheel DOMMouseScroll wheel", function (e) {
 			if ($(window).width() > 768) {
@@ -36,7 +31,7 @@ function SideNav(props) {
 				e.preventDefault();
 			}
 		});
-	
+
 		// Scroll to top button appear
 		$(document).on("scroll", function () {
 			var scrollDistance = $(this).scrollTop();
@@ -46,7 +41,7 @@ function SideNav(props) {
 				$(".scroll-to-top").fadeOut();
 			}
 		});
-	
+
 		// Smooth scrolling using jQuery easing
 		$(document).on("click", "a.scroll-to-top", function (e) {
 			var $anchor = $(this);
@@ -60,65 +55,63 @@ function SideNav(props) {
 					"easeInOutExpo"
 				);
 			e.preventDefault();
-	
 		});
-		
+
 		// 각 컴포넌트 Detail 주소들 매핑규칙
-		let key = url.slice(url.lastIndexOf("/")+1, url.length);
-		switch(key) {
+		const url = window.location.href;
+		let key = url.slice(url.lastIndexOf("/") + 1, url.length);
+		switch (key) {
 			case "truckOwnerInfoDetail":
 				key = "truckOwnerInfoList";
 				break;
 			case "carrierInfoDetail":
 				key = "carrierInfoList";
 				break;
-		};
-	
+		}
+
 		// 계단 sideNav 활성화
-		if(key !== '') {
-			$(".forMobileMenu").each(function() {
+		if (key !== "") {
+			$(".forMobileMenu").each(function () {
 				const tmp1 = $(this).children();
-				for(var i = 0; i < tmp1.length; i++) {
-					if(JSON.stringify(tmp1[i].href).includes(key)) {
+				for (var i = 0; i < tmp1.length; i++) {
+					if (JSON.stringify(tmp1[i].href).includes(key)) {
 						$(tmp1[i]).attr("class", $(tmp1[i]).attr("class") + " active");
 						const tmp2 = $(this).parents("li").children();
 						$(tmp2[0]).attr("class", "nav-link");
 						$(tmp2[0]).attr("aria-expanded", "true");
 						$(tmp2[0]).css("color", "#0061f2");
 						$(tmp2[1]).attr("class", "collapse show");
-					};
-				};
+					}
+				}
 			});
-		};
-	
+		}
+
 		// 단일 sideNav 활성화
-		$("li[class=nav-item]").each(function() {
+		$("li[class=nav-item]").each(function () {
 			const targetMenu = $(this).children().attr("href");
-			if(targetMenu !== undefined && targetMenu !== "#") {
-				if(targetMenu.includes(key)) {
+			if (targetMenu !== undefined && targetMenu !== "#") {
+				if (targetMenu.includes(key)) {
 					$(this).find("span").css("color", "#0061f2");
-				};
-			};
+				}
+			}
 		});
 
 		// 새로 active 하기 전 active값들 초기화
-		$("li[class=nav-item").on("click", function() {
+		$("li[class=nav-item").on("click", function () {
 			const obj = $(this)[0];
 			var arr = new Array();
-			$("li[class=nav-item").each(function() {
-				if($(this)[0] != obj) {
+			$("li[class=nav-item").each(function () {
+				if ($(this)[0] != obj) {
 					arr.push($(this));
 				}
-			})
-	
-			for(var i = 0; i < arr.length; i++) {
+			});
+
+			for (var i = 0; i < arr.length; i++) {
 				$(arr[i][0].children[0]).css("color", "");
 			}
-		})
+		});
 
-		return () => {
-	
-		}
+		return () => {};
 	}, []);
 
 	return (
@@ -140,10 +133,10 @@ function SideNav(props) {
 							href="#"
 							onClick={() => store.handleClick("button1")}
 						> */}
-							<Link className="nav-link collapsed" to="/dashboard/dashboard">
+						<Link className="nav-link collapsed" to="/dashboard/dashboard">
 							<i className="fas fa-fw fa-chart-line"></i>
-								<span>Dashboard</span>
-							</Link>
+							<span>Dashboard</span>
+						</Link>
 						{/* </a> */}
 					</li>
 
@@ -167,10 +160,10 @@ function SideNav(props) {
 								<div className="forMobileMenu">
 									<Link className="collapse-item" to="/calculate/transportList">
 										운송료관리
-										</Link>
+									</Link>
 									<Link className="collapse-item" to="/calculate/truckOwnerCalc">
 										차주정산
-										</Link>
+									</Link>
 								</div>
 							</div>
 						</div>
@@ -182,10 +175,10 @@ function SideNav(props) {
 							href="#"
 							onClick={() => store.handleClick("button3")}
 						> */}
-							<Link className="nav-link collapsed" to="/carrier/carrierInfoList">
+						<Link className="nav-link collapsed" to="/carrier/carrierInfoList">
 							<i className="fas fa-fw fa-chalkboard-teacher"></i>
-								<span>운송사관리</span>
-							</Link>
+							<span>운송사관리</span>
+						</Link>
 						{/* </a> */}
 					</li>
 
@@ -195,10 +188,10 @@ function SideNav(props) {
 							href="#"
 							onClick={() => store.handleClick("button4")}
 						> */}
-							<Link className="nav-link collapsed" to="/truckOwner/truckOwnerInfoList">
+						<Link className="nav-link collapsed" to="/truckOwner/truckOwnerInfoList">
 							<i className="fas fa-fw fa-truck"></i>
-								<span>차주관리</span>
-							</Link>
+							<span>차주관리</span>
+						</Link>
 						{/* </a> */}
 					</li>
 
@@ -247,13 +240,13 @@ function SideNav(props) {
 								<div className="forMobileMenu">
 									<Link className="collapse-item" to="/account/carrierAccount">
 										운송사계정
-										</Link>
+									</Link>
 									<Link className="collapse-item" to="/account/truckOwnerAccount">
 										차주계정
-										</Link>
+									</Link>
 									<Link className="collapse-item" to="/account/adminAccount">
 										관리자계정
-										</Link>
+									</Link>
 								</div>
 							</div>
 						</div>
@@ -275,7 +268,7 @@ function SideNav(props) {
 						<div id="collapseSeven" className="collapse" aria-labelledby="headingSeven" data-parent="#accordionSidebar">
 							<div className="bg-white py-2 collapse-inner rounded">
 								<h6 className="collapse-header">고객센터VOC</h6>
-	
+
 								<div className="forMobileMenu">
 									<Link className="collapse-item" to="/customerCenter/csInfo">
 										고객센터
@@ -294,10 +287,10 @@ function SideNav(props) {
 							href="#"
 							onClick={() => store.handleClick("button8")}
 						> */}
-							<Link className="nav-link collapsed" to="/notice/noticeList">
+						<Link className="nav-link collapsed" to="/notice/noticeContainer">
 							<i className="fas fa-fw fa-bullhorn"></i>
-								<span>공지사항</span>
-							</Link>
+							<span>공지사항 & PUSH</span>
+						</Link>
 						{/* </a> */}
 					</li>
 
@@ -307,10 +300,10 @@ function SideNav(props) {
 							href="#"
 							onClick={() => store.handleClick("button9")}
 						> */}
-							<Link className="nav-link collapsed" to="/serviceTerms/serviceTerms">
+						<Link className="nav-link collapsed" to="/serviceTerms/serviceTerms">
 							<i className="fas fa-fw fa-info"></i>
-								<span>서비스 약관</span>
-							</Link>
+							<span>서비스 약관</span>
+						</Link>
 						{/* </a> */}
 					</li>
 
@@ -323,6 +316,6 @@ function SideNav(props) {
 			)}
 		</ReactStore.Consumer>
 	);
-};
+}
 
 export default SideNav;

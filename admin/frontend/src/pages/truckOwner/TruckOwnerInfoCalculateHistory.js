@@ -11,7 +11,7 @@ import Loader from "../../util/Loader";
 import { Link } from "react-router-dom";
 $.datepicker = require("bootstrap-datepicker");
 import "styles/bootstrap-datepicker3.standalone.css";
-import * as dateCalc from "util/dateCalc";
+import * as DateCalc from "util/DateCalc";
 
 function TruckOwnerInfoCalculateHistory(props) {
 	useEffect(() => {
