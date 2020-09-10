@@ -13,18 +13,21 @@ export const getLastWeek = () => {
 	$("#fromDate").datepicker("setDate", "-7D");
 	$("#toDate").datepicker("setDate", "today");
 };
+
 // 1달 전
 export const getLastMonth = () => {
 	$("#fromDate").datepicker("setDate", "-1M");
-	$("#toDate").datepicker("setDate", "toDay");
+	$("#toDate").datepicker("setDate", "today");
 };
+
 // 3달 전
 export const getLast3Month = () => {
 	$("#fromDate").datepicker("setDate", "-3M");
-	$("#toDate").datepicker("setDate", "toDay");
+	$("#toDate").datepicker("setDate", "today");
 };
+
 // 6달 전
 export const getLast6Month = () => {
-	$("#fromDate").datepicker("setDate", "-6M");
-	$("#toDate").datepicker("setDate", "toDay");
+	$("#fromDate").datepicker("setDate", "-6");
+	$("#toDate").datepicker("setDate", "today");
 };
