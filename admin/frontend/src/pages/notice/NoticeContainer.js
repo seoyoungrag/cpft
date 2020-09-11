@@ -7,15 +7,68 @@ import Nav from "react-bootstrap/Nav";
 import NoticeList from "./NoticeList";
 import PushList from "./PushList";
 import NoticeMutate from "./NoticeMutate";
-import { globalContext } from "util/GlobalContext";
+import PushMutate from "./PushMutate";
 
 function NoticeContainer(props) {
 	React.useEffect(() => {
 		return () => {};
 	}, []);
 
-	const { globalState, dispatch } = React.useContext(globalContext);
-	const { isNoticeMutate, noticeSeq } = globalState;
+	const [mutates, setMutates] = React.useState({
+		isNoticeMutate: false,
+		isPushMutate: false,
+		noticeSeq: null,
+		pushSeq: null,
+	});
+
+	const { isNoticeMutate, isPushMutate, noticeSeq, pushSeq } = mutates;
+
+	const noticeInsert = React.useCallback(() => {
+		setMutates((prevMutates) => ({
+			...prevMutates,
+			isNoticeMutate: true,
+			noticeSeq: null,
+		}));
+	}, []);
+
+	const pushInsert = React.useCallback(() => {
+		setMutates((prevMutates) => ({
+			...prevMutates,
+			isPushMutate: true,
+		}));
+	}, []);
+
+	const noticeDetail = React.useCallback(
+		(noticeSeq) => {
+			setMutates((prevMutates) => ({
+				...prevMutates,
+				isNoticeMutate: true,
+				noticeSeq: noticeSeq,
+			}));
+		},
+		[noticeSeq]
+	);
+
+	const pushDetail = React.useCallback(
+		(pushSeq) => {
+			setMutates((prevMutates) => ({
+				...prevMutates,
+				isPushMutate: true,
+				pushSeq: pushSeq,
+			}));
+		},
+		[pushSeq]
+	);
+
+	const resetMutates = React.useCallback(() => {
+		setMutates((prevMutates) => ({
+			...prevMutates,
+			isNoticeMutate: false,
+			isPushMutate: false,
+			noticeSeq: null,
+			pushSeq: null,
+		}));
+	}, []);
 
 	return (
 		<MainStructure>
@@ -56,18 +109,12 @@ function NoticeContainer(props) {
 										<div className="d-flex justify-content-start">
 											<Nav variant="tabs">
 												<Nav.Item>
-													<Nav.Link
-														eventKey="noticeList"
-														onClick={() => dispatch({ type: "SET_NOTICE_MUTATE", SET_NOTICE_MUTATE: false })}
-													>
+													<Nav.Link eventKey="noticeList" onClick={resetMutates}>
 														공지사항
 													</Nav.Link>
 												</Nav.Item>
 												<Nav.Item>
-													<Nav.Link
-														eventKey="pushList"
-														onClick={() => dispatch({ type: "SET_NOTICE_MUTATE", SET_NOTICE_MUTATE: false })}
-													>
+													<Nav.Link eventKey="pushList" onClick={resetMutates}>
 														PUSH
 													</Nav.Link>
 												</Nav.Item>
@@ -79,18 +126,31 @@ function NoticeContainer(props) {
 								</div>
 							</div>
 							<div className="card-body">
-								{isNoticeMutate ? (
-									<NoticeMutate noticeSeq={noticeSeq} dispatch={dispatch} noticeSeq={noticeSeq} />
-								) : (
+								{isNoticeMutate === false && isPushMutate === false && (
 									<Tab.Content>
 										<Tab.Pane eventKey="noticeList">
-											<NoticeList />
+											<NoticeList onClick={noticeInsert} noticeDetail={noticeDetail} />
 										</Tab.Pane>
 										<Tab.Pane eventKey="pushList">
-											<PushList />
+											<PushList onClick={pushInsert} pushDetail={pushDetail} />
 										</Tab.Pane>
 									</Tab.Content>
 								)}
+								{isNoticeMutate === true && isPushMutate === false && <NoticeMutate noticeSeq={noticeSeq} />}
+								{isPushMutate === true && isNoticeMutate === false && <PushMutate pushSeq={pushSeq} />}
+
+								{/* {isNoticeMutate ? (
+									<NoticeMutate noticeSeq={noticeSeq} />
+								) : (
+									<Tab.Content>
+										<Tab.Pane eventKey="noticeList">
+											<NoticeList onClick={noticeInsert} noticeDetail={noticeDetail} />
+										</Tab.Pane>
+										<Tab.Pane eventKey="pushList">
+											<PushList onClick={pushInsert} pushDetail={pushDetail} />
+										</Tab.Pane>
+									</Tab.Content>
+								)} */}
 							</div>
 						</div>
 					</div>
@@ -100,4 +160,4 @@ function NoticeContainer(props) {
 	);
 }
 
-export default NoticeContainer;
+export default React.memo(NoticeContainer);

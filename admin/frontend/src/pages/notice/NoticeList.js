@@ -1,5 +1,4 @@
 import React from "react";
-import { globalContext } from "util/GlobalContext";
 
 function NoticeList(props) {
 	React.useEffect(() => {
@@ -49,14 +48,7 @@ function NoticeList(props) {
 
 				$("#noticeList tbody tr").on("click", function () {
 					const noticeSeq = $(this).attr("id");
-					const action = {
-						type: "SET_NOTICE_SEQ",
-						noticeSeq: noticeSeq - 1,
-					};
-					dispatch(action);
-
-					// const url = "/notice/noticeDetail";
-					// props.history.push(url, { noticeSeq: noticeSeq });
+					props.noticeDetail(noticeSeq);
 				});
 
 				$("#noticeList tbody tr").on("mouseenter", function () {
@@ -70,8 +62,6 @@ function NoticeList(props) {
 			$("#noticeList tbody tr").unbind();
 		};
 	}, []);
-
-	const { globalState, dispatch } = React.useContext(globalContext);
 
 	// 더미데이터
 	const dummyData = [
@@ -118,7 +108,7 @@ function NoticeList(props) {
 					</div>
 					<div className="col-5 d-flex justify-content-center"></div>
 					<div className="form-group row col-4 d-flex justify-content-end m-auto p-auto">
-						<button onClick={() => dispatch({ type: "SET_NOTICE_MUTATE", isNoticeMutate: true })}>공지사항 등록</button>
+						<button onClick={props.onClick}>공지사항 등록</button>
 					</div>
 				</div>
 			</div>
@@ -152,4 +142,4 @@ function NoticeList(props) {
 	);
 }
 
-export default NoticeList;
+export default React.memo(NoticeList);

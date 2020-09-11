@@ -12,8 +12,8 @@ function NoticeMutate(props) {
 				popupCheck: dummyData[props.noticeSeq].popupCheck,
 				from: dummyData[props.noticeSeq].from,
 				to: dummyData[props.noticeSeq].to,
-				// startTime: dummyData[props.noticeSeq].startTime,
-				// endTime: dummyData[props.noticeSeq],endTime,
+				startTime: dummyData[props.noticeSeq].startTime,
+				endTime: dummyData[props.noticeSeq],
 				createdAt: dummyData[props.noticeSeq].createdAt,
 				title: dummyData[props.noticeSeq].title,
 				content: dummyData[props.noticeSeq].content,
@@ -37,13 +37,13 @@ function NoticeMutate(props) {
 
 	const { noticeSeq, target, popupCheck, from, to, startTime, endTime, createdAt, title, content } = inputs;
 
-	const handleChange = (e) => {
+	const handleChange = React.useCallback((e) => {
 		const { name, value } = e.target;
 		setInputs((prevInputs) => ({
 			...prevInputs,
 			[name]: value,
 		}));
-	};
+	}, []);
 
 	// 더미데이터
 	const dummyData = [
