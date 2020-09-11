@@ -14,7 +14,7 @@ function NoticeMutate(props) {
 				from: dummyData[index].from,
 				to: dummyData[index].to,
 				startTime: dummyData[index].startTime,
-				endTime: dummyData[index],
+				endTime: dummyData[index].endTime,
 				createdAt: dummyData[index].createdAt,
 				title: dummyData[index].title,
 				content: dummyData[index].content,
