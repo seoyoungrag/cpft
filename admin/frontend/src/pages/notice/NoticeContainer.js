@@ -136,21 +136,8 @@ function NoticeContainer(props) {
 										</Tab.Pane>
 									</Tab.Content>
 								)}
-								{isNoticeMutate === true && isPushMutate === false && <NoticeMutate noticeSeq={noticeSeq} />}
-								{isPushMutate === true && isNoticeMutate === false && <PushMutate pushSeq={pushSeq} />}
-
-								{/* {isNoticeMutate ? (
-									<NoticeMutate noticeSeq={noticeSeq} />
-								) : (
-									<Tab.Content>
-										<Tab.Pane eventKey="noticeList">
-											<NoticeList onClick={noticeInsert} noticeDetail={noticeDetail} />
-										</Tab.Pane>
-										<Tab.Pane eventKey="pushList">
-											<PushList onClick={pushInsert} pushDetail={pushDetail} />
-										</Tab.Pane>
-									</Tab.Content>
-								)} */}
+								{isNoticeMutate === true && isPushMutate === false && <NoticeMutate noticeSeq={noticeSeq - 1} />}
+								{isPushMutate === true && isNoticeMutate === false && <PushMutate pushSeq={pushSeq - 1} />}
 							</div>
 						</div>
 					</div>

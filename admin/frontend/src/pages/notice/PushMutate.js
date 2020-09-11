@@ -320,8 +320,8 @@ function PushMutate(props) {
 									<td style={{ width: "5%" }}>분류</td>
 									<td style={{ width: "20%" }}>
 										<select
-											id="target"
-											name="target"
+											id="classification"
+											name="classification"
 											value={classification}
 											onChange={handleChange}
 											style={{ width: "50%" }}
@@ -333,8 +333,8 @@ function PushMutate(props) {
 									<td style={{ width: "5%" }}>발송시점</td>
 									<td style={{ width: "10%" }}>
 										<select
-											id="classification"
-											name="classification"
+											id="sendMethod"
+											name="sendMethod"
 											value={sendMethod}
 											onChange={handleChange}
 											style={{ width: "100%" }}
