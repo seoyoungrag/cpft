@@ -136,8 +136,8 @@ function NoticeContainer(props) {
 										</Tab.Pane>
 									</Tab.Content>
 								)}
-								{isNoticeMutate === true && isPushMutate === false && <NoticeMutate noticeSeq={noticeSeq - 1} />}
-								{isPushMutate === true && isNoticeMutate === false && <PushMutate pushSeq={pushSeq - 1} />}
+								{isNoticeMutate === true && isPushMutate === false && <NoticeMutate noticeSeq={noticeSeq} />}
+								{isPushMutate === true && isNoticeMutate === false && <PushMutate pushSeq={pushSeq} />}
 							</div>
 						</div>
 					</div>

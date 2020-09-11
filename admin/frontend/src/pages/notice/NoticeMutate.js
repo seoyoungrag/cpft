@@ -6,17 +6,18 @@ function NoticeMutate(props) {
 	React.useEffect(() => {
 		$("#from, #to").datepicker();
 		if (props.noticeSeq !== null) {
+			const index = props.noticeSeq - 1;
 			setInputs((prevInputs) => ({
 				...prevInputs,
-				target: dummyData[props.noticeSeq].target,
-				popupCheck: dummyData[props.noticeSeq].popupCheck,
-				from: dummyData[props.noticeSeq].from,
-				to: dummyData[props.noticeSeq].to,
-				startTime: dummyData[props.noticeSeq].startTime,
-				endTime: dummyData[props.noticeSeq],
-				createdAt: dummyData[props.noticeSeq].createdAt,
-				title: dummyData[props.noticeSeq].title,
-				content: dummyData[props.noticeSeq].content,
+				target: dummyData[index].target,
+				popupCheck: dummyData[index].popupCheck,
+				from: dummyData[index].from,
+				to: dummyData[index].to,
+				startTime: dummyData[index].startTime,
+				endTime: dummyData[index],
+				createdAt: dummyData[index].createdAt,
+				title: dummyData[index].title,
+				content: dummyData[index].content,
 			}));
 		}
 		return () => {};

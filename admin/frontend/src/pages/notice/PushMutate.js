@@ -6,16 +6,17 @@ import "vendor/datatables/dataTables.checkboxes.min.js";
 function PushMutate(props) {
 	React.useEffect(() => {
 		if (props.pushSeq !== null) {
+			const index = props.pushSeq - 1;
 			setInputs((prevInputs) => ({
 				...prevInputs,
-				pushSeq: dummyData[props.pushSeq].pushSeq,
-				classification: dummyData[props.pushSeq].classification,
-				targets: dummyData[props.pushSeq].targets,
-				sendMethod: dummyData[props.pushSeq].sendMethod,
-				sendDate: dummyData[props.pushSeq].sendDate,
-				sendTime: dummyData[props.pushSeq].sendTime,
-				title: dummyData[props.pushSeq].title,
-				content: dummyData[props.pushSeq].content,
+				pushSeq: dummyData[index].pushSeq,
+				classification: dummyData[index].classification,
+				targets: dummyData[index].targets,
+				sendMethod: dummyData[index].sendMethod,
+				sendDate: dummyData[index].sendDate,
+				sendTime: dummyData[index].sendTime,
+				title: dummyData[index].title,
+				content: dummyData[index].content,
 			}));
 		}
 		$("#sendDate").datepicker();
