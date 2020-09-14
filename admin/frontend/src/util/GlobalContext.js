@@ -9,7 +9,7 @@ const initialState = {
 const globalContext = React.createContext(initialState);
 const { Provider } = globalContext;
 
-const GlobalStateProvider = ({ children }) => {
+function GlobalStateProvider({ children }) {
 	const [globalState, dispatch] = React.useReducer((globalState, action) => {
 		switch (action.type) {
 			case "SET_URL":
@@ -41,6 +41,6 @@ const GlobalStateProvider = ({ children }) => {
 	}, initialState);
 
 	return <Provider value={{ globalState, dispatch }}>{children}</Provider>;
-};
+}
 
 export { globalContext, GlobalStateProvider };

@@ -6,17 +6,18 @@ function NoticeMutate(props) {
 	React.useEffect(() => {
 		$("#from, #to").datepicker();
 		if (props.noticeSeq !== null) {
+			const index = props.noticeSeq - 1;
 			setInputs((prevInputs) => ({
 				...prevInputs,
-				target: dummyData[props.noticeSeq].target,
-				popupCheck: dummyData[props.noticeSeq].popupCheck,
-				from: dummyData[props.noticeSeq].from,
-				to: dummyData[props.noticeSeq].to,
-				// startTime: dummyData[props.noticeSeq].startTime,
-				// endTime: dummyData[props.noticeSeq],endTime,
-				createdAt: dummyData[props.noticeSeq].createdAt,
-				title: dummyData[props.noticeSeq].title,
-				content: dummyData[props.noticeSeq].content,
+				target: dummyData[index].target,
+				popupCheck: dummyData[index].popupCheck,
+				from: dummyData[index].from,
+				to: dummyData[index].to,
+				startTime: dummyData[index].startTime,
+				endTime: dummyData[index].endTime,
+				createdAt: dummyData[index].createdAt,
+				title: dummyData[index].title,
+				content: dummyData[index].content,
 			}));
 		}
 		return () => {};
@@ -37,13 +38,13 @@ function NoticeMutate(props) {
 
 	const { noticeSeq, target, popupCheck, from, to, startTime, endTime, createdAt, title, content } = inputs;
 
-	const handleChange = (e) => {
+	const handleChange = React.useCallback((e) => {
 		const { name, value } = e.target;
 		setInputs((prevInputs) => ({
 			...prevInputs,
 			[name]: value,
 		}));
-	};
+	}, []);
 
 	// 더미데이터
 	const dummyData = [
