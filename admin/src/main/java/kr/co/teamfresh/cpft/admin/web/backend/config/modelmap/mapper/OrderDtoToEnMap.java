@@ -16,7 +16,7 @@ public class OrderDtoToEnMap extends PropertyMap<OrderDTO, Order> {
 				((OrderDTO) ctx.getSource()).getWorkGroupNm(),
 				((OrderDTO) ctx.getSource()).getWorkGroupManager())
 				).map(source, destination.getWorkGroupManager());
-		using(ctx -> generateCarrer(((OrderDTO)ctx.getSource()).getCarrierSeq())).map(source, destination.getCarrier());
+		using(ctx -> generateCareer(((OrderDTO)ctx.getSource()).getCarrierSeq())).map(source, destination.getCarrier());
 		using(ctx -> generateUser(((OrderDTO)ctx.getSource()).getUserSeq())).map(source, destination.getUser());
 	}
 
@@ -26,7 +26,7 @@ public class OrderDtoToEnMap extends PropertyMap<OrderDTO, Order> {
 		return c;
 	}
 
-	private Carrier generateCarrer(Integer carrierSeq) {
+	private Carrier generateCareer(Integer carrierSeq) {
 		Carrier c = new Carrier();
 		c.setCarrierSeq(carrierSeq);
 		return c;

@@ -16,7 +16,7 @@ const columns = [
  { title: "오더 번호", data: "order.orderSeq", width: "7%" },
  { title: "이름/나이", data: "truckOwner", width: "9%" },
  { title: "차량/톤수", data: "truckOwner.trucks", width: "9%" },
- { title: "경력", data: "truckOwner.carrerCn", width: "6%" },
+ { title: "경력", data: "truckOwner.careerCn", width: "6%" },
  { title: "메세지", data: "message", width: "44%" },
  { title: "지원일", data: "createdAt", width: "7%" },
  { title: "열람", data: "isRead", width: "7%" },
@@ -158,7 +158,7 @@ class ApplicantManage extends Component {
         $("#applicantModalUserNm").text(data.truckOwner.userNm);
         $("#applicantModalUserPhone").text(data.truckOwner.phone);
         $("#applicantModalCarAndTon").html(carAndTon);
-        $("#applicantModalCarrer").text(data.carrerCn);
+        $("#applicantModalCareer").text(data.careerCn);
         $("#applicantModalCert").html(certs);
         $("#applicantModalMsg").text(data.message);
         $("#applicantModalStatusIngBtn").data("orderSeq", data.order.orderSeq);
@@ -520,7 +520,7 @@ class ApplicantManage extends Component {
                 1t 냉장
                </dd>
                <dt className="col-3 h-25 d-flex justify-content-end">경력:</dt>{" "}
-               <dd className="col-9 h-25" id="applicantModalCarrer">
+               <dd className="col-9 h-25" id="applicantModalCareer">
                 1년 미만
                </dd>
               </dl>

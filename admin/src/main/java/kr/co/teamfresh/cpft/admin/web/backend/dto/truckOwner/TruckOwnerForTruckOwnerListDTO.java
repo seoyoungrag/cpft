@@ -20,8 +20,8 @@ public class TruckOwnerForTruckOwnerListDTO implements Serializable{
 	private String userNm;
 	private String userEmail;
     private int age;
-    private String carrerCn;
-    private String carrerDetail;
+    private String careerCn;
+    private String careerDetail;
     private String carrierNm;
     private String phone;
 	private List<TruckDTO> trucks = new ArrayList<TruckDTO>(0);

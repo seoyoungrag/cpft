@@ -45,11 +45,11 @@ public class TruckOwner {
     @Column(name="AGE")
     private int age;
     
-    @Column(name="CARRER_CN")
-    private String carrerCn;
+    @Column(name="CAREER_CN")
+    private String careerCn;
     
-    @Column(name="CARRER_DETAIL")
-    private String carrerDetail;
+    @Column(name="CAREER_DETAIL")
+    private String careerDetail;
     
     @Column(name="PHONE")
     private String phone;
