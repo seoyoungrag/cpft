@@ -1,6 +1,6 @@
 import React from "react";
 $.datepicker = require("bootstrap-datepicker");
-import * as DateCalc from "util/DateCalc";
+import * as Calc from "util/Calc";
 
 function NoticeMutate(props) {
 	React.useEffect(() => {
@@ -24,16 +24,16 @@ function NoticeMutate(props) {
 	}, []);
 
 	const [inputs, setInputs] = React.useState({
-		noticeSeq: "",
-		target: "",
+		noticeSeq: null,
+		target: null,
 		popupCheck: false,
-		from: "",
-		to: "",
-		startTime: "00:00",
-		endTime: "24:00",
-		createdAt: DateCalc.getDateStr(new Date()),
-		title: "",
-		content: "",
+		from: null,
+		to: null,
+		startTime: null,
+		endTime: null,
+		createdAt: Calc.getDateStr(new Date()),
+		title: null,
+		content: null,
 	});
 
 	const { noticeSeq, target, popupCheck, from, to, startTime, endTime, createdAt, title, content } = inputs;
@@ -110,7 +110,13 @@ function NoticeMutate(props) {
 								<tr>
 									<td style={{ width: "5%" }}>대상</td>
 									<td style={{ width: "10%" }}>
-										<select id="target" name="target" value={target} onChange={handleChange} style={{ width: "100%" }}>
+										<select
+											id="target"
+											name="target"
+											value={target || ""}
+											onChange={handleChange}
+											style={{ width: "100%" }}
+										>
 											<option>운송사</option>
 											<option>차주</option>
 										</select>
@@ -120,7 +126,7 @@ function NoticeMutate(props) {
 											type="checkbox"
 											id="popupCheck"
 											name="popupCheck"
-											checked={popupCheck}
+											checked={popupCheck || ""}
 											onChange={handleChange}
 											style={{ marginLeft: "3rem" }}
 										/>
@@ -134,13 +140,19 @@ function NoticeMutate(props) {
 											name="from"
 											placeholder="2020-01-01"
 											className="form-control datepicker"
-											value={from}
+											value={from || ""}
 											onChange={handleChange}
 											style={{ width: "100%" }}
 										/>
 									</td>
 									<td>
-										<input type="time" id="startTime" name="startTime" value={startTime} onChange={handleChange} />
+										<input
+											type="time"
+											id="startTime"
+											name="startTime"
+											value={startTime || "00:00"}
+											onChange={handleChange}
+										/>
 									</td>
 									<td>&nbsp;~&nbsp;</td>
 									<td style={{ width: "15%" }}>
@@ -150,16 +162,16 @@ function NoticeMutate(props) {
 											name="to"
 											placeholder="2020-01-01"
 											className="form-control datepicker"
-											value={to}
+											value={to || ""}
 											onChange={handleChange}
 											style={{ width: "100%" }}
 										/>
 									</td>
 									<td style={{ width: "10%" }}>
-										<input type="time" id="endTime" name="endTime" value={endTime} onChange={handleChange} />
+										<input type="time" id="endTime" name="endTime" value={endTime || "24:00"} onChange={handleChange} />
 									</td>
 									<td style={{ width: "8%" }}>최초 작성일</td>
-									<td>{createdAt}</td>
+									<td>{createdAt || ""}</td>
 								</tr>
 							</tbody>
 						</table>
@@ -184,7 +196,7 @@ function NoticeMutate(props) {
 											type="text"
 											id="title"
 											name="title"
-											value={title}
+											value={title || ""}
 											onChange={handleChange}
 											style={{ width: "100%" }}
 										/>
@@ -197,7 +209,7 @@ function NoticeMutate(props) {
 											id="content"
 											name="content"
 											rows="20"
-											value={content}
+											value={content || ""}
 											onChange={handleChange}
 											style={{ width: "100%" }}
 										/>

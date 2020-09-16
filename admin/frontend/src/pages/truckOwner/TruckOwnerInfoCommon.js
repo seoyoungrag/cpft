@@ -1,75 +1,44 @@
-import React, { useEffect, useState, useCallback } from "react";
-import $ from "jquery";
-import "vendor/datatables/dataTables.bootstrap4.min.css";
-import "vendor/datatables/jquery.dataTables.min.js";
-$.DataTable = require("vendor/datatables/dataTables.bootstrap4.min.js");
-import "datatables.net-dt";
+import React from "react";
+import * as rq from "react-query";
 import axios from "axios";
 import imgSrc from "../../styles/캡처.png";
+
 import TruckOwnerInfoDetail from "./TruckOwnerInfoDetail";
 import TruckOwnerInfoTransferHistory from "./TruckOwnerInfoTransferHistory";
 import TruckOwnerInfoPurchaseHistory from "./TruckOwnerInfoPurchaseHistory";
 import TruckOwnerInfoCalculateHistory from "./TruckOwnerInfoCalculateHistory";
 import TruckOwnerInfoAccountManagement from "./TruckOwnerInfoAccountManagement";
-import Tabs from "react-bootstrap/Tabs";
 
 function TruckOwnerInfoCommon(props) {
-	useEffect(() => {
-		console.log("컴포넌트 마운트");
-		// getData();
+	// 컴포넌트 마운트
+	React.useEffect(() => {
+		// 더미데이터 세팅
 		setData(userSeq - 1);
 
+		// 컴포넌트 언마운트
 		return () => {
-			console.log("컴포넌트 언마운트");
 			$.fn.dataTable.ext.search.pop();
 			$.fn.dataTable.ext.search.pop();
 		};
 	}, []);
 
-	// TruckOwnerInfoContainer에서 받아옴
-	const userSeq = props.userSeq;
-
-	// const url = "/v1/truckOwner/truckOwnerInfoDetail/";
-
 	// inputs
-	const [inputs, setInputs] = useState({
+	const [inputs, setInputs] = React.useState({
 		// 차주이름
-		ownerName: "-",
+		truckOwnerName: null,
 		// 차주코드
-		ownerCode: "-",
+		truckOwnerCode: null,
 		// 연락처
-		ownerPhoneNumber: "-",
+		phoneNumber: null,
 		// 가입상태
-		joinStatus: "-",
-		// 운송사Seq (미정)
-		carrierSeq: "-",
+		joinStatus: null,
+		// 운송사Seq (예비-미사용)
+		// carrierSeq: null,
 	});
 
-	const { ownerName, ownerCode, ownerPhoneNumber, joinStatus, carrierSeq } = inputs;
+	const { truckOwnerName, truckOwnerCode, phoneNumber, joinStatus, carrierSeq } = inputs;
 
-	// 데이터 조회
-	const getData = useCallback(async () => {
-		await axios
-			.get(url + userSeq)
-			.then((res) => {
-				let data = res.data.data;
-				console.log(data);
-				setInputs((prevInputs) => ({
-					...prevInputs,
-					userName: data.userName,
-					phoneNumber: data.phone,
-					ownerCode: data.ownerCode,
-					carrierSeq: data.carrierSeq,
-				}));
-			})
-			.catch((res) => {
-				alert("에러가 발생하였습니다 새로고침 후 다시 이용해주세요.");
-				console.log("에러: " + res);
-			});
-	}, []);
-
-	// inputs값 세팅
-	const handleChange = useCallback((e) => {
+	const onInputsChange = React.useCallback((e) => {
 		const { name, value } = e.target;
 		setInputs((prevInputs) => ({
 			...prevInputs,
@@ -77,86 +46,102 @@ function TruckOwnerInfoCommon(props) {
 		}));
 	}, []);
 
-	// 수정 버튼
-	const handleClick = useCallback((e) => {
-		let infoType = e.target.name; // ~~~info
-		let saveType = e.target.id; // state, commit
+	// files
+	const [files, setFiles] = React.useState({
+		// 사업자등록증
+		buinessLicenseImg: null,
+		// 화물운송종사 자격증
+		truckLicenseImg: null,
+		// 자동차등록증
+		carLicenseImg: null,
+		// 통장 사본
+		bankAccountImg: null,
+	});
+
+	const { buinessLicenseImg, truckLicenseImg, carLicenseImg, bankAccountImg } = files;
+
+	// files값 세팅
+	const onFilesChange = React.useCallback((e) => {
+		const { name, value } = e.target;
+		setFiles((prevFiles) => ({
+			...prevFiles,
+			[name]: value,
+		}));
 	}, []);
+
+	const userSeq = props.userSeq;
+	const url = "/v1/truckOwner/truckOwnerInfoDetail/";
+
+	// 데이터 조회
+	// const getData = async (url, userSeq) => {
+	// 	const data = await axios.get(url + userSeq).then((res) => {
+	// 		const result = res.data.data;
+	// 		setInputs((prevInputs) => ({
+	// 			...prevInputs,
+	// 			truckOwnerName: result.truckOwnerName,
+	// 			truckOwnerCode: result.truckOwnerCode,
+	// 			phoneNumber: result.phoneNumber,
+	// 			joinStatus: result.joinStatus,
+	// 			// carrierSeq: result.carrierSeq,
+	// 		}));
+	// 	});
+	// 	return data;
+	// };
+
+	// const { data, status, error } = rq.useQuery("basicInfo", getData(url, userSeq));
+
+	// 데이터 업데이트
+	// const updateData = (inputs) => {
+	// 	const data = axios.post(url + userSeq, inputs);
+	// 	return data;
+	// }
+	// const [mutate, {status, data, error}] = rq.useMutation(updateData, {
+	// 	onSuccess: (res) => {
+	// 		rq.queryCache.setQueryData("basicInfo", res.data.data);
+	// 	}
+	// })
+
+	// 수정 버튼 누르면 동작하는 함수
+	// const basicInfoUpdate = async () => {
+	// 	try {
+	// 		const data = await mutate(inputs);
+	// 		console.log(data);
+	// 	} catch (err) {
+	// 		console.log(err);
+	// 	}
+	// };
 
 	// 더미 데이터 -------------------------------------------------------------
 	const array = [
 		{
-			ownerName: "갑",
-			ownerCode: "N0002643",
+			truckOwnerName: "갑",
+			truckOwnerCode: "N0002643",
+			phoneNumber: "010-1234-5678",
 			joinStatus: "미제출",
-			businessInfo: "O",
-			certificateInfo: "O",
-			vehicleInfo: "X",
-			paymentInfo: "X",
-			workingYn: "X",
 		},
 		{
-			ownerName: "을",
-			ownerCode: "N0002543",
+			truckOwnerName: "을",
+			truckOwnerCode: "N0002543",
+			phoneNumber: "010-1541-1119",
 			joinStatus: "승인완료",
-			businessInfo: "O",
-			certificateInfo: "O",
-			vehicleInfo: "O",
-			paymentInfo: "O",
-			workingYn: "O",
 		},
 		{
-			ownerName: "병",
-			ownerCode: "N0001253",
+			truckOwnerName: "병",
+			truckOwnerCode: "N0001253",
+			phoneNumber: "010-5525-5257",
 			joinStatus: "미제출",
-			businessInfo: "O",
-			certificateInfo: "X",
-			vehicleInfo: "X",
-			paymentInfo: "O",
-			workingYn: "X",
 		},
 	];
 
 	// 더미 데이터 세팅 ---------------------------------------------------------
-	const setData = useCallback((userSeq) => {
-		switch (userSeq) {
-			case 0:
-				setInputs((prevInputs) => ({
-					...prevInputs,
-					ownerName: array[userSeq].ownerName,
-					ownerCode: array[userSeq].ownerCode,
-					ownerPhoneNumber: "010-1234-5678",
-					joinStatus: array[userSeq].joinStatus,
-				}));
-				break;
-			case 1:
-				setInputs((prevInputs) => ({
-					...prevInputs,
-					ownerName: array[userSeq].ownerName,
-					ownerCode: array[userSeq].ownerCode,
-					ownerPhoneNumber: "010-1541-1119",
-					joinStatus: array[userSeq].joinStatus,
-				}));
-				break;
-			case 2:
-				setInputs((prevInputs) => ({
-					...prevInputs,
-					ownerName: array[userSeq].ownerName,
-					ownerCode: array[userSeq].ownerCode,
-					ownerPhoneNumber: "010-5525-5257",
-					joinStatus: array[userSeq].joinStatus,
-				}));
-				break;
-			case 3:
-				setInputs((prevInputs) => ({
-					...inputs,
-					ownerName: array[userSeq].ownerName,
-					ownerCode: array[userSeq].ownerCode,
-					ownerPhoneNumber: "010-5252-5252",
-					joinStatus: array[userSeq].joinStatus,
-				}));
-				break;
-		}
+	const setData = React.useCallback((userSeq) => {
+		setInputs((prevInputs) => ({
+			...prevInputs,
+			truckOwnerName: array[userSeq].truckOwnerName,
+			truckOwnerCode: array[userSeq].truckOwnerCode,
+			phoneNumber: array[userSeq].phoneNumber,
+			joinStatus: array[userSeq].joinStatus,
+		}));
 	}, []);
 	// --------------------------------------------------------------------------
 
@@ -203,39 +188,23 @@ function TruckOwnerInfoCommon(props) {
 								<img src={imgSrc} style={{ width: "70px", height: "70px" }}></img>
 							</div>
 							<div className="basicInfoArea" style={{ float: "left" }}>
-								<span id="userName" style={{ fontSize: "25px", heigth: "70px", lineHeight: "70px", marginRight: "50px" }}>
-									{ownerName}
+								<span
+									id="truckOwnerName"
+									style={{ fontSize: "25px", heigth: "70px", lineHeight: "70px", marginRight: "50px" }}
+								>
+									{truckOwnerName}
 								</span>
 								<span style={{ fontSize: "15px", marginRight: "50px" }}>
 									<b>연락처</b>&nbsp;&nbsp;
-									<input
-										type="text"
-										id="ownerPhoneNumber"
-										name="ownerPhoneNumber"
-										onChange={handleChange}
-										value={ownerPhoneNumber}
-										style={{ width: "130px" }}
-									/>
+									{phoneNumber}
 								</span>
 								<span id="" style={{ fontSize: "15px", marginRight: "50px" }}>
 									<b>가입 상태</b>&nbsp;&nbsp;{joinStatus}
 								</span>
 								<span style={{ fontSize: "15px", marginRight: "50px" }}>
 									<b>차주코드</b>&nbsp;&nbsp;
-									<input
-										type="text"
-										id="ownerCode"
-										name="ownerCode"
-										onChange={handleChange}
-										value={ownerCode}
-										style={{ width: "130px" }}
-									/>
+									{truckOwnerCode}
 								</span>
-							</div>
-							<div className="modifyBtnArea" style={{ float: "right" }}>
-								<button type="button" onClick={handleClick} id="basicInfoModifyBtn">
-									수정
-								</button>
 							</div>
 						</div>
 						<div className="card-header card-header-tabs card-header-primary pb-0">
@@ -255,12 +224,7 @@ function TruckOwnerInfoCommon(props) {
 											</a>
 										</li>
 										<li className="nav-item">
-											<a
-												className="nav-link d-flex align-items-center"
-												href="#purchaseHistory"
-												data-toggle="tab"
-												// onClick={() => dispatch({ type: "SET_ACTIVE", activeTab: "purchaseHistory" })}
-											>
+											<a className="nav-link d-flex align-items-center" href="#purchaseHistory" data-toggle="tab">
 												<span className="sm-display-none">구매내역</span>
 												<div className="ripple-container"></div>
 											</a>
@@ -289,7 +253,14 @@ function TruckOwnerInfoCommon(props) {
 						<div className="card-body">
 							<div className="tab-content">
 								<div className="tab-pane col-12 active" id="personalInfo">
-									<TruckOwnerInfoDetail userSeq={userSeq} />
+									<TruckOwnerInfoDetail
+										userSeq={userSeq}
+										onInputsChange={onInputsChange}
+										onFilesChange={onFilesChange}
+										// onSave={basicInfoUpdate}
+										files={files}
+										data={inputs}
+									/>
 								</div>
 								<div className="tab-pane col-12" id="transferHistory">
 									<TruckOwnerInfoTransferHistory userSeq={userSeq} />

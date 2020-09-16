@@ -1,59 +1,48 @@
-import React, { Component, useEffect, useCallback, useState, Fragment } from "react";
-import MainStructure from "components/structure/MainStructure";
-import $ from "jquery";
-import "vendor/datatables/dataTables.bootstrap4.min.css";
-import "vendor/datatables/jquery.dataTables.min.js";
-$.DataTable = require("vendor/datatables/dataTables.bootstrap4.min.js");
-import "datatables.net-dt";
-import axios from "axios";
-import imgSrc from "../../styles/캡처.png";
-import Loader from "../../util/Loader";
-import { Link } from "react-router-dom";
+import React from "react";
 
 function TruckOwnerInfoDetail(props) {
-	useEffect(() => {
-		console.log("컴포넌트 마운트");
+	// 컴포넌트 마운트
+	React.useEffect(() => {
 		setData(userSeq - 1);
 
-		return () => {
-			console.log("컴포넌트 언마운트");
-		};
+		// 컴포넌트 언마운트
+		return () => {};
 	}, []);
 
 	const userSeq = props.userSeq;
 
 	// inputs
-	const [inputs, setInputs] = useState({
+	const [inputs, setInputs] = React.useState({
 		// 사업자등록번호
-		registrationNumber: "-",
+		registrationNumber: null,
 		// 과세유형
-		taxType: "-",
+		taxType: null,
 		// 휴폐업유무
-		corpState: "-",
+		corpState: null,
 		// 간이과세자 주민번호
-		personalNumber: "-",
+		personalNumber: null,
 		// 상호
-		companyName: "-",
+		companyName: null,
 		// 성명
-		companyOwnerName: "-",
+		companyOwnerName: null,
 		// 업태
-		businessCondition: "-",
+		businessCondition: null,
 		// 종목
-		businessOption: "-",
+		businessOption: null,
 		// 자격번호
-		businessNumber: "-",
+		businessNumber: null,
 		// 차량번호
-		vehicleNumber: "-",
+		vehicleNumber: null,
 		// 차량톤수
-		tonType: "-",
+		tonType: null,
 		// 차량종류
-		carType: "-",
+		carType: null,
 		// 은행
-		bankName: "-",
+		bankName: null,
 		// 계좌번호
-		bankAccount: "-",
+		bankAccount: null,
 		// 세금계산서 유형
-		taxBillType: "-",
+		taxBillType: null,
 	});
 
 	const {
@@ -75,7 +64,7 @@ function TruckOwnerInfoDetail(props) {
 	} = inputs;
 
 	// inputs값 세팅
-	const handleChange = useCallback((e) => {
+	const handleChange = React.useCallback((e) => {
 		const { name, value } = e.target;
 		setInputs((prevInputs) => ({
 			...prevInputs,
@@ -83,120 +72,138 @@ function TruckOwnerInfoDetail(props) {
 		}));
 	}, []);
 
-	// files
-	const [files, setFiles] = useState({
-		buinessLicenseImg: "",
-		truckLicenseImg: "",
-		carLicenseImg: "",
-		bankAccountImg: "",
-	});
-
-	const { buinessLicenseImg, truckLicenseImg, carLicenseImg, bankAccountImg } = files;
-
-	// files값 세팅
-	const handleFileChange = useCallback((e) => {
-		const { name, value } = e.target;
-		setFiles((prevFiles) => ({
-			...prevFiles,
-			[name]: value,
-		}));
-	}, []);
-
 	// 저장, 완료 버튼
-	const handleClick = useCallback((e) => {
+	const handleClick = React.useCallback((e) => {
 		let infoType = e.target.name; // ~~~info
 		let saveType = e.target.id; // state, commit
 	}, []);
 
-	// // 데이터 조회
-	// const getData = async () => {
-	//     setIsLoading(true);
-	//     var data = null;
-	//     await axios.get(url + userSeq)
-	//         .then(res => {
-	//             data = res.data.data;
-	//             setInputs((state) => ({
-	//                 ...inputs,
-	//                 userName: data.userNm,
-	//                 phoneNumber: data.truckOwner.phone
-	//             }));
-	//         })
-	//         .catch(res => {
-	//             alert("에러가 발생하였습니다 새로고침 후 다시 이용해주세요.");
-	//         });
-	//     setIsLoading(false);
+	// 더미 데이터
+	const array = [
+		{
+			registrationNumber: "561-88-01138",
+			taxType: "일반과세자",
+			corpState: "사업중",
+			personalNumber: "20200901",
+			companyName: "팀프레시",
+			companyOwnerName: "이성일",
+			businessCondition: "운송업",
+			businessOption: "화물",
+			businessNumber: "1-14-146139",
+			vehicleNumber: "서울 10배 1234",
+			tonType: "5t",
+			carType: "cold",
+			bankName: "nh",
+			bankAccount: "40625-21-454891",
+			taxBillType: "1",
+		},
+		{
+			registrationNumber: "812-13-51128",
+			taxType: "특급과세자",
+			corpState: "사업정지",
+			personalNumber: "20200304",
+			companyName: "활빈당",
+			companyOwnerName: "홍길동",
+			businessCondition: "해운업",
+			businessOption: "크루즈선",
+			businessNumber: "101-0-239",
+			vehicleNumber: "조선 1배 0001",
+			tonType: "2t",
+			carType: "hot",
+			bankName: "kb",
+			bankAccount: "20213-51-171814",
+			taxBillType: "2",
+		},
+		{
+			registrationNumber: "210-14-55128",
+			taxType: "일반과세자",
+			corpState: "사업중",
+			personalNumber: "20200505",
+			companyName: "OO운수",
+			companyOwnerName: "링컨",
+			businessCondition: "철도업",
+			businessOption: "무궁화호",
+			businessNumber: "200-57-255",
+			vehicleNumber: "미국 1철 5252",
+			tonType: "4t",
+			carType: "hot",
+			bankName: "sh",
+			bankAccount: "45213-339-1814",
+			taxBillType: "2",
+		},
+	];
 
 	// 더미 데이터 세팅 ----------------------------------------------------------
-	const setData = useCallback((userSeq) => {
-		switch (userSeq) {
-			case 0:
-				setInputs((prevInputs) => ({
-					...prevInputs,
-					registrationNumber: "561-88-01138",
-					taxType: "일반과세자",
-					corpState: "사업중",
-					personalNumber: "20200901",
-					companyName: "팀프레시",
-					companyOwnerName: "이성일",
-					businessCondition: "운송업",
-					businessOption: "화물",
-					businessNumber: "1-14-146139",
-					vehicleNumber: "서울 10배 1234",
-					tonType: "5t",
-					carType: "cold",
-					bankName: "nh",
-					bankAccount: "40625-21-454891",
-					taxBillType: "1",
-				}));
-				break;
-			case 1:
-				setInputs((prevInputs) => ({
-					...prevInputs,
-					registrationNumber: "812-13-51128",
-					taxType: "특급과세자",
-					corpState: "사업정지",
-					personalNumber: "20200304",
-					companyName: "활빈당",
-					companyOwnerName: "홍길동",
-					businessCondition: "해운업",
-					businessOption: "크루즈선",
-					businessNumber: "101-0-239",
-					vehicleNumber: "조선 1배 0001",
-					tonType: "2t",
-					carType: "hot",
-					bankName: "kb",
-					bankAccount: "20213-51-171814",
-					taxBillType: "2",
-				}));
-				break;
-			case 2:
-				setInputs((prevInputs) => ({
-					...prevInputs,
-					registrationNumber: "210-14-55128",
-					taxType: "일반과세자",
-					corpState: "사업중",
-					personalNumber: "20200505",
-					companyName: "OO운수",
-					companyOwnerName: "링컨",
-					businessCondition: "철도업",
-					businessOption: "무궁화호",
-					businessNumber: "200-57-255",
-					vehicleNumber: "미국 1철 5252",
-					tonType: "4t",
-					carType: "hot",
-					bankName: "sh",
-					bankAccount: "45213-339-1814",
-					taxBillType: "2",
-				}));
-				break;
-		}
+	const setData = React.useCallback((userSeq) => {
+		setInputs((prevInputs) => ({
+			...prevInputs,
+			registrationNumber: array[userSeq].registrationNumber,
+			taxType: array[userSeq].taxType,
+			corpState: array[userSeq].corpState,
+			personalNumber: array[userSeq].personalNumber,
+			companyName: array[userSeq].companyName,
+			businessCondition: array[userSeq].businessCondition,
+			businessOption: array[userSeq].businessOption,
+			businessNumber: array[userSeq].businessNumber,
+			vehicleNumber: array[userSeq].vehicleNumber,
+			tonType: array[userSeq].tonType,
+			carType: array[userSeq].carType,
+			bankName: array[userSeq].bankName,
+			bankAccount: array[userSeq].bankAccount,
+			taxBillType: array[userSeq].taxBillType,
+		}));
 	}, []);
 	// ------------------------------------------------------------------------
 
 	return (
-		<Fragment>
+		<React.Fragment>
 			<div className="form-row my-2 mb-3">
-				<div className="attachFiles" style={{ width: "100%" }}>
+				<div className="personalInfo" style={{ width: "50%" }}>
+					<h4>
+						<b>개인정보</b>
+					</h4>
+					<table>
+						<tbody>
+							<tr>
+								<td style={{ width: "50%" }}>이름</td>
+								<td>
+									<input
+										type="text"
+										id="truckOwnerName"
+										name="truckOwnerName"
+										value={props.data.truckOwnerName || ""}
+										onChange={props.onInputsChange}
+									/>
+								</td>
+							</tr>
+							<tr>
+								<td style={{ width: "50%" }}>차주코드</td>
+								<td>
+									<input
+										type="text"
+										id="truckOwnerCode"
+										name="truckOwnerCode"
+										value={props.data.truckOwnerCode || ""}
+										onChange={props.onInputsChange}
+									/>
+								</td>
+							</tr>
+							<tr>
+								<td style={{ width: "50%" }}>연락처</td>
+								<td>
+									<input
+										type="text"
+										id="phoneNumber"
+										name="phoneNumber"
+										value={props.data.phoneNumber || ""}
+										onChange={props.onInputsChange}
+									/>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div className="attachFiles" style={{ width: "40%" }}>
 					<h4>
 						<b>제출 서류</b>
 					</h4>
@@ -207,17 +214,17 @@ function TruckOwnerInfoDetail(props) {
 								<td style={{ width: "50%" }}>
 									<a href="#">사업자등록증 사진.jpg</a>
 								</td>
-								{/* <td><input type="file" onChange={handleFileChange} name="businessLicenseImg" value={businessLicenseImg}/></td> */}
+								{/* <td><input type="file" onChange={props.onFilesChange} name="businessLicenseImg" value={businessLicenseImg}/></td> */}
 							</tr>
 							<tr>
 								<td>화물운송종사 자격증</td>
 								<td style={{ width: "50%" }}>
 									<input
 										type="file"
-										onChange={handleFileChange}
+										onChange={props.onFilesChange}
 										name="truckLicenseImg"
 										id="truckLicenseImg"
-										value={truckLicenseImg}
+										value={props.files.truckLicenseImg || ""}
 									/>
 								</td>
 							</tr>
@@ -226,10 +233,10 @@ function TruckOwnerInfoDetail(props) {
 								<td style={{ width: "50%" }}>
 									<input
 										type="file"
-										onChange={handleFileChange}
+										onChange={props.onFilesChange}
 										name="carLicenseImg"
 										id="carLicenseImg"
-										value={carLicenseImg}
+										value={props.files.carLicenseImg || ""}
 									/>
 								</td>
 							</tr>
@@ -238,15 +245,20 @@ function TruckOwnerInfoDetail(props) {
 								<td style={{ width: "50%" }}>
 									<input
 										type="file"
-										onChange={handleFileChange}
+										onChange={props.onFilesChange}
 										name="bankAccountImg"
 										id="bankAccountImg"
-										value={bankAccountImg}
+										value={props.files.bankAccountImg || ""}
 									/>
 								</td>
 							</tr>
 						</tbody>
 					</table>
+				</div>
+				<div className="btnArea" style={{ width: "10%" }}>
+					<button name="businessInfo" id="stage" onClick={() => console.log(props.data)} style={{ float: "right" }}>
+						수정
+					</button>
 				</div>
 				<div id="buinessInfo" style={{ marginTop: "20px", width: "100%" }}>
 					<hr />
@@ -265,7 +277,7 @@ function TruckOwnerInfoDetail(props) {
 												onChange={handleChange}
 												name="registrationNumber"
 												id="registrationNumber"
-												value={registrationNumber}
+												value={registrationNumber || ""}
 											/>
 										</td>
 										<td>
@@ -275,13 +287,19 @@ function TruckOwnerInfoDetail(props) {
 									<tr>
 										<td width="195px">과세유형</td>
 										<td>
-											<input type="text" onChange={handleChange} name="taxType" id="taxType" value={taxType} />
+											<input type="text" onChange={handleChange} name="taxType" id="taxType" value={taxType || ""} />
 										</td>
 									</tr>
 									<tr>
 										<td width="195px">휴폐업유무</td>
 										<td>
-											<input type="text" onChange={handleChange} name="corpState" id="corpState" value={corpState} />
+											<input
+												type="text"
+												onChange={handleChange}
+												name="corpState"
+												id="corpState"
+												value={corpState || ""}
+											/>
 										</td>
 									</tr>
 									<tr>
@@ -292,7 +310,7 @@ function TruckOwnerInfoDetail(props) {
 												onChange={handleChange}
 												name="personalNumber"
 												id="personalNumber"
-												value={personalNumber}
+												value={personalNumber || ""}
 											/>
 										</td>
 									</tr>
@@ -311,7 +329,7 @@ function TruckOwnerInfoDetail(props) {
 													onChange={handleChange}
 													name="companyName"
 													id="companyName"
-													value={companyName}
+													value={companyName || ""}
 												/>
 											</td>
 										</tr>
@@ -323,7 +341,7 @@ function TruckOwnerInfoDetail(props) {
 													onChange={handleChange}
 													name="companyOwnerName"
 													id="companyOwnerName"
-													value={companyOwnerName}
+													value={companyOwnerName || ""}
 												/>
 											</td>
 										</tr>
@@ -335,7 +353,7 @@ function TruckOwnerInfoDetail(props) {
 													onChange={handleChange}
 													name="businessCondition"
 													id="businessCondition"
-													value={businessCondition}
+													value={businessCondition || ""}
 												/>
 											</td>
 										</tr>
@@ -347,7 +365,7 @@ function TruckOwnerInfoDetail(props) {
 													onChange={handleChange}
 													name="businessOption"
 													id="businessOption"
-													value={businessOption}
+													value={businessOption || ""}
 												/>
 											</td>
 										</tr>
@@ -382,7 +400,7 @@ function TruckOwnerInfoDetail(props) {
 												onChange={handleChange}
 												name="businessNumber"
 												id="businessNumber"
-												value={businessNumber}
+												value={businessNumber || ""}
 											/>
 										</td>
 									</tr>
@@ -418,7 +436,7 @@ function TruckOwnerInfoDetail(props) {
 												onChange={handleChange}
 												name="vehicleNumber"
 												id="vehicleNumber"
-												value={vehicleNumber}
+												value={vehicleNumber || ""}
 											/>
 										</td>
 									</tr>
@@ -428,7 +446,7 @@ function TruckOwnerInfoDetail(props) {
 											<select
 												name="tonType"
 												id="tonType"
-												value={tonType}
+												value={tonType || ""}
 												onChange={handleChange}
 												style={{ width: "100%" }}
 											>
@@ -446,7 +464,7 @@ function TruckOwnerInfoDetail(props) {
 											<select
 												name="carType"
 												id="carType"
-												value={carType}
+												value={carType || ""}
 												onChange={handleChange}
 												style={{ width: "100%" }}
 											>
@@ -485,7 +503,7 @@ function TruckOwnerInfoDetail(props) {
 											<select
 												name="bankName"
 												id="bankName"
-												value={bankName}
+												value={bankName || ""}
 												onChange={handleChange}
 												style={{ width: "100%" }}
 											>
@@ -501,7 +519,7 @@ function TruckOwnerInfoDetail(props) {
 												onChange={handleChange}
 												name="bankAccount"
 												id="bankAccount"
-												value={bankAccount}
+												value={bankAccount || ""}
 											/>
 										</td>
 										<td>
@@ -511,7 +529,7 @@ function TruckOwnerInfoDetail(props) {
 									<tr>
 										<td width="195px">세금계산서 유형</td>
 										<td>
-											<select name="taxBillType" id="taxBillType" value={taxBillType} onChange={handleChange}>
+											<select name="taxBillType" id="taxBillType" value={taxBillType || ""} onChange={handleChange}>
 												<option value="1">전자세금계산서(위수탁 발행)</option>
 												<option value="2">수기세금계산서(역발행)</option>
 											</select>
@@ -533,7 +551,7 @@ function TruckOwnerInfoDetail(props) {
 					</div>
 				</div>
 			</div>
-		</Fragment>
+		</React.Fragment>
 	);
 }
 

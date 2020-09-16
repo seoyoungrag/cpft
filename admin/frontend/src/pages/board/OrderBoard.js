@@ -1,9 +1,10 @@
 import React from "react";
 import MainStructure from "components/structure/MainStructure";
 import Modal from "react-bootstrap/Modal";
-import * as DateCalc from "util/DateCalc";
+import * as Calc from "util/Calc";
 
 function OrderBoard(props) {
+	// 컴포넌트 마운트
 	React.useEffect(() => {
 		// 더미 테이블
 		const dummyTable = $("#orderBoardList").DataTable({
@@ -18,6 +19,12 @@ function OrderBoard(props) {
 				{ data: "recruitment" },
 				{ data: "deliveryPrice" },
 				{ data: "orderStatus" },
+				{
+					data: "orderNum",
+					render: function (data, type, row) {
+						return '<button id="' + data + '" name="boardDetail">상세보기</button>';
+					},
+				},
 			],
 			columnDefs: [
 				{
@@ -25,20 +32,12 @@ function OrderBoard(props) {
 					targets: "_all",
 				},
 				{
-					targets: [0],
-					data: null,
-					createdCell: function (td, cellData, rowData, row, col) {
-						$(td).text(row + 1);
-					},
-				},
-				{
-					targets: [9],
-					data: "orderNum",
-					render: function (data, type, row) {
-						return '<button id="' + data + '" name="boardDetail">상세보기</button>';
-					},
+					targets: 0,
+					searchable: false,
+					orderable: false,
 				},
 			],
+			order: [[1, "asc"]],
 			createdRow: function (row, data, dataIndex, cells) {
 				$(row).attr("id", dataIndex + 1);
 			},
@@ -70,27 +69,41 @@ function OrderBoard(props) {
 				$.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
 					const from = $("#fromDate").datepicker("getDate");
 					const to = $("#toDate").datepicker("getDate");
-					const carrierCalculateDate = new Date(data[1]);
+					const targetDate = new Date(data[1]);
 
 					if (from === null && to === null) return true;
-					if (from === null && carrierCalculateDate <= to) return true;
-					if (to === null && carrierCalculateDate >= from) return true;
-					if (carrierCalculateDate <= to && carrierCalculateDate >= from) return true;
+					if (from === null && targetDate <= to) return true;
+					if (to === null && targetDate >= from) return true;
+					if (targetDate <= to && targetDate >= from) return true;
 					return false;
 				});
 			},
 		});
 
+		// rownum
+		dummyTable
+			.on("order.dt search.dt", function () {
+				dummyTable
+					.column(0, { search: "applied", order: "applied" })
+					.nodes()
+					.each(function (cell, i) {
+						cell.innerHTML = i + 1;
+					});
+			})
+			.draw();
+
 		$("#fromDate, #toDate").datepicker();
 
-		$("#fromDate, #toDate").change(function () {
+		$("#fromDate, #toDate").on("change", function () {
 			dummyTable.draw();
 		});
 
+		// 컴포넌트 언마운트
 		return () => {
 			dummyTable.destroy(true);
 			$.fn.dataTable.ext.search.pop();
-			$("button[name=boardDetail]").unbind();
+			$("button[name=boardDetail]").off();
+			$("#fromDate, #toDate").off();
 		};
 	}, []);
 
@@ -99,18 +112,18 @@ function OrderBoard(props) {
 
 	// 더미 데이터 ------------------------------------------------------------------------
 	const [modalData, setModalData] = React.useState({
-		orderNum: "",
-		carrierName: "",
-		carrierGroup: "",
-		orderCode: "",
-		workType: "",
-		tonType: "",
-		carType: "",
-		deliveryProduct: "",
-		pickupPoint: "",
-		workInfo: "",
-		officeHours: "",
-		comment: "",
+		orderNum: null,
+		carrierName: null,
+		carrierGroup: null,
+		orderCode: null,
+		workType: null,
+		tonType: null,
+		carType: null,
+		deliveryProduct: null,
+		pickupPoint: null,
+		workInfo: null,
+		officeHours: null,
+		comment: null,
 	});
 
 	const modalArray = [
@@ -220,7 +233,7 @@ function OrderBoard(props) {
 						>
 							<span style={{ fontSize: "6px" }}>운송사</span>
 							<br />
-							<span style={{ fontSize: "20px" }}>{modalData.carrierName}</span>
+							<span style={{ fontSize: "20px" }}>{modalData.carrierName || ""}</span>
 						</div>
 						<div
 							className="carrierGroup"
@@ -232,7 +245,7 @@ function OrderBoard(props) {
 						>
 							<span style={{ fontSize: "6px" }}>운송그룹</span>
 							<br />
-							<span style={{ fontSize: "20px" }}>{modalData.carrierGroup}</span>
+							<span style={{ fontSize: "20px" }}>{modalData.carrierGroup || ""}</span>
 						</div>
 						<div
 							className="orderCode"
@@ -244,7 +257,7 @@ function OrderBoard(props) {
 						>
 							<span style={{ fontSize: "6px" }}>오더코드</span>
 							<br />
-							<span style={{ fontSize: "20px" }}>{modalData.orderCode}</span>
+							<span style={{ fontSize: "20px" }}>{modalData.orderCode || ""}</span>
 						</div>
 						<div
 							className="workType"
@@ -256,7 +269,7 @@ function OrderBoard(props) {
 						>
 							<span style={{ fontSize: "6px" }}>업무형태</span>
 							<br />
-							<span style={{ fontSize: "20px" }}>{modalData.workType}</span>
+							<span style={{ fontSize: "20px" }}>{modalData.workType || ""}</span>
 						</div>
 					</div>
 					<div className="detailInfoArea" style={{ marginTop: "2rem" }}>
@@ -278,7 +291,7 @@ function OrderBoard(props) {
 											width: "75%",
 										}}
 									>
-										{modalData.tonType}
+										{modalData.tonType || ""}
 									</td>
 								</tr>
 								<tr>
@@ -290,7 +303,7 @@ function OrderBoard(props) {
 									>
 										<b>차량 종류</b>
 									</td>
-									<td style={{ border: "1px solid black" }}>{modalData.carType}</td>
+									<td style={{ border: "1px solid black" }}>{modalData.carType || ""}</td>
 								</tr>
 								<tr>
 									<td
@@ -301,7 +314,7 @@ function OrderBoard(props) {
 									>
 										<b>배송 품목</b>
 									</td>
-									<td style={{ border: "1px solid black" }}>{modalData.deliveryProduct}</td>
+									<td style={{ border: "1px solid black" }}>{modalData.deliveryProduct || ""}</td>
 								</tr>
 								<tr>
 									<td
@@ -312,7 +325,7 @@ function OrderBoard(props) {
 									>
 										<b>상차지</b>
 									</td>
-									<td style={{ border: "1px solid black" }}>{modalData.pickupPoint}</td>
+									<td style={{ border: "1px solid black" }}>{modalData.pickupPoint || ""}</td>
 								</tr>
 								<tr>
 									<td
@@ -323,7 +336,7 @@ function OrderBoard(props) {
 									>
 										<b>근무 일자</b>
 									</td>
-									<td style={{ border: "1px solid black" }}>{modalData.workInfo}</td>
+									<td style={{ border: "1px solid black" }}>{modalData.workInfo || ""}</td>
 								</tr>
 								<tr>
 									<td
@@ -334,7 +347,7 @@ function OrderBoard(props) {
 									>
 										<b>근무 시간</b>
 									</td>
-									<td style={{ border: "1px solid black" }}>{modalData.officeHours}</td>
+									<td style={{ border: "1px solid black" }}>{modalData.officeHours || ""}</td>
 								</tr>
 								<tr>
 									<td
@@ -345,7 +358,7 @@ function OrderBoard(props) {
 									>
 										<b>상세 사항</b>
 									</td>
-									<td style={{ border: "1px solid black" }}>{modalData.comment}</td>
+									<td style={{ border: "1px solid black" }}>{modalData.comment || ""}</td>
 								</tr>
 							</tbody>
 						</table>
@@ -395,10 +408,10 @@ function OrderBoard(props) {
 							<div className="col-12 row mt-3">
 								<div className="col-3">
 									<div className="d-flex justify-content-start">
-										<button onClick={DateCalc.getLastWeek}>1주일</button>
-										<button onClick={DateCalc.getLastMonth}>1개월</button>
-										<button onClick={DateCalc.getLast3Month}>3개월</button>
-										<button onClick={DateCalc.getLast6Month}>6개월</button>
+										<button onClick={Calc.getLastWeek}>1주일</button>
+										<button onClick={Calc.getLastMonth}>1개월</button>
+										<button onClick={Calc.getLast3Month}>3개월</button>
+										<button onClick={Calc.getLast6Month}>6개월</button>
 									</div>
 								</div>
 								<div className="col-5 d-flex justify-content-center"></div>

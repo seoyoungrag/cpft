@@ -10,9 +10,8 @@ import TruckOwnerInfoDetail from "./TruckOwnerInfoDetail";
 import Loader from "../../util/Loader";
 
 function TruckOwnerInfoList(props) {
+	// 컴포넌트 마운트
 	useEffect(() => {
-		console.log("컴포넌트 마운트");
-
 		// DataTables
 		// $("#truckOwnerInfoList").DataTable({
 		//     serverSide: false,
@@ -75,7 +74,8 @@ function TruckOwnerInfoList(props) {
 				{ data: "certificateInfo" },
 				{ data: "vehicleInfo" },
 				{ data: "paymentInfo" },
-				{ data: "workingYn" },
+				{ data: "accountStatus" },
+				{ data: "carrierName" },
 			],
 			columnDefs: [
 				{
@@ -83,12 +83,17 @@ function TruckOwnerInfoList(props) {
 					targets: "_all",
 				},
 				{
-					targets: [0],
-					createdCell: function (td, cellData, rowData, row, col) {
-						$(td).text(row + 1);
-					},
+					targets: 0,
+					searchable: false,
+					orderable: false,
+				},
+				{
+					targets: 9,
+					visible: false,
+					// searchable: false,
 				},
 			],
+			order: [[1, "asc"]],
 			createdRow: function (row, data, dataIndex, cells) {
 				$(row).attr("id", dataIndex + 1);
 			},
@@ -104,47 +109,92 @@ function TruckOwnerInfoList(props) {
 				$("#truckOwnerInfoList tbody tr").on("mouseenter", function () {
 					$(this).css("cursor", "pointer");
 				});
+
+				const column1 = this.api().column(9);
+				const select1 = $("<select><option value=''>전체</option></select>")
+					.appendTo("#searchTab1")
+					.on("change", function () {
+						const val1 = $(this).val();
+						column1.search(val1 ? "^" + $(this).val() + "$" : val1, true, false).draw();
+					});
+				column1
+					.data()
+					.unique()
+					.sort()
+					.each(function (data, j) {
+						select1.append("<option>" + data + "</option>");
+					});
+
+				const column2 = this.api().column(3);
+				const select2 = $("<select><option value=''>전체</option></select>")
+					.appendTo("#searchTab2")
+					.on("change", function () {
+						const val2 = $(this).val();
+						column2.search(val2 ? "^" + $(this).val() + "$" : val2, true, false).draw();
+					});
+				column2
+					.data()
+					.unique()
+					.sort()
+					.each(function (data, j) {
+						select2.append("<option>" + data + "</option>");
+					});
 			},
 		});
 
+		// rownum
+		dummyTable
+			.on("order.dt search.dt", function () {
+				dummyTable
+					.column(0, { search: "applied", order: "applied" })
+					.nodes()
+					.each(function (cell, i) {
+						cell.innerHTML = i + 1;
+					});
+			})
+			.draw();
+
+		// 컴포넌트 언마운트
 		return () => {
-			console.log("컴포넌트 언마운트");
 			dummyTable.destroy(true);
-			$("#truckOwnerInfoList tbody tr").unbind();
+			$("#truckOwnerInfoList tbody tr").off();
 		};
 	}, []);
 
 	// 더미 데이터 -------------------------------------------------------------
 	const array = [
 		{
-			ownerName: "갑",
+			ownerName: "홍길동",
 			ownerCode: "N0002643",
 			joinStatus: "미제출",
 			businessInfo: "O",
 			certificateInfo: "O",
 			vehicleInfo: "X",
 			paymentInfo: "X",
-			workingYn: "X",
+			accountStatus: "준회원",
+			carrierName: "팀프레시",
 		},
 		{
-			ownerName: "을",
+			ownerName: "고길동",
 			ownerCode: "N0002543",
 			joinStatus: "승인완료",
 			businessInfo: "O",
 			certificateInfo: "O",
 			vehicleInfo: "O",
 			paymentInfo: "O",
-			workingYn: "O",
+			accountStatus: "정회원",
+			carrierName: "마켓컬리",
 		},
 		{
-			ownerName: "병",
+			ownerName: "대길동",
 			ownerCode: "N0001253",
 			joinStatus: "미제출",
 			businessInfo: "O",
 			certificateInfo: "X",
 			vehicleInfo: "X",
 			paymentInfo: "O",
-			workingYn: "X",
+			accountStatus: "준회원",
+			carrierName: "CJ",
 		},
 	];
 	// ----------------------------------------------------------------------
@@ -191,6 +241,16 @@ function TruckOwnerInfoList(props) {
 								</div>
 							</div>
 						</div>
+						<div className="card-header row">
+							<div className="col-12 row mt-3">
+								<div className="col-3">
+									<div className="d-flex justify-content-start" id="searchTab1"></div>
+								</div>
+								<div className="col-5 d-flex justify-content-center"></div>
+								<div className="form-group row col-4 d-flex justify-content-end m-auto p-auto" id="searchTab2"></div>
+							</div>
+						</div>
+
 						<div className="card-body">
 							<div className="datatable table-responsive">
 								<table
@@ -214,14 +274,15 @@ function TruckOwnerInfoList(props) {
 												차주코드
 											</th>
 											<th rowSpan="2" style={{ width: "5rem", verticalAlign: "middle" }}>
-												가입 상태
+												서류 제출 여부
 											</th>
 											<th colSpan="4" style={{ width: "15rem" }}>
 												정보 기입 완료 상태
 											</th>
 											<th rowSpan="2" style={{ width: "5rem", verticalAlign: "middle" }}>
-												근무 여부
+												계정 상태
 											</th>
+											<th rowSpan="2">운송사이름(히든)</th>
 										</tr>
 										<tr>
 											<th style={{ width: "3rem" }}>사업자 정보</th>

@@ -1,7 +1,5 @@
 import React from "react";
 import MainStructure from "components/structure/MainStructure";
-import { useQuery, useMutation, queryCache } from "react-query";
-import axios from "axios";
 import Tab from "react-bootstrap/Tab";
 import Nav from "react-bootstrap/Nav";
 import NoticeList from "./NoticeList";

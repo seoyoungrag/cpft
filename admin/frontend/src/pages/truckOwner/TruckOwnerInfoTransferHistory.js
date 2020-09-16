@@ -1,18 +1,8 @@
-import React, { Component, useEffect, useRef, useState, Fragment } from "react";
-import MainStructure from "components/structure/MainStructure";
-import $ from "jquery";
-import "vendor/datatables/dataTables.bootstrap4.min.css";
-import "vendor/datatables/jquery.dataTables.min.js";
-$.DataTable = require("vendor/datatables/dataTables.bootstrap4.min.js");
-import "datatables.net-dt";
-import axios from "axios";
-import imgSrc from "../../styles/캡처.png";
-import Loader from "../../util/Loader";
+import React from "react";
 
 function TruckOwnerInfoTransferHistory(props) {
-	useEffect(() => {
-		console.log("컴포넌트 마운트");
-
+	// 컴포넌트 마운트
+	React.useEffect(() => {
 		// DataTables - 고정
 		// $("#fixedTransferList").DataTable({
 		//     serverSide: false,
@@ -109,19 +99,25 @@ function TruckOwnerInfoTransferHistory(props) {
 		// 더미 고정 테이블
 		const dummyFixedTable = $("#fixedTransferList").DataTable({
 			data: fixedArray,
-			columns: [{ data: null }, { data: "companyName" }, { data: "contractDate" }, { data: "contractEndData" }, { data: "deliveryStatus" }],
+			columns: [
+				{ data: null },
+				{ data: "companyName" },
+				{ data: "contractDate" },
+				{ data: "contractEndData" },
+				{ data: "deliveryStatus" },
+			],
 			columnDefs: [
 				{
 					defaultContent: "-",
 					targets: "_all",
 				},
 				{
-					targets: [0],
-					createdCell: function (td, cellData, rowData, row, col) {
-						$(td).text(row + 1);
-					},
+					targets: 0,
+					searchable: false,
+					orderable: false,
 				},
 			],
+			order: [[2, "asc"]],
 			createdRow: function (row, data, dataIndex, cells) {
 				$(row).attr("id", dataIndex + 1);
 			},
@@ -146,19 +142,43 @@ function TruckOwnerInfoTransferHistory(props) {
 					targets: "_all",
 				},
 				{
-					targets: [0],
-					createdCell: function (td, cellData, rowData, row, col) {
-						$(td).text(row + 1);
-					},
+					targets: 0,
+					searchable: false,
+					orderable: false,
 				},
 			],
+			order: [[2, "asc"]],
 			createdRow: function (row, data, dataIndex, cells) {
 				$(row).attr("id", dataIndex + 1);
 			},
 		});
 
+		// rownum
+		dummyFixedTable
+			.on("order.dt search.dt", function () {
+				dummyFixedTable
+					.column(0, { search: "applied", order: "applied" })
+					.nodes()
+					.each(function (cell, i) {
+						cell.innerHTML = i + 1;
+					});
+			})
+			.draw();
+
+		// rownum
+		dummyShortTermTable
+			.on("order.dt search.dt", function () {
+				dummyShortTermTable
+					.column(0, { search: "applied", order: "applied" })
+					.nodes()
+					.each(function (cell, i) {
+						cell.innerHTML = i + 1;
+					});
+			})
+			.draw();
+
+		// 컴포넌트 언마운트
 		return () => {
-			console.log("컴포넌트 언마운트");
 			dummyFixedTable.destroy(true);
 			dummyShortTermTable.destroy(true);
 		};
@@ -228,7 +248,7 @@ function TruckOwnerInfoTransferHistory(props) {
 	// ------------------------------------------------------------------------------
 
 	return (
-		<Fragment>
+		<React.Fragment>
 			<div className="form-row my-2 mb-3">
 				<div className="transferHistoryArea" style={{ width: "100%" }}>
 					<h4>
@@ -329,7 +349,7 @@ function TruckOwnerInfoTransferHistory(props) {
 					</div>
 				</div>
 			</div>
-		</Fragment>
+		</React.Fragment>
 	);
 }
 

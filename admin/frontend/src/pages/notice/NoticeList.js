@@ -21,12 +21,12 @@ function NoticeList(props) {
 					targets: "_all",
 				},
 				{
-					targets: [0],
-					createdCell: function (td, cellData, rowData, row, col) {
-						$(td).text(row + 1);
-					},
+					targets: 0,
+					searchable: false,
+					orderable: false,
 				},
 			],
+			order: [[4, "asc"]],
 			createdRow: function (row, data, dataIndex, cells) {
 				$(row).attr("id", dataIndex + 1);
 			},
@@ -57,9 +57,21 @@ function NoticeList(props) {
 			},
 		});
 
+		// rownum
+		dummyTable
+			.on("order.dt search.dt", function () {
+				dummyTable
+					.column(0, { search: "applied", order: "applied" })
+					.nodes()
+					.each(function (cell, i) {
+						cell.innerHTML = i + 1;
+					});
+			})
+			.draw();
+
 		return () => {
 			dummyTable.destroy(true);
-			$("#noticeList tbody tr").unbind();
+			$("#noticeList tbody tr").off();
 		};
 	}, []);
 

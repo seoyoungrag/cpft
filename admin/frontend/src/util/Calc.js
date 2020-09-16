@@ -7,6 +7,18 @@ export const getDateStr = (date) => {
 	day = day >= 10 ? day : "0" + day;
 	return year + "-" + month + "-" + day;
 };
+// date에 new Date 형식의 값을 넣으면 yyyy-MM 형태로 반환해줌
+export const getMonthStr = (date) => {
+	let year = date.getFullYear();
+	let month = date.getMonth() + 1;
+	month = month >= 10 ? month : "0" + month;
+	return year + "-" + month;
+};
+
+// 한화 ,000,000 표시
+export const regexWON = (number) => {
+	return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
 
 // 일주일 전
 export const getLastWeek = () => {

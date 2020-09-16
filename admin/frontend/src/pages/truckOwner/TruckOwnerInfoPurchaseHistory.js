@@ -1,21 +1,8 @@
-import React, { Component, useEffect, useCallback, useState, Fragment } from "react";
-import MainStructure from "components/structure/MainStructure";
-import $, { expr } from "jquery";
-import "vendor/datatables/dataTables.bootstrap4.min.css";
-import "vendor/datatables/jquery.dataTables.min.js";
-$.DataTable = require("vendor/datatables/dataTables.bootstrap4.min.js");
-import "datatables.net-dt";
-import axios from "axios";
-import imgSrc from "../../styles/캡처.png";
-import Loader from "../../util/Loader";
-import { Link } from "react-router-dom";
-import { func } from "prop-types";
-$.datepicker = require("bootstrap-datepicker");
+import React from "react";
 
 function TruckOwnerInfoPurchaseHistory(props) {
-	useEffect(() => {
-		console.log("컴포넌트 마운트");
-
+	// 컴포넌트 마운트
+	React.useEffect(() => {
 		// DataTables
 		// $("#purchaseHistoryList").DataTable({
 		//     serverSide: false,
@@ -81,12 +68,12 @@ function TruckOwnerInfoPurchaseHistory(props) {
 					targets: "_all",
 				},
 				{
-					targets: [0],
-					createdCell: function (td, cellData, rowData, row, col) {
-						$(td).text(row + 1);
-					},
+					targets: 0,
+					searchable: false,
+					orderable: false,
 				},
 			],
+			order: [[2, "asc"]],
 			createdRow: function (row, data, dataIndex, cells) {
 				$(row).attr("id", dataIndex + 1);
 			},
@@ -123,43 +110,37 @@ function TruckOwnerInfoPurchaseHistory(props) {
 			},
 		});
 
+		// rownum
+		dummyTable
+			.on("order.dt search.dt", function () {
+				dummyTable
+					.column(0, { search: "applied", order: "applied" })
+					.nodes()
+					.each(function (cell, i) {
+						cell.innerHTML = i + 1;
+					});
+			})
+			.draw();
+
 		$("#fromDateA, #toDateA").datepicker();
 
 		$("#fromDateA, #toDateA").change(function () {
 			dummyTable.draw();
 		});
 
+		// 컴포넌트 언마운트
 		return () => {
-			console.log("컴포넌트 언마운트");
-			$.fn.dataTable.ext.search.pop();
 			dummyTable.destroy(true);
 		};
 	}, []);
 
-	// inputs
-	const [inputs, setInputs] = useState({
-		// 검색옵션
-		searchOption: "-",
-		// 시작 날짜
-		startDate: "-",
-		// 끝 날짜
-		endDate: "-",
-	});
-
-	const { searchOption, startDate, endDate } = inputs;
-
 	// inputs값 세팅
-	const handleChange = useCallback((e) => {
+	const handleChange = React.useCallback((e) => {
 		const { name, value } = e.target;
 		setInputs((prevInputs) => ({
 			...prevInputs,
 			[name]: value,
 		}));
-	}, []);
-
-	// 조회 버튼 클릭
-	const handleClick = useCallback(() => {
-		console.log("조회 버튼 클릭");
 	}, []);
 
 	// 더미 데이터 -----------------------------------------------------------------
@@ -208,7 +189,7 @@ function TruckOwnerInfoPurchaseHistory(props) {
 	// -------------------------------------------------------------------------------
 
 	return (
-		<Fragment>
+		<React.Fragment>
 			<div className="card-header row">
 				<div className="col-12 row mt-3">
 					<div className="col-3">
@@ -222,17 +203,9 @@ function TruckOwnerInfoPurchaseHistory(props) {
 							name="fromDateA"
 							type="text"
 							placeholder="2020-01-01"
-							onChange={handleChange}
 						/>
 						<label className="col-form-label ml-3 mr-3">~</label>
-						<input
-							className="form-control datepicker col-3"
-							id="toDateA"
-							name="toDateA"
-							type="text"
-							placeholder="2020-12-31"
-							onChange={handleChange}
-						/>
+						<input className="form-control datepicker col-3" id="toDateA" name="toDateA" type="text" placeholder="2020-12-31" />
 					</div>
 				</div>
 			</div>
@@ -261,7 +234,7 @@ function TruckOwnerInfoPurchaseHistory(props) {
 					</table>
 				</div>
 			</div>
-		</Fragment>
+		</React.Fragment>
 	);
 }
 

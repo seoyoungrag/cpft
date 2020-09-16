@@ -22,19 +22,22 @@ function PushMutate(props) {
 		$("#sendDate").datepicker();
 
 		return () => {
-			$("#targetList input[type=checkbox]").unbind();
+			$("#targetList input[type=checkbox]").off();
 		};
 	}, []);
 
+	const selectList = React.useRef();
+	const targetList = React.useRef();
+
 	const [inputs, setInputs] = React.useState({
-		pushSeq: "",
-		classification: "",
+		pushSeq: null,
+		classification: null,
 		targets: [],
-		sendMethod: "",
-		sendDate: "",
-		sendTime: "",
-		title: "",
-		content: "",
+		sendMethod: null,
+		sendDate: null,
+		sendTime: null,
+		title: null,
+		content: null,
 	});
 
 	const { title } = inputs;
@@ -247,6 +250,7 @@ function PushMutate(props) {
 										cellSpacing="0"
 										role="grid"
 										aria-describedby="dataTable_info"
+										ref={targetList}
 										style={{ textAlign: "center" }}
 									>
 										<thead>
@@ -270,6 +274,7 @@ function PushMutate(props) {
 									cellSpacing="0"
 									role="grid"
 									aria-describedby="dataTable_info"
+									ref={selectList}
 									style={{ textAlign: "center" }}
 								>
 									<thead>
@@ -323,7 +328,7 @@ function PushMutate(props) {
 										<select
 											id="classification"
 											name="classification"
-											value={classification}
+											value={classification || ""}
 											onChange={handleChange}
 											style={{ width: "50%" }}
 										>
@@ -336,7 +341,7 @@ function PushMutate(props) {
 										<select
 											id="sendMethod"
 											name="sendMethod"
-											value={sendMethod}
+											value={sendMethod || ""}
 											onChange={handleChange}
 											style={{ width: "100%" }}
 										>
@@ -358,13 +363,13 @@ function PushMutate(props) {
 											type="text"
 											id="sendDate"
 											name="sendDate"
-											value={sendDate}
+											value={sendDate || ""}
 											onChange={handleChange}
 											style={{ width: "100%" }}
 										/>
 									</td>
 									<td>
-										<input type="time" id="sendTime" name="sendTime" value={sendTime} onChange={handleChange} />
+										<input type="time" id="sendTime" name="sendTime" value={sendTime || ""} onChange={handleChange} />
 									</td>
 								</tr>
 								<tr>
@@ -394,7 +399,7 @@ function PushMutate(props) {
 											type="text"
 											id="title"
 											name="title"
-											value={title}
+											value={title || ""}
 											onChange={handleChange}
 											style={{ width: "100%" }}
 										/>
@@ -407,7 +412,7 @@ function PushMutate(props) {
 											id="content"
 											name="content"
 											rows="20"
-											value={content}
+											value={content || ""}
 											onChange={handleChange}
 											style={{ width: "100%" }}
 										/>

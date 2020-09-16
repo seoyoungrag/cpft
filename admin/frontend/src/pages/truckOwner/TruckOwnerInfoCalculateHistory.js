@@ -1,22 +1,8 @@
-import React, { Component, useEffect, useCallback, useState, Fragment } from "react";
-import MainStructure from "components/structure/MainStructure";
-import $, { expr } from "jquery";
-import "vendor/datatables/dataTables.bootstrap4.min.css";
-import "vendor/datatables/jquery.dataTables.min.js";
-$.DataTable = require("vendor/datatables/dataTables.bootstrap4.min.js");
-import "datatables.net-dt";
-import axios from "axios";
-import imgSrc from "../../styles/캡처.png";
-import Loader from "../../util/Loader";
-import { Link } from "react-router-dom";
-$.datepicker = require("bootstrap-datepicker");
-import "styles/bootstrap-datepicker3.standalone.css";
-import * as DateCalc from "util/DateCalc";
+import React from "react";
 
 function TruckOwnerInfoCalculateHistory(props) {
-	useEffect(() => {
-		console.log("컴포넌트 마운트");
-
+	// 컴포넌트 마운트
+	React.useEffect(() => {
 		// DataTables
 		// $("#calculateHistoryList").DataTable({
 		//     serverSide: false,
@@ -84,12 +70,12 @@ function TruckOwnerInfoCalculateHistory(props) {
 					targets: "_all",
 				},
 				{
-					targets: [0],
-					createdCell: function (td, cellData, rowData, row, col) {
-						$(td).text(row + 1);
-					},
+					targets: 0,
+					searchable: false,
+					orderable: false,
 				},
 			],
+			order: [[4, "asc"]],
 			createdRow: function (row, data, dataIndex, cells) {
 				$(row).attr("id", dataIndex + 1);
 			},
@@ -111,6 +97,18 @@ function TruckOwnerInfoCalculateHistory(props) {
 			},
 		});
 
+		// rownum
+		dummyTable
+			.on("order.dt search.dt", function () {
+				dummyTable
+					.column(0, { search: "applied", order: "applied" })
+					.nodes()
+					.each(function (cell, i) {
+						cell.innerHTML = i + 1;
+					});
+			})
+			.draw();
+
 		// 날짜 기능
 		$("#fromDateB, #toDateB").datepicker();
 
@@ -119,30 +117,10 @@ function TruckOwnerInfoCalculateHistory(props) {
 			dummyTable.draw();
 		});
 
+		// 컴포넌트 언마운트
 		return () => {
-			console.log("컴포넌트 언마운트");
-			$.fn.dataTable.ext.search.pop();
 			dummyTable.destroy(true);
 		};
-	}, []);
-
-	// inputs
-	const [inputs, setInputs] = useState({
-		// 시작 날짜
-		startDate: "-",
-		// 끝 날짜
-		endDate: "-",
-	});
-
-	const { startDate, endDate } = inputs;
-
-	// inputs값 세팅
-	const handleChange = useCallback((e) => {
-		const { name, value } = e.target;
-		setInputs((prevInpus) => ({
-			...prevInpus,
-			[name]: value,
-		}));
 	}, []);
 
 	// 더미 데이터 --------------------------------------------------------------------------
@@ -178,7 +156,7 @@ function TruckOwnerInfoCalculateHistory(props) {
 	// ----------------------------------------------------------------------------------
 
 	return (
-		<Fragment>
+		<React.Fragment>
 			<div className="card-header row">
 				<div className="col-12 row mt-3">
 					<div className="col-3"></div>
@@ -222,7 +200,7 @@ function TruckOwnerInfoCalculateHistory(props) {
 					</table>
 				</div>
 			</div>
-		</Fragment>
+		</React.Fragment>
 	);
 }
 

@@ -18,7 +18,9 @@ import "./styles/font-awesome.min.css";
 import "./styles/fonts.css";
 import "./styles/sb-admin-2.css";
 import "./styles/style.css";
+import "react-datepicker/dist/react-datepicker.css";
 import "./vendor/fontawesome-free/css/all.css";
+
 //import "./styles/utils.css";
 import ReactStore from "ReactStore";
 import { GlobalStateProvider } from "util/GlobalContext";
