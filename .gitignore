@@ -266,3 +266,5 @@ src/main/resources/static/app.css
 src/main/resources/static/app.css.map
 src/main/resources/static/index.html
 bundle.#.js
+
+**/src/main/resources/static/**
