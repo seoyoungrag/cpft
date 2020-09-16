@@ -235,7 +235,7 @@ function TruckOwnerInfoList(props) {
 							<div className="col-6">전체 차주 리스트</div>
 							<div className="col-sm-12 col-md-6 row">
 								<div className="col-12 d-flex justify-content-end">
-									<button className="btn btn-info" onClick={() => console.log(window.location)}>
+									<button className="btn btn-info" onClick={() => $("#truckOwnerInfoList").DataTable().destroy(true)}>
 										<span>관리</span>
 									</button>
 								</div>

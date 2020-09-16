@@ -59,9 +59,14 @@ function TransportDetail(props) {
 				$("#sum2").html(Calc.regexWON(sum2));
 				$("#sum3").html(Calc.regexWON(sum3));
 				$(".contentStart").append('<input type="text" id="monthPicker" name="monthPicker" />');
-				$("#monthPicker").monthpicker({
-					pattern: "yyyy-mm",
-					monthNames: ["01월", "02월", "03월", "04월", "05월", "06월", "07월", "08월", "09월", "10월", "11월", "12월"],
+
+				// $("#monthPicker").monthpicker({
+				// 	pattern: "yyyy-mm",
+				// 	monthNames: ["01월", "02월", "03월", "04월", "05월", "06월", "07월", "08월", "09월", "10월", "11월", "12월"],
+				// });
+
+				$("monthPicker").datepicker({
+					dateFormat: "yy.mm",
 				});
 			},
 		});
