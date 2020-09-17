@@ -1,4 +1,5 @@
 import React from "react";
+import * as dl from "util/DataTableLang";
 
 function TruckOwnerInfoPurchaseHistory(props) {
 	// 컴포넌트 마운트
@@ -52,15 +53,21 @@ function TruckOwnerInfoPurchaseHistory(props) {
 
 		// 더미 테이블
 		const dummyTable = $("#purchaseHistoryList").DataTable({
+			language: dl.DataTable_language,
+			responsive: true,
 			data: array,
+			dom:
+				"<'row'<'col-3 d-flex justify-content-start TOP_start'><'col-6 d-flex justify-content-center TOP_center'><'col-3 d-flex justify-content-end TOP_end'>>" +
+				"<'row'<'col-sm-12'rt>>" +
+				"<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
 			columns: [
-				{ data: null },
-				{ data: "purchaseKindOf" },
-				{ data: "purchaseDate" },
-				{ data: "sellCode" },
-				{ data: "price" },
-				{ data: "pay" },
-				{ data: "notReceived" },
+				{ title: "no.", data: null },
+				{ title: "구매상품 종류", data: "purchaseKindOf" },
+				{ title: "구매일", data: "purchaseDate" },
+				{ title: "판매코드", data: "sellCode" },
+				{ title: "구매금액", data: "price" },
+				{ title: "지불금액", data: "pay" },
+				{ title: "미수금액", data: "notReceived" },
 			],
 			columnDefs: [
 				{
@@ -78,9 +85,10 @@ function TruckOwnerInfoPurchaseHistory(props) {
 				$(row).attr("id", dataIndex + 1);
 			},
 			initComplete: function () {
+				// 카테고리 추가
 				const column = this.api().column(1);
-				const select = $("<select><option value=''>전체</option></select>")
-					.appendTo("#searchTab")
+				const select = $("<select class='form-control col-6'><option value=''>전체</option></select>")
+					.appendTo(".TOP_start")
 					.on("change", function () {
 						const val = $(this).val();
 						column.search(val ? "^" + $(this).val() + "$" : val, true, false).draw();
@@ -93,6 +101,31 @@ function TruckOwnerInfoPurchaseHistory(props) {
 						select.append("<option>" + data + "</option>");
 					});
 
+				// 달력 추가
+				$(".TOP_end").append(
+					'<input type="text" id="fromDateA" class="form-control datepicker col-4" placeholder="2020-00-00" />' +
+						'<label class="col-form-label ml-3 mr-3">~</label>' +
+						'<input type="text" id="toDateA" class="form-control datepicker col-4" placeholder="2020-12-31" />'
+				);
+
+				// 달력 초기화
+				$(".TOP_end").append('<button class="btn btn-primary" id="resetCalendarA">초기화</button>');
+
+				// datepicker
+				$("#fromDateA, #toDateA").datepicker();
+
+				// 초기화 버튼
+				$("#resetCalendarA").on("click", function () {
+					$("#fromDateA").datepicker("setDate", "");
+					$("#toDateA").datepicker("setDate", "");
+				});
+
+				// 달력 자동검색
+				$("#fromDateA, #toDateA").on("change", function () {
+					dummyTable.draw();
+				});
+
+				// 달력 자동검색 옵션
 				$.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
 					if (settings.nTable.id !== "purchaseHistoryList") return true;
 
@@ -122,14 +155,9 @@ function TruckOwnerInfoPurchaseHistory(props) {
 			})
 			.draw();
 
-		$("#fromDateA, #toDateA").datepicker();
-
-		$("#fromDateA, #toDateA").change(function () {
-			dummyTable.draw();
-		});
-
 		// 컴포넌트 언마운트
 		return () => {
+			$.fn.dataTable.ext.search.pop();
 			dummyTable.destroy(true);
 		};
 	}, []);
@@ -190,25 +218,11 @@ function TruckOwnerInfoPurchaseHistory(props) {
 
 	return (
 		<React.Fragment>
-			<div className="card-header row">
-				<div className="col-12 row mt-3">
-					<div className="col-3">
-						<div className="d-flex justify-content-start" id="searchTab"></div>
-					</div>
-					<div className="col-5 d-flex justify-content-center"></div>
-					<div className="form-group row col-4 d-flex justify-content-end m-auto p-auto">
-						<input
-							className="form-control datepicker col-3"
-							id="fromDateA"
-							name="fromDateA"
-							type="text"
-							placeholder="2020-01-01"
-						/>
-						<label className="col-form-label ml-3 mr-3">~</label>
-						<input className="form-control datepicker col-3" id="toDateA" name="toDateA" type="text" placeholder="2020-12-31" />
-					</div>
-				</div>
-			</div>
+			{/* <div className="card-header row">
+				<div className="col-3 d-flex justify-content-start"></div>
+				<div className="col-6 d-flex justify-content-center"></div>
+				<div className="col-3 d-flex justify-content-end"></div>
+			</div> */}
 			<div className="form-row my-2 mb-3">
 				<div className="datatable table-responsive">
 					<table
@@ -219,19 +233,7 @@ function TruckOwnerInfoPurchaseHistory(props) {
 						role="grid"
 						aria-describedby="dataTable_info"
 						style={{ textAlign: "center" }}
-					>
-						<thead>
-							<tr>
-								<th>no.</th>
-								<th>구매상품 종류</th>
-								<th>구매일</th>
-								<th>판매코드</th>
-								<th>구매금액</th>
-								<th>지불금액</th>
-								<th>미수금액</th>
-							</tr>
-						</thead>
-					</table>
+					/>
 				</div>
 			</div>
 		</React.Fragment>

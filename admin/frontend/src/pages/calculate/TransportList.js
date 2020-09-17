@@ -1,30 +1,18 @@
 import React from "react";
 import MainStructure from "components/structure/MainStructure";
-import DatePicker, { registerLocale } from "react-datepicker";
-import ko from "date-fns/locale/ko";
-import * as Calc from "util/Calc";
+import * as dl from "util/DataTableLang";
 
 function TransportList(props) {
-	const DataTable_language = {
-		decimal: ",",
-		thousands: ".",
-		paginate: {
-			first: "",
-			last: "",
-			previous: "<",
-			next: ">",
-		},
-		processing: "처리 중 입니다.",
-		emptyTable: "처리할 내용이 없습니다.",
-		info: "총 _PAGES_페이지/_TOTAL_개 중 (_START_ ~ _END_) ",
-	};
-
 	// 컴포넌트 마운트
 	React.useEffect(() => {
 		const dummyTable = $("#TransportListTbl").DataTable({
-			// language: DataTable_language,
-			lengthChange: false,
+			language: dl.DataTable_language,
+			responsive: true,
 			data: array,
+			dom:
+				"<'row'<'col-3 d-flex justify-content-start TPL_start'><'col-6 d-flex justify-content-center TPL_center'><'col-3 d-flex justify-content-end TPL_end'>>" +
+				"<'row'<'col-sm-12'rt>>" +
+				"<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
 			columns: [
 				{ data: null },
 				{ data: "carrierNm" },
@@ -56,16 +44,42 @@ function TransportList(props) {
 			createdRow: function (row, data, dataIndex, cells) {
 				$(row).attr("id", dataIndex + 1);
 			},
-
 			initComplete: function (settings, json) {
+				// 테이블 클릭 상세보기
 				$("#TransportListTbl tbody tr").on("click", function () {
 					const userSeq = $(this).attr("id");
 					const url = "/calculate/transportDetail";
 					props.history.push(url, { userSeq: userSeq });
 				});
 
+				// 테이블 마우스 hover
 				$("#TransportListTbl tbody tr").on("mouseenter", function () {
 					$(this).css("cursor", "pointer");
+				});
+
+				// 테이블 상단 달력 추가
+				$(".TPL_start").append('<input type="text" id="month" class="form-control monthpicker col-4" placeholder="2020-00"/>');
+				$(".TPL_start").append('<button class="btn btn-primary" id="resetMonth">초기화</button>');
+
+				// monthpicker
+				$("#month").monthpicker({
+					pattern: "yyyy-mm",
+					monthNames: ["01월", "02월", "03월", "04월", "05월", "06월", "07월", "08월", "09월", "10월", "11월", "12월"],
+				});
+
+				// 달력 초기화
+				$("#resetMonth").on("click", function () {
+					$("#month").datepicker("setDate", "");
+				});
+
+				// 달력 자동검색
+				$("#month").on("change", function () {
+					const searchMonth = $(this).val();
+					if (searchMonth !== "") {
+						dummyTable.columns(9).search(searchMonth).draw();
+					} else {
+						dummyTable.columns(9).search("").draw();
+					}
 				});
 			},
 		});
@@ -84,7 +98,6 @@ function TransportList(props) {
 
 		// 컴포넌트 언마운트
 		return () => {
-			$("#TransportListTbl tbody tr").off();
 			dummyTable.destroy(true);
 		};
 	}, []);
@@ -149,18 +162,6 @@ function TransportList(props) {
 	];
 	//--------------------------------------------
 
-	// 달력 검색 로직
-	registerLocale("ko", ko);
-	const [searchMonth, setSearchMonth] = React.useState(null);
-	React.useEffect(() => {
-		const dummyTable = $("#TransportListTbl").DataTable();
-		if (searchMonth !== null) {
-			dummyTable.columns(9).search(Calc.getMonthStr(searchMonth)).draw();
-		} else {
-			dummyTable.columns(9).search("").draw();
-		}
-	}, [searchMonth]);
-
 	return (
 		<MainStructure>
 			<main>
@@ -192,58 +193,49 @@ function TransportList(props) {
 				</div>
 				<div className="container-fluid mt-n10">
 					<div className="card mb-4">
+						<div className="card-header row">
+							<div className="col-3 d-flex justify-content-start"></div>
+							<div className="col-6 d-flex justify-content-center"></div>
+							<div className="col-3 d-flex justify-content-end"></div>
+						</div>
 						<div className="card-body">
-							<div className="col-12 d-flex justify-content-end">
-								<DatePicker
-									locale="ko"
-									selected={searchMonth || ""}
-									dateFormat="yyyy-MM"
-									onChange={(date) => setSearchMonth(date)}
-									className="searchMonth"
-									placeholderText="2020-00"
-									showMonthYearPicker
-								/>
-								<button onClick={() => setSearchMonth(null)}>초기화</button>
-							</div>
-							<div className="form-row my-2 mb-3">
-								<div className="datatable table-responsive">
-									<table
-										id="TransportListTbl"
-										className="table table-bordered table-hover"
-										width="100%"
-										cellSpacing="0"
-										role="grid"
-										aria-describedby="dataTable_info"
-										style={{ textAlign: "center" }}
-									>
-										<thead>
-											<tr>
-												<th rowSpan="2" style={{ width: "1rem", verticalAlign: "middle" }}>
-													no.
-												</th>
-												<th rowSpan="2" style={{ width: "6rem", verticalAlign: "middle" }}>
-													운송사
-												</th>
-												<th rowSpan="2" style={{ width: "5rem", verticalAlign: "middle" }}>
-													운송그룹
-												</th>
-												<th rowSpan="2" style={{ width: "5rem", verticalAlign: "middle" }}>
-													업무형태
-												</th>
-												<th colSpan="3">운송사 정산</th>
-												<th colSpan="2">플랫폼 정산</th>
-												<th rowSpan="2">운송사이름(히든)</th>
-											</tr>
-											<tr>
-												<th>운송사 정산 상태</th>
-												<th>운송사 정산 완료일</th>
-												<th>운송사 입금 금액</th>
-												<th>플랫폼 정산 상태</th>
-												<th>플랫폼 지출 금액</th>
-											</tr>
-										</thead>
-									</table>
-								</div>
+							<div className="datatable table-responsive">
+								<table
+									id="TransportListTbl"
+									className="table table-bordered table-hover"
+									width="100%"
+									cellSpacing="0"
+									role="grid"
+									aria-describedby="dataTable_info"
+									style={{ textAlign: "center" }}
+								>
+									<thead>
+										<tr>
+											<th rowSpan="2" style={{ verticalAlign: "middle" }}>
+												no.
+											</th>
+											<th rowSpan="2" style={{ verticalAlign: "middle" }}>
+												운송사
+											</th>
+											<th rowSpan="2" style={{ verticalAlign: "middle" }}>
+												운송그룹
+											</th>
+											<th rowSpan="2" style={{ verticalAlign: "middle" }}>
+												업무형태
+											</th>
+											<th colSpan="3">운송사 정산</th>
+											<th colSpan="2">플랫폼 정산</th>
+											<th rowSpan="2">운송사이름(히든)</th>
+										</tr>
+										<tr>
+											<th>운송사 정산 상태</th>
+											<th>운송사 정산 완료일</th>
+											<th>운송사 입금 금액</th>
+											<th>플랫폼 정산 상태</th>
+											<th>플랫폼 지출 금액</th>
+										</tr>
+									</thead>
+								</table>
 							</div>
 						</div>
 					</div>

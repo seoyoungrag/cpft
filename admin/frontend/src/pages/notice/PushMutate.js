@@ -1,7 +1,6 @@
 import React from "react";
 import Modal from "react-bootstrap/Modal";
-import "vendor/datatables/dataTables.checkboxes.css";
-import "vendor/datatables/dataTables.checkboxes.min.js";
+import * as dl from "util/DataTableLang";
 
 function PushMutate(props) {
 	React.useEffect(() => {
@@ -93,18 +92,21 @@ function PushMutate(props) {
 			carrierGroup: "TS1",
 			truckOwnerCode: "CZ00001",
 			truckOwnerName: "홍길동",
+			carrierName: "팀프레시",
 		},
 		{
 			truckOwnerSeq: 2,
 			carrierGroup: "TS2",
 			truckOwnerCode: "CZ00022",
 			truckOwnerName: "고길동",
+			carrierName: "마켓컬리",
 		},
 		{
 			truckOwnerSeq: 3,
 			carrierGroup: "TS3",
 			truckOwnerCode: "CZ00333",
 			truckOwnerName: "대길동",
+			carrierName: "CJ홈쇼핑",
 		},
 	];
 
@@ -126,43 +128,78 @@ function PushMutate(props) {
 	// 모달 show 값
 	const [modalShow, setModalShow] = React.useState(false);
 
+	// 모달 open 동작
 	React.useEffect(() => {
 		if (modalShow) {
-			$("#targetList").DataTable({
-				lengthChange: false,
-				info: false,
-				paging: false,
-				dom: "lrtip",
+			const targetListTbl = $("#targetList").DataTable({
+				language: dl.DataTable_language,
+				responsive: true,
 				data: truckOwnerList,
-				columns: [{ data: "truckOwnerSeq" }, { data: "carrierGroup" }, { data: "truckOwnerCode" }, { data: "truckOwnerName" }],
+				dom:
+					"<'row'<'col-3 d-flex justify-content-start TGL_start'><'col-6 d-flex justify-content-center TGL_center'><'col-3 d-flex justify-content-end TGL_end'>>" +
+					"<'row'<'col-sm-12'rt>>" +
+					"<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+				columns: [
+					{
+						title: "",
+						data: "truckOwnerSeq",
+						render: function (data, type, row) {
+							return '<input type="checkbox" id=' + data + " />";
+						},
+					},
+					{ title: "운송그룹", data: "carrierGroup" },
+					{ title: "차주코드", data: "truckOwnerCode" },
+					{ title: "차주명", data: "truckOwnerName" },
+					{ title: "운송사명(히든)", data: "carrierName" },
+				],
 				columnDefs: [
 					{
 						defaultContent: "-",
 						targets: "_all",
 					},
 					{
-						targets: 0,
-						createdCell: function (td, cellData, rowData, row, col) {
-							$(td).html("<input type='checkbox' id=" + cellData + " />");
-						},
+						targets: 4,
+						visible: false,
 					},
 				],
 				initComplete: function (settings, json) {
-					const column = this.api().column(1);
-					const select = $("<select width='20%'><option value=''>전체</option></select>")
+					// 카테고리1 추가
+					const column1 = this.api().column(4);
+					const select1 = $(
+						"<select class='form-control mr-2' style='width: 15%; float: left'><option value=''>전체</option></select>"
+					)
 						.appendTo(".searchOptionArea")
 						.on("change", function () {
 							const val = $(this).val();
-							column.search(val ? "^" + $(this).val() + "$" : val, true, false).draw();
+							column1.search(val ? "^" + $(this).val() + "$" : val, true, false).draw();
 						});
-					column
+					column1
 						.data()
 						.unique()
 						.sort()
 						.each(function (data, j) {
-							select.append("<option>" + data + "</option>");
+							select1.append("<option>" + data + "</option>");
 						});
 
+					// 카테고리2 추가
+					const column2 = this.api().column(1);
+					const select2 = $(
+						"<select class='form-control' style='width: 15%; float: left'><option value=''>전체</option></select>"
+					)
+						.appendTo(".searchOptionArea")
+						.on("change", function () {
+							const val = $(this).val();
+							column2.search(val ? "^" + $(this).val() + "$" : val, true, false).draw();
+						});
+					column2
+						.data()
+						.unique()
+						.sort()
+						.each(function (data, j) {
+							select2.append("<option>" + data + "</option>");
+						});
+
+					// 체크박스 동작 추가
 					$("#targetList input[type=checkbox]").on("change", function () {
 						const seq = parseInt($(this).attr("id"));
 						if ($(this).is(":checked")) {
@@ -178,46 +215,48 @@ function PushMutate(props) {
 						}
 					});
 
-					$("#searchTable").keyup(function () {
-						targetList.search($(this).val()).draw();
+					// 검색 자동검색
+					$("#searchTable").on("keyup", function () {
+						const searchTable = $(this).val();
+						targetListTbl.columns(3).search(searchTable).draw();
 					});
 				},
 			});
 
-			$("#selectList").DataTable({
-				lengthChange: false,
-				info: false,
-				paging: false,
-				dom: "lrtip",
+			const selectListTbl = $("#selectList").DataTable({
+				language: dl.DataTable_language,
+				responsive: true,
 				data: selectTargetList,
-				columns: [{ data: "null" }, { data: "carrierGroup" }, { data: "truckOwnerCode" }, { data: "truckOwnerName" }],
-				columnDefs: [
+				dom:
+					"<'row'<'col-3 d-flex justify-content-start STL_start'><'col-6 d-flex justify-content-center STL_center'><'col-3 d-flex justify-content-end STL_end'>>" +
+					"<'row'<'col-sm-12'rt>>" +
+					"<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+				columns: [
 					{
-						defaultContent: "-",
-						targets: "_all",
-					},
-					{
-						targets: 0,
-						createdCell: function (td, cellData, rowData, row, col) {
-							$(td).html("<input type='checkbox' id=" + cellData + " checked=true />");
+						title: "",
+						data: null,
+						render: function (data, type, row) {
+							return '<input type="checkbox" id=' + data + " checked=true disabled />";
 						},
 					},
+					{ title: "운송그룹", data: "carrierGroup" },
+					{ title: "차주코드", data: "truckOwnerCode" },
+					{ title: "차주명", data: "truckOwnerName" },
 				],
 			});
 		} else {
 			$("#targetList").DataTable().destroy(true);
 			$("#selectList").DataTable().destroy(true);
+			$("#searchTable").off();
 		}
 	}, [modalShow]);
 
+	// 체크박스 체크시 오른쪽 테이블 자동 추가
 	React.useEffect(() => {
 		$("#selectList").dataTable().fnClearTable();
-		$("#selectList").dataTable().fnAddData(selectTargetList);
-		// $("#selectList input[type=checkbox]").on("change", function () {
-		// 	const seq = parseInt($(this).attr("id"));
-		// 	$(this).is(":checked") === false &&
-		// 		setSelectTargetList((prevSelectTargetList) => prevSelectTargetList.filter((data) => data.truckOwnerSeq !== seq));
-		// });
+		if (selectTargetList.length !== 0) {
+			$("#selectList").dataTable().fnAddData(selectTargetList);
+		}
 	}, [selectTargetList]);
 
 	return (
@@ -228,14 +267,9 @@ function PushMutate(props) {
 				</Modal.Header>
 				<Modal.Body>
 					<div className="searchInputArea" style={{ marginBottom: "1rem" }}>
-						<input type="text" id="searchTable" name="searchTable" placeholder="차주명 검색" style={{ width: "100%" }} />
+						<input type="text" id="searchTable" name="searchTable" className="form-control" placeholder="차주명 검색" />
 					</div>
-					<div className="searchOptionArea" style={{ marginBottom: "1rem" }}>
-						<select id="carrierName" name="carrierName" style={{ width: "20%", marginRight: "1rem" }}>
-							<option>팀프레시</option>
-							<option>마켓컬리</option>
-						</select>
-					</div>
+					<div className="searchOptionArea" style={{ marginBottom: "1rem", overflow: "hidden" }}></div>
 					<div className="targetList" style={{ overflow: "hidden", height: "20rem" }}>
 						<div
 							className="leftSide"
@@ -252,16 +286,7 @@ function PushMutate(props) {
 										aria-describedby="dataTable_info"
 										ref={targetList}
 										style={{ textAlign: "center" }}
-									>
-										<thead>
-											<tr>
-												<th style={{ width: "1rem" }}></th>
-												<th style={{ width: "3rem" }}>운송그룹</th>
-												<th style={{ width: "3rem" }}>차주코드</th>
-												<th style={{ width: "3rem" }}>차주명</th>
-											</tr>
-										</thead>
-									</table>
+									/>
 								</div>
 							</form>
 						</div>
@@ -276,24 +301,14 @@ function PushMutate(props) {
 									aria-describedby="dataTable_info"
 									ref={selectList}
 									style={{ textAlign: "center" }}
-								>
-									<thead>
-										<tr>
-											<th style={{ width: "1rem" }}>
-												<input type="checkbox" style={{ display: "none" }} />
-											</th>
-											<th style={{ width: "3rem" }}>운송그룹</th>
-											<th style={{ width: "3rem" }}>차주코드</th>
-											<th style={{ width: "3rem" }}>차주명</th>
-										</tr>
-									</thead>
-								</table>
+								/>
 							</div>
 						</div>
 					</div>
 				</Modal.Body>
 				<Modal.Footer>
 					<button
+						className="btn btn-info"
 						onClick={() => {
 							setModalShow(false);
 							saveTarget();
@@ -303,21 +318,10 @@ function PushMutate(props) {
 					</button>
 				</Modal.Footer>
 			</Modal>
-			<div className="card-header-row">
-				<div className="col-12 row mt-3">
-					<div className="col-3">
-						<div className="d-flex justify-content-start" id="searchTab"></div>
-						<div className="col-5 d-flex justify-content-center"></div>
-						<div className="form-group row col-4 d-flex justify-content-end m-auto p-auto"></div>
-					</div>
-					<div className="col-5 d-flex justify-content-center"></div>
-					<div className="form-group row col-4 d-flex justify-content-end m-auto p-auto"></div>
-				</div>
-			</div>
 			<div className="form-row my-2 mb-3">
-				<div className="noticeArea" style={{ border: "1px solid black", width: "100%" }}>
+				<div className="pushArea" style={{ border: "1px solid black", width: "100%" }}>
 					<div
-						className="noticeHeader"
+						className="pushHeader"
 						style={{ paddingTop: "2rem", paddingBottom: "2rem", paddingLeft: "1rem", paddingRight: "1rem", width: "100%" }}
 					>
 						<table style={{ width: "100%" }}>
@@ -329,6 +333,7 @@ function PushMutate(props) {
 											id="classification"
 											name="classification"
 											value={classification || ""}
+											className="form-control"
 											onChange={handleChange}
 											style={{ width: "50%" }}
 										>
@@ -342,6 +347,7 @@ function PushMutate(props) {
 											id="sendMethod"
 											name="sendMethod"
 											value={sendMethod || ""}
+											className="form-control"
 											onChange={handleChange}
 											style={{ width: "100%" }}
 										>
@@ -353,7 +359,7 @@ function PushMutate(props) {
 								<tr>
 									<td style={{ width: "5%" }}>대상</td>
 									<td style={{ width: "20%" }}>
-										<button onClick={() => setModalShow(true)} style={{ width: "50%" }}>
+										<button onClick={() => setModalShow(true)} className="btn btn-primary" style={{ width: "50%" }}>
 											차주 추가
 										</button>
 									</td>
@@ -364,12 +370,21 @@ function PushMutate(props) {
 											id="sendDate"
 											name="sendDate"
 											value={sendDate || ""}
+											className="form-control"
 											onChange={handleChange}
 											style={{ width: "100%" }}
 										/>
 									</td>
 									<td>
-										<input type="time" id="sendTime" name="sendTime" value={sendTime || ""} onChange={handleChange} />
+										<input
+											type="time"
+											id="sendTime"
+											name="sendTime"
+											value={sendTime || ""}
+											className="form-control"
+											onChange={handleChange}
+											style={{ width: "15%" }}
+										/>
 									</td>
 								</tr>
 								<tr>
@@ -380,7 +395,7 @@ function PushMutate(props) {
 						</table>
 					</div>
 					<div
-						className="noticeContent"
+						className="pushContent"
 						style={{
 							paddingTop: "2rem",
 							paddingBottom: "2rem",
@@ -400,8 +415,8 @@ function PushMutate(props) {
 											id="title"
 											name="title"
 											value={title || ""}
+											className="form-control"
 											onChange={handleChange}
-											style={{ width: "100%" }}
 										/>
 									</td>
 								</tr>
@@ -413,8 +428,8 @@ function PushMutate(props) {
 											name="content"
 											rows="20"
 											value={content || ""}
+											className="form-control"
 											onChange={handleChange}
-											style={{ width: "100%" }}
 										/>
 									</td>
 								</tr>
@@ -422,11 +437,17 @@ function PushMutate(props) {
 						</table>
 						<div style={{ paddingTop: "2rem", paddingBottom: "2rem", width: "100%" }}>
 							{props.pushSeq === null ? (
-								<button style={{ float: "right" }}>저장</button>
+								<button style={{ float: "right" }} className="btn btn-info">
+									저장
+								</button>
 							) : (
 								<React.Fragment>
-									<button style={{ float: "right" }}>수정</button>
-									<button style={{ float: "right" }}>삭제</button>
+									<button style={{ float: "right" }} className="btn btn-info">
+										수정
+									</button>
+									<button style={{ float: "right" }} className="btn btn-info mr-1">
+										삭제
+									</button>
 								</React.Fragment>
 							)}
 						</div>

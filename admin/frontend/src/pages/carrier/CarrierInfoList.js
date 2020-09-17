@@ -1,5 +1,6 @@
 import React from "react";
 import MainStructure from "components/structure/MainStructure";
+import * as dl from "util/DataTableLang";
 
 function CarrierInfoList(props) {
 	// 컴포넌트 마운트
@@ -55,17 +56,23 @@ function CarrierInfoList(props) {
 
 		// 더미 테이블
 		const dummyTable = $("#carrierInfoList").DataTable({
+			language: dl.DataTable_language,
+			responsive: true,
 			data: array,
+			dom:
+				"<'row'<'col-3 d-flex justify-content-start CIL_start'><'col-6 d-flex justify-content-center CIL_center'><'col-3 d-flex justify-content-end CIL_end'>>" +
+				"<'row'<'col-sm-12'rt>>" +
+				"<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
 			columns: [
-				{ data: null },
-				{ data: "corporationName" },
-				{ data: "carrierCode" },
-				{ data: "ceoName" },
-				{ data: "managerName" },
-				{ data: "managerPhoneNumber" },
-				{ data: "managerEmail" },
-				{ data: "serviceYn" },
-				{ data: "contractDate" },
+				{ title: "no.", data: null },
+				{ title: "법인명", data: "corporationName" },
+				{ title: "운송사코드", data: "carrierCode" },
+				{ title: "대표자", data: "ceoName" },
+				{ title: "담당자명", data: "managerName" },
+				{ title: "담당자 연락처", data: "managerPhoneNumber" },
+				{ title: "담당자 이메일", data: "managerEmail" },
+				{ title: "서비스 운영 여부", data: "serviceYn" },
+				{ title: "계약일", data: "contractDate" },
 			],
 			columnDefs: [
 				{
@@ -93,6 +100,30 @@ function CarrierInfoList(props) {
 				$("#carrierInfoList tbody tr").on("mouseenter", function () {
 					$(this).css("cursor", "pointer");
 				});
+
+				// 검색옵션 추가
+				$(".CIL_end").append(
+					'<select id="searchOption" class="form-control col-5">' +
+						'<option value="">전체</option>' +
+						'<option value="1">법인명</option>' +
+						'<option value="4">운송사담당자</option>' +
+						'<option value="3">대표자</option>' +
+						"</select>"
+				);
+
+				// 검색창 추가
+				$(".CIL_end").append('<input type="text" id="searchVal" class="form-control" placeholder="검색" />');
+
+				// 검색 자동검색
+				$("#searchVal").on("keyup", function () {
+					const searchVal = $(this).val();
+					const searchOption = $("#searchOption").val();
+					if (searchOption !== "") {
+						dummyTable.columns(searchOption).search(searchVal).draw();
+					} else {
+						dummyTable.search(searchVal).draw();
+					}
+				});
 			},
 		});
 
@@ -111,7 +142,6 @@ function CarrierInfoList(props) {
 		// 컴포넌트 언마운트
 		return () => {
 			dummyTable.destroy(true);
-			$("#carrierInfoList tbody tr").off();
 		};
 	}, []);
 
@@ -182,10 +212,9 @@ function CarrierInfoList(props) {
 				<div className="container-fluid mt-n10">
 					<div className="card mb-4">
 						<div className="card-header row">
-							<div className="col-6">전체 운송사 리스트</div>
-							<div className="col-sm-12 col-md-6 row">
-								<div className="col-12 d-flex justify-content-end" id="searchTab"></div>
-							</div>
+							<div className="col-3 d-flex justify-content-start"></div>
+							<div className="col-6 d-flex justify-content-center"></div>
+							<div className="col-3 d-flex justify-content-end"></div>
 						</div>
 						<div className="card-body">
 							<div className="datatable table-responsive">
@@ -197,21 +226,7 @@ function CarrierInfoList(props) {
 									role="grid"
 									aria-describedby="dataTable_info"
 									style={{ textAlign: "center" }}
-								>
-									<thead>
-										<tr>
-											<th>no.</th>
-											<th>법인명</th>
-											<th>운송사 코드</th>
-											<th>대표자</th>
-											<th>담당자명</th>
-											<th>담당자연락처</th>
-											<th>담당자이메일</th>
-											<th>서비스 운영 여부</th>
-											<th>계약일</th>
-										</tr>
-									</thead>
-								</table>
+								/>
 							</div>
 						</div>
 					</div>

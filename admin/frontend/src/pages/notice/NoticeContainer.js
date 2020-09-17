@@ -102,26 +102,22 @@ function NoticeContainer(props) {
 					<div className="container-fluid mt-n10">
 						<div className="card mb-4">
 							<div className="card-header row">
-								<div className="col-12 row mt-3">
-									<div className="col-3">
-										<div className="d-flex justify-content-start">
-											<Nav variant="tabs">
-												<Nav.Item>
-													<Nav.Link eventKey="noticeList" onClick={resetMutates}>
-														공지사항
-													</Nav.Link>
-												</Nav.Item>
-												<Nav.Item>
-													<Nav.Link eventKey="pushList" onClick={resetMutates}>
-														PUSH
-													</Nav.Link>
-												</Nav.Item>
-											</Nav>
-										</div>
-									</div>
-									<div className="col-5 d-flex justify-content-center"></div>
-									<div className="form-group row col-4 d-flex justify-content-end m-auto p-auto"></div>
+								<div className="col-3 d-flex justify-content-start">
+									<Nav variant="tabs">
+										<Nav.Item>
+											<Nav.Link eventKey="noticeList" onClick={resetMutates}>
+												공지사항
+											</Nav.Link>
+										</Nav.Item>
+										<Nav.Item>
+											<Nav.Link eventKey="pushList" onClick={resetMutates}>
+												PUSH
+											</Nav.Link>
+										</Nav.Item>
+									</Nav>
 								</div>
+								<div className="col-6 d-flex justify-content-center"></div>
+								<div className="col-3 d-flex justify-content-end"></div>
 							</div>
 							<div className="card-body">
 								{isNoticeMutate === false && isPushMutate === false && (

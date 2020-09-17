@@ -1,11 +1,23 @@
 import React from "react";
+import * as dl from "util/DataTableLang";
 
 function TruckOwnerInfoAccountManagement(props) {
 	// 컴포넌트 마운트
 	React.useEffect(() => {
 		const dummyTable = $("#accountHistory").DataTable({
+			language: dl.DataTable_language,
+			responsive: true,
 			data: array,
-			columns: [{ data: null }, { data: "Revision" }, { data: "useCategory" }, { data: "accountStatus" }],
+			dom:
+				"<'row'<'col-3 d-flex justify-content-start TOA_start'><'col-6 d-flex justify-content-center TOA_center'><'col-3 d-flex justify-content-end TOA_end'>>" +
+				"<'row'<'col-sm-12'rt>>" +
+				"<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+			columns: [
+				{ title: "no.", data: null },
+				{ title: "일자", data: "Revision" },
+				{ title: "이용내역", data: "useCategory" },
+				{ title: "계정상태", data: "accountStatus" },
+			],
 			columnDefs: [
 				{
 					defaultContent: "-",
@@ -82,12 +94,45 @@ function TruckOwnerInfoAccountManagement(props) {
 					<h4>
 						<b>가입 정보</b>
 					</h4>
-					<span style={{ marginRight: "100px" }}>가입일자</span>
-					<input type="text" id="registDate" name="registDate" onChange={handleChange} value={registDate} />
-					<span style={{ marginRight: "50px", marginLeft: "50px" }}>가입경로</span>
-					<input type="text" id="registPath" name="registPath" onChange={handleChange} value={registPath} />
-					<span style={{ marginRight: "50px", marginLeft: "50px" }}>마지막 로그인 일자</span>
-					<input type="text" id="lastLoginDate" name="lastLoginDate" onChange={handleChange} value={lastLoginDate} />
+					<table>
+						<tbody>
+							<tr>
+								<td style={{ width: "5rem" }}>가입일자</td>
+								<td style={{ width: "15rem" }}>
+									<input
+										type="text"
+										id="registDate"
+										name="registDate"
+										className="form-control col-8"
+										onChange={handleChange}
+										value={registDate}
+									/>
+								</td>
+								<td style={{ width: "5rem" }}>가입경로</td>
+								<td style={{ width: "15rem" }}>
+									<input
+										type="text"
+										id="registPath"
+										name="registPath"
+										className="form-control col-8"
+										onChange={handleChange}
+										value={registPath}
+									/>
+								</td>
+								<td style={{ width: "10rem" }}>마지막 로그인 일자</td>
+								<td style={{ width: "15rem" }}>
+									<input
+										type="text"
+										id="lastLoginDate"
+										name="lastLoginDate"
+										className="form-control col-8"
+										onChange={handleChange}
+										value={lastLoginDate}
+									/>
+								</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 				<div className="agreeHistory" style={{ marginTop: "50px", width: "100%" }}>
 					<h4>
@@ -138,16 +183,7 @@ function TruckOwnerInfoAccountManagement(props) {
 							role="grid"
 							aria-describedby="dataTable_info"
 							style={{ textAlign: "center" }}
-						>
-							<thead>
-								<tr>
-									<th>no.</th>
-									<th>일자</th>
-									<th>이용내역</th>
-									<th>계정상태</th>
-								</tr>
-							</thead>
-						</table>
+						/>
 					</div>
 				</div>
 			</div>

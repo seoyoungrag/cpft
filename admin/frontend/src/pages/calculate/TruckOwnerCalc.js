@@ -1,34 +1,19 @@
 import React from "react";
 import MainStructure from "components/structure/MainStructure";
-import * as Calc from "util/Calc";
-import DatePicker, { registerLocale } from "react-datepicker";
-import ko from "date-fns/locale/ko";
+import * as dl from "util/DataTableLang";
 
 function TruckOwnerCalc(props) {
-	const DataTable_language = {
-		decimal: ",",
-		thousands: ".",
-		paginate: {
-			first: "",
-			last: "",
-			previous: "<",
-			next: ">",
-		},
-		processing: "처리 중 입니다.",
-		emptyTable: "처리할 내용이 없습니다.",
-		info: "총 _PAGES_페이지/_TOTAL_개 중 (_START_ ~ _END_) ",
-	};
 	// 컴포넌트 마운트
 	React.useEffect(() => {
 		const dummyTable = $("#TruckOwnerCalcTbl").DataTable({
-			//language: DataTable_language,
-			// dom:
-			// 	"<'row'<'col-sm-12 col-md-3 contentStart'><'col-sm-12 col-md-6' contentCenter><'col-sm-12 col-md-3 contentEnd'f>>" +
-			// 	"<'row'<'col-sm-12'rt>>" +
-			// 	"<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+			language: dl.DataTable_language,
+			dom:
+				"<'row'<'col-3 d-flex justify-content-start TOC_start'><'col-6 d-flex justify-content-center TOC_center'><'col-3 d-flex justify-content-end TOC_end'>>" +
+				"<'row'<'col-sm-12'rt>>" +
+				"<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
 			data: array,
 			columns: [
-				{ data: null, width: "5%" },
+				{ data: null, width: "3%" },
 				{ data: "truckOwnerNm", width: "15%" },
 				{ data: "truckOwnerCode", width: "15%" },
 				{ data: "taxBillYn", width: "15%" },
@@ -67,6 +52,44 @@ function TruckOwnerCalc(props) {
 				//	                $(this).css("cursor", "pointer");
 				//	            });
 
+				// 달력추가
+				$(".TOC_start").append(
+					'<input type="text" id="month" class="form-control datepicker col-4" placeholder="2020-00"/>' +
+						'<button class="btn btn-primary" id="resetMonth">초기화</button>'
+				);
+
+				// monthpicker
+				$("#month").monthpicker({
+					pattern: "yyyy-mm",
+					monthNames: ["01월", "02월", "03월", "04월", "05월", "06월", "07월", "08월", "09월", "10월", "11월", "12월"],
+				});
+
+				// 달력 초기화
+				$("#resetMonth").on("click", function () {
+					$("#month").datepicker("setDate", "");
+				});
+
+				// 달력 자동검색
+				$("#month").on("change", function () {
+					const searchMonth = $(this).val();
+					if (searchMonth !== "") {
+						dummyTable.columns(5).search(searchMonth).draw();
+					} else {
+						dummyTable.columns(5).search("").draw();
+					}
+				});
+
+				// 검색창 추가
+				$(".TOC_center").append(
+					'<select id="searchOption" class="form-control col-2">' +
+						'<option value="">전체</option>' +
+						'<option value="1">차주명</option>' +
+						'<option value="2">차주코드</option>' +
+						"</select>" +
+						'<input type="text" id="searchVal" class="form-control col-9" placeholder="검색" />'
+				);
+
+				// 검색 자동검색
 				$("#searchVal").on("keyup", function () {
 					const searchVal = $(this).val();
 					const searchOption = $("#searchOption").val();
@@ -94,7 +117,6 @@ function TruckOwnerCalc(props) {
 		// 컴포넌트 언마운트
 		return () => {
 			dummyTable.destroy(true);
-			$("#searchOption").off();
 		};
 	}, []);
 
@@ -166,18 +188,6 @@ function TruckOwnerCalc(props) {
 	];
 	//--------------------------------------------
 
-	// 달력 검색 로직
-	registerLocale("ko", ko);
-	const [searchMonth, setSearchMonth] = React.useState(null);
-	React.useEffect(() => {
-		const dummyTable = $("#TruckOwnerCalcTbl").DataTable();
-		if (searchMonth !== null) {
-			dummyTable.columns(5).search(Calc.getMonthStr(searchMonth)).draw();
-		} else {
-			dummyTable.columns(5).search("").draw();
-		}
-	}, [searchMonth]);
-
 	return (
 		<MainStructure>
 			<main>
@@ -210,26 +220,9 @@ function TruckOwnerCalc(props) {
 				<div className="container-fluid mt-n10">
 					<div className="card mb-4">
 						<div className="card-header row">
-							<div className="col-3 d-flex justify-content-start">
-								<DatePicker
-									locale="ko"
-									selected={searchMonth || ""}
-									dateFormat="yyyy-MM"
-									onChange={(date) => setSearchMonth(date)}
-									className="searchMonth"
-									placeholderText="2020-00"
-									showMonthYearPicker
-								/>
-								<button onClick={() => setSearchMonth(null)}>초기화</button>
-							</div>
-							<div className="col-5 d-flex justify-content-center">
-								<select id="searchOption" name="searchOption">
-									<option value="">전체</option>
-									<option value="1">차주명</option>
-									<option value="2">차주코드</option>
-								</select>
-								<input type="text" id="searchVal" name="searchVal" />
-							</div>
+							<div className="col-3 d-flex justify-content-start"></div>
+							<div className="col-6 d-flex justify-content-center"></div>
+							<div className="col-3 d-flex justify-content-end"></div>
 						</div>
 						<div className="card-body">
 							<div className="datatable table-responsive">
@@ -240,6 +233,7 @@ function TruckOwnerCalc(props) {
 									cellSpacing="0"
 									role="grid"
 									aria-describedby="dataTable_info"
+									style={{ textAlign: "center" }}
 								>
 									<thead>
 										<tr>

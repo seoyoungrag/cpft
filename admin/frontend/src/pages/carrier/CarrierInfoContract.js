@@ -97,6 +97,7 @@ function CarrierInfoContract(props) {
 											id="serviceYn"
 											name="serviceYn"
 											value={serviceYn || ""}
+											className="form-control"
 											onChange={handleChange}
 											style={{ width: "12em" }}
 										>
@@ -113,6 +114,7 @@ function CarrierInfoContract(props) {
 											id="contractStartDate"
 											name="contractStartDate"
 											value={contractStartDate || ""}
+											className="form-control"
 											onChange={handleChange}
 											style={{ width: "12rem" }}
 										/>
@@ -126,6 +128,7 @@ function CarrierInfoContract(props) {
 											id="contractEndDate"
 											name="contractEndDate"
 											value={contractEndDate || ""}
+											className="form-control"
 											onChange={handleChange}
 											style={{ width: "12rem" }}
 										/>
@@ -156,7 +159,7 @@ function CarrierInfoContract(props) {
 						</table>
 					</div>
 					<div className="btnArea" style={{ width: "100%", marginTop: "10rem" }}>
-						<button type="button" style={{ float: "right" }}>
+						<button type="button" className="btn btn-info" style={{ float: "right" }}>
 							저장
 						</button>
 					</div>

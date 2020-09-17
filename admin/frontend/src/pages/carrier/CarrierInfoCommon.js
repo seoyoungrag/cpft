@@ -1,6 +1,6 @@
 import React from "react";
 
-import CarrierInfoBasic from "pages/carrier/CarrierInfoBasic";
+import CarrierInfoDetail from "pages/carrier/CarrierInfoDetail";
 import CarrierInfoContract from "pages/carrier/CarrierInfoContract";
 import CarrierInfoPayment from "pages/carrier/CarrierInfoPayment";
 import CarrierInfoAccountManagement from "pages/carrier/CarrierInfoAccountManagement";
@@ -20,23 +20,27 @@ function CarrierInfoCommon(props) {
 	// CarrierInfoContainer에서 가져옴
 	const userSeq = props.userSeq;
 
+	// inputs
 	const [inputs, setInputs] = React.useState({
-		// 운송사 이름
-		carrierName: null,
+		// 법인명
+		corporationName: null,
+		// 대표자
+		ceoName: null,
 		// 사업자등록번호
 		registrationNumber: null,
-		// 가입 상태
-		joinStatus: null,
+		// 운송사코드
+		carrierCode: null,
+		// 고객센터 전화번호
+		customerCenterNumber: null,
+		// 고객센터 운영시간
+		customerCenterTime: null,
 		// 서비스 운영여부
 		serviceYn: null,
-		// 운송사 코드
-		carrierCode: null,
 	});
 
-	const { carrierName, registrationNumber, serviceYn, carrierCode } = inputs;
+	const { corporationName, ceoName, registrationNumber, carrierCode, customerCenterNumber, customerCenterTime, serviceYn } = inputs;
 
-	// inputs 값 세팅
-	const handleChange = React.useCallback((e) => {
+	const onInputsChange = React.useCallback((e) => {
 		const { name, value } = e.target;
 		setInputs((prevInputs) => ({
 			...prevInputs,
@@ -44,39 +48,66 @@ function CarrierInfoCommon(props) {
 		}));
 	}, []);
 
-	// 데이터 조회
-	const getDate = React.useCallback(async () => {
-		await axios
-			.get(url + userSeq)
-			.then((res) => {
-				let data = res.data.data;
-				setInputs((prevInputs) => ({}));
-			})
-			.catch((res) => {
-				alert("에러가 발생하였습니다 새로고침 후 다시 이용해주세요.");
-				console.log("에러: " + res);
-			});
+	// files
+	const [files, setFiles] = React.useState({
+		// 사업자등록증
+		businessLicenseImg: null,
+		// 직인
+		seal: null,
+	});
+
+	const { businessLicenseImg, seal } = files;
+
+	const onFilesChange = React.useCallback((e) => {
+		const { name, value } = e.target;
+		setFiles((prevFiles) => ({
+			...prevFiles,
+			[name]: value,
+		}));
 	}, []);
 
-	// 더미 데이터 ------------------------------------------------------------------------
+	// 데이터 조회
+	// const getDate = React.useCallback(async () => {
+	// 	await axios
+	// 		.get(url + userSeq)
+	// 		.then((res) => {
+	// 			let data = res.data.data;
+	// 			setInputs((prevInputs) => ({}));
+	// 		})
+	// 		.catch((res) => {
+	// 			alert("에러가 발생하였습니다 새로고침 후 다시 이용해주세요.");
+	// 			console.log("에러: " + res);
+	// 		});
+	// }, []);
+
+	// 더미 데이터 ------------------------------------------------------------------------------
 	const array = [
 		{
-			carrierName: "팀프레시",
-			registrationNumber: "45-6687-9821",
-			serviceYn: "Y",
+			corporationName: "팀프레시",
+			ceoName: "이성일",
+			registrationNumber: "561-88-31138",
 			carrierCode: "W00001",
+			customerCenterNumber: "02-888-8988",
+			customerCenterTime: "09:00~18:00",
+			serviceYn: "Y",
 		},
 		{
-			carrierName: "마켓컬리",
-			registrationNumber: "543-67-21",
+			corporationName: "마켓컬리",
+			ceoName: "이성일",
+			registrationNumber: "422-32-1138",
+			carrierCode: "W00521",
+			customerCenterNumber: "02-623-7788",
+			customerCenterTime: "09:00~18:00",
 			serviceYn: "Y",
-			carrierCode: "W00051",
 		},
 		{
-			carrierName: "CJ홈쇼핑",
-			registrationNumber: "766-12-321",
+			corporationName: "CJ홈쇼핑",
+			ceoName: "이성일",
+			registrationNumber: "852-18-323",
+			carrierCode: "W00301",
+			customerCenterNumber: "02-766-5252",
+			customerCenterTime: "09:00~18:00",
 			serviceYn: "Y",
-			carrierCode: "W00321",
 		},
 	];
 
@@ -84,10 +115,13 @@ function CarrierInfoCommon(props) {
 	const setData = React.useCallback((userSeq) => {
 		setInputs((prevInputs) => ({
 			...prevInputs,
-			carrierName: array[userSeq].carrierName,
+			corporationName: array[userSeq].corporationName,
+			ceoName: array[userSeq].ceoName,
 			registrationNumber: array[userSeq].registrationNumber,
-			serviceYn: array[userSeq].serviceYn,
 			carrierCode: array[userSeq].carrierCode,
+			customerCenterNumber: array[userSeq].customerCenterNumber,
+			customerCenterTime: array[userSeq].customerCenterTime,
+			serviceYn: array[userSeq].serviceYn,
 		}));
 	}, []);
 	// ---------------------------------------------------------------------------------
@@ -123,12 +157,12 @@ function CarrierInfoCommon(props) {
 			</div>
 			<div className="container-fluid mt-n10">
 				<div className="card mb-4">
-					<div className="card-header row">
+					{/* <div className="card-header row">
 						<div className="col-6">운송사 정보</div>
 						<div className="col-sm-12 col-md-6 row">
 							<div className="col-12 d-flex justify-content-end"></div>
 						</div>
-					</div>
+					</div> */}
 					<div className="card-body">
 						<div className="basicInfoArea" style={{ overflow: "hidden", marginBottom: "20px", height: "70px" }}>
 							{/* <div className="photo" style={{ float: "left", width: "90px", paddingLeft: "20px", marginRight: "20px" }}> */}
@@ -136,41 +170,20 @@ function CarrierInfoCommon(props) {
 							{/* </div> */}
 							<div className="basicInfo" style={{ float: "left", marginLeft: "5rem" }}>
 								<span id="userName" style={{ fontSize: "25px", heigth: "70px", lineHeight: "70px", marginRight: "50px" }}>
-									<b>{carrierName}</b>
+									<b>{corporationName || ""}</b>
 								</span>
 								<span style={{ fontSize: "15px", marginRight: "50px" }}>
 									<b>사업자등록번호</b>&nbsp;&nbsp;
-									<input
-										type="text"
-										id="registrationNumber"
-										name="registrationNumber"
-										onChange={handleChange}
-										value={registrationNumber || ""}
-										style={{ width: "130px" }}
-									/>
+									{registrationNumber || ""}
 								</span>
 								{/* <span id="" style={{ fontSize: "15px", marginRight: "50px" }}><b>가입 상태</b>&nbsp;&nbsp;-</span> */}
 								<span style={{ fontSize: "15px", marginRight: "50px" }}>
 									<b>서비스 운영여부</b>&nbsp;&nbsp;
-									<input
-										type="text"
-										id="serviceYn"
-										name="serviceYn"
-										onChange={handleChange}
-										value={serviceYn || ""}
-										style={{ width: "130px" }}
-									/>
+									{serviceYn || ""}
 								</span>
 								<span id="" style={{ fontSize: "15px", marginRight: "50px" }}>
 									<b>운송사 코드</b>&nbsp;&nbsp;
-									<input
-										type="text"
-										id="carrierCode"
-										name="carrierCode"
-										onChange={handleChange}
-										value={carrierCode || ""}
-										style={{ width: "130px" }}
-									/>
+									{carrierCode || ""}
 								</span>
 							</div>
 							<div className="modifyBtnArea" style={{ float: "right" }}>
@@ -212,7 +225,14 @@ function CarrierInfoCommon(props) {
 						<div className="card-body">
 							<div className="tab-content">
 								<div className="tab-pane col-12 active" id="basicInfo">
-									<CarrierInfoBasic userSeq={userSeq} />
+									<CarrierInfoDetail
+										userSeq={userSeq}
+										onInputsChange={onInputsChange}
+										onFilesChange={onFilesChange}
+										// onSave={basicInfoUpdate}
+										files={files}
+										data={inputs}
+									/>
 								</div>
 								<div className="tab-pane col-12" id="contractInfo">
 									<CarrierInfoContract userSeq={userSeq} />

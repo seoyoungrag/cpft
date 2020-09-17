@@ -1,11 +1,9 @@
 import React from "react";
 import ManagerRow from "pages/carrier/ManagerRow";
 
-function CarrierInfoBasic(props) {
+function CarrierInfoDetail(props) {
 	// 컴포넌트 마운트
 	React.useEffect(() => {
-		setData(userSeq - 1);
-
 		// 컴포넌트 언마운트
 		return () => {};
 	}, []);
@@ -13,55 +11,9 @@ function CarrierInfoBasic(props) {
 	// CarrierInfoCommon에서 가져옴
 	const userSeq = props.userSeq;
 
-	// inputs
-	const [inputs, setInputs] = React.useState({
-		// 법인명
-		corporationName: null,
-		// 대표자
-		ceoName: null,
-		// 사업자등록번호
-		registrationNumberData: null,
-		// 운송사코드
-		carrierCodeData: null,
-		// 고객센터 전화번호
-		customerCenterNumber: null,
-		// 고객센터 운영시간
-		customerCenterTime: null,
-	});
-
-	const { corporationName, ceoName, registrationNumberData, carrierCodeData, customerCenterNumber, customerCenterTime } = inputs;
-
-	// files
-	const [files, setFiles] = React.useState({
-		// 사업자등록증
-		businessLicenseImg: null,
-		// 직인
-		seal: null,
-	});
-
-	const { businessLicenseImg, seal } = files;
-
 	// 저장버튼
 	const handleClick = React.useCallback((e) => {
 		// inputs 값들을 다룰 예정
-	}, []);
-
-	// input값 세팅
-	const handleChange = React.useCallback((e) => {
-		const { name, value } = e.target;
-		setInputs((prevInputs) => ({
-			...prevInputs,
-			[name]: value,
-		}));
-	}, []);
-
-	// files값 세팅
-	const handleFileChange = React.useCallback((e) => {
-		const { name, value } = e.target;
-		setFiles((prevFiles) => ({
-			...prevFiles,
-			[name]: value,
-		}));
 	}, []);
 
 	// // 데이터 조회
@@ -81,47 +33,6 @@ function CarrierInfoBasic(props) {
 	//             alert("에러가 발생하였습니다 새로고침 후 다시 이용해주세요.");
 	//         });
 	//     setIsLoading(false);
-
-	// 더미 데이터 ------------------------------------------------------------------------------
-	const array = [
-		{
-			corporationName: "팀프레시",
-			ceoName: "이성일",
-			registrationNumberData: "561-88-31138",
-			carrierCodeData: "W00001",
-			customerCenterNumber: "02-888-8988",
-			customerCenterTime: "09:00~18:00",
-		},
-		{
-			corporationName: "마켓컬리",
-			ceoName: "이성일",
-			registrationNumberData: "422-32-1138",
-			carrierCodeData: "W00521",
-			customerCenterNumber: "02-623-7788",
-			customerCenterTime: "09:00~18:00",
-		},
-		{
-			corporationName: "CJ홈쇼핑",
-			ceoName: "이성일",
-			registrationNumberData: "852-18-323",
-			carrierCodeData: "W00301",
-			customerCenterNumber: "02-766-5252",
-			customerCenterTime: "09:00~18:00",
-		},
-	];
-
-	// 더미 데이터 세팅
-	const setData = React.useCallback((userSeq) => {
-		setInputs((prevInputs) => ({
-			...prevInputs,
-			corporationName: array[userSeq].corporationName,
-			ceoName: array[userSeq].ceoName,
-			registrationNumberData: array[userSeq].registrationNumberData,
-			carrierCodeData: array[userSeq].carrierCodeData,
-			customerCenterNumber: array[userSeq].customerCenterNumber,
-			customerCenterTime: array[userSeq].customerCenterTime,
-		}));
-	}, []);
 
 	// 담당자 정보(배열) - 더미데이터
 	const [datas, setDatas] = React.useState([
@@ -207,13 +118,21 @@ function CarrierInfoBasic(props) {
 											type="text"
 											id="corporationName"
 											name="corporationName"
-											value={corporationName || ""}
-											onChange={handleChange}
+											className="form-control col-10"
+											value={props.data.corporationName || ""}
+											onChange={props.onInputsChange}
 										/>
 									</td>
 									<td style={{ width: "10rem" }}>대표자</td>
-									<td>
-										<input type="text" id="ceoName" name="ceoName" value={ceoName || ""} onChange={handleChange} />
+									<td style={{ width: "15rem" }}>
+										<input
+											type="text"
+											id="ceoName"
+											name="ceoName"
+											className="form-control col-10"
+											value={props.data.ceoName || ""}
+											onChange={props.onInputsChange}
+										/>
 									</td>
 								</tr>
 								<tr>
@@ -221,20 +140,22 @@ function CarrierInfoBasic(props) {
 									<td style={{ width: "15rem" }}>
 										<input
 											type="text"
-											id="registrationNumberData"
-											name="registrationNumberData"
-											value={registrationNumberData || ""}
-											onChange={handleChange}
+											id="registrationNumber"
+											name="registrationNumber"
+											className="form-control col-10"
+											value={props.data.registrationNumber || ""}
+											onChange={props.onInputsChange}
 										/>
 									</td>
 									<td style={{ width: "10rem" }}>운송사코드</td>
-									<td>
+									<td style={{ width: "15rem" }}>
 										<input
 											type="text"
-											id="carrierCodeData"
-											name="carrierCodeData"
-											value={carrierCodeData || ""}
-											onChange={handleChange}
+											id="carrierCode"
+											name="carrierCode"
+											className="form-control col-10"
+											value={props.data.carrierCode || ""}
+											onChange={props.onInputsChange}
 										/>
 									</td>
 								</tr>
@@ -245,18 +166,20 @@ function CarrierInfoBasic(props) {
 											type="text"
 											id="customerCenterNumber"
 											name="customerCenterNumber"
-											value={customerCenterNumber || ""}
-											onChange={handleChange}
+											className="form-control col-10"
+											value={props.data.customerCenterNumber || ""}
+											onChange={props.onInputsChange}
 										/>
 									</td>
 									<td style={{ width: "10rem" }}>고객센터 운영시간</td>
-									<td>
+									<td style={{ width: "15rem" }}>
 										<input
 											type="text"
 											id="customerCenterTime"
 											name="customerCenterTime"
-											value={customerCenterTime || ""}
-											onChange={handleChange}
+											className="form-control col-10"
+											value={props.data.customerCenterTime || ""}
+											onChange={props.onInputsChange}
 										/>
 									</td>
 								</tr>
@@ -276,15 +199,21 @@ function CarrierInfoBasic(props) {
 											type="file"
 											id="businessLicenseImg"
 											name="businessLicenseImg"
-											value={businessLicenseImg || ""}
-											onChange={handleFileChange}
+											value={props.files.businessLicenseImg || ""}
+											onChange={props.onFilesChange}
 										/>
 									</td>
 								</tr>
 								<tr>
 									<td>직인</td>
 									<td style={{ width: "50%" }}>
-										<input type="file" id="seal" name="seal" value={seal || ""} onChange={handleFileChange} />
+										<input
+											type="file"
+											id="seal"
+											name="seal"
+											value={props.files.seal || ""}
+											onChange={props.onFilesChange}
+										/>
 									</td>
 								</tr>
 							</tbody>
@@ -299,7 +228,7 @@ function CarrierInfoBasic(props) {
 						</h4>
 					</div>
 					<div className="btnArea" style={{ float: "right" }}>
-						<button type="button" id="addRow" onClick={addRow}>
+						<button className="btn btn-info" type="button" id="addRow" onClick={addRow}>
 							+
 						</button>
 					</div>
@@ -313,7 +242,7 @@ function CarrierInfoBasic(props) {
 						</table>
 					</div>
 					<div className="btnArea" style={{ width: "100%", marginTop: "10rem" }}>
-						<button type="button" onClick={handleClick} style={{ float: "right" }}>
+						<button type="button" className="btn btn-info" onClick={handleClick} style={{ float: "right" }}>
 							저장
 						</button>
 					</div>
@@ -323,4 +252,4 @@ function CarrierInfoBasic(props) {
 	);
 }
 
-export default React.memo(CarrierInfoBasic);
+export default React.memo(CarrierInfoDetail);
