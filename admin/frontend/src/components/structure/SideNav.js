@@ -133,10 +133,10 @@ function SideNav(props) {
 							href="#"
 							onClick={() => store.handleClick("button1")}
 						> */}
-						<Link className="nav-link collapsed" to="/dashboard/dashboard">
+						{/* <Link className="nav-link collapsed" to="/dashboard/dashboard">
 							<i className="fas fa-fw fa-chart-line"></i>
 							<span>Dashboard</span>
-						</Link>
+						</Link> */}
 						{/* </a> */}
 					</li>
 
@@ -221,7 +221,7 @@ function SideNav(props) {
 					</li>
 
 					<li className="nav-item" id="button6">
-						<a
+						{/* <a
 							className="nav-link collapsed"
 							href="#"
 							data-toggle="collapse"
@@ -249,7 +249,7 @@ function SideNav(props) {
 									</Link>
 								</div>
 							</div>
-						</div>
+						</div> */}
 					</li>
 
 					<li className="nav-item" id="button7">
@@ -300,10 +300,10 @@ function SideNav(props) {
 							href="#"
 							onClick={() => store.handleClick("button9")}
 						> */}
-						<Link className="nav-link collapsed" to="/serviceTerms/serviceTerms">
+						{/* <Link className="nav-link collapsed" to="/serviceTerms/serviceTerms">
 							<i className="fas fa-fw fa-info"></i>
 							<span>서비스 약관</span>
-						</Link>
+						</Link> */}
 						{/* </a> */}
 					</li>
 
