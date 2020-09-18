@@ -364,7 +364,7 @@ function VocManage(props) {
 		// 순수 자바스크립트 vs 제이쿼리 편한방식 골라 쓰면 됨
 		// updateReply.current.readOnly = false;
 		// btnView.current.innerHTML = "저장";
-		$(updateReply.current).attr("readonly", false);
+		$(updateReply.current).prop("readonly", false);
 		$(btnView.current).html("저장");
 	};
 
