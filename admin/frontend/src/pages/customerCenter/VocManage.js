@@ -347,16 +347,25 @@ function VocManage(props) {
 	const handleShow = () => setShow(true);
 	const handleClose = () => setShow(false);
 
-	const [inputs, setInputs] = React.useState({
-		csReply: null,
-	});
-
 	const handleChagne = (e) => {
 		const { name, value } = e.target;
-		setInputs((prevInputs) => ({
-			...prevInputs,
+		setModalData((prevModalData) => ({
+			...prevModalData,
 			[name]: value,
 		}));
+	};
+
+	const updateReply = React.useRef();
+	const btnView = React.useRef();
+
+	const updateMode = () => {
+		// 이 경우 굳이 ref를 사용한 이유 -> Modal내부의 dom은 Modal이 화면에 보이기 전까지는 생성되지 않음(언마운트 상태), 때문에 제이쿼리 선택자로 참조가 불가능함
+		// ref는 참조가 되어서 사용함
+		// 순수 자바스크립트 vs 제이쿼리 편한방식 골라 쓰면 됨
+		// updateReply.current.readOnly = false;
+		// btnView.current.innerHTML = "저장";
+		$(updateReply.current).attr("readonly", false);
+		$(btnView.current).html("저장");
 	};
 
 	//--------------------------------------------
@@ -708,8 +717,10 @@ function VocManage(props) {
 															className="form-control col-12 col-sm-12"
 															id="csReply"
 															name="csReply"
+															ref={updateReply}
 															value={modalData.csReply}
 															required
+															readOnly
 															onChange={handleChagne}
 														></textarea>
 													</span>
@@ -723,7 +734,7 @@ function VocManage(props) {
 					</div>
 				</Modal.Body>
 				<Modal.Footer>
-					<button className="btn btn-info ml-2" onClick={() => setModalShow(false)}>
+					<button className="btn btn-info" ref={btnView} onClick={updateMode}>
 						수정
 					</button>
 				</Modal.Footer>
