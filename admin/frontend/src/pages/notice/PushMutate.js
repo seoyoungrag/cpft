@@ -234,9 +234,9 @@ function PushMutate(props) {
 				columns: [
 					{
 						title: "",
-						data: null,
+						data: "truckOwnerSeq",
 						render: function (data, type, row) {
-							return '<input type="checkbox" id=' + data + " checked=true disabled />";
+							return '<input type="checkbox" id=' + data + " checked=true />";
 						},
 					},
 					{ title: "운송그룹", data: "carrierGroup" },
@@ -245,6 +245,7 @@ function PushMutate(props) {
 				],
 			});
 		} else {
+			setSelectTargetList([]);
 			$("#targetList").DataTable().destroy(true);
 			$("#selectList").DataTable().destroy(true);
 			$("#searchTable").off();
@@ -256,6 +257,12 @@ function PushMutate(props) {
 		$("#selectList").dataTable().fnClearTable();
 		if (selectTargetList.length !== 0) {
 			$("#selectList").dataTable().fnAddData(selectTargetList);
+			$("#selectList input[type=checkbox]").on("change", function () {
+				const seq = parseInt($(this).attr("id"));
+				if (!$(this).is(":checked")) {
+					setSelectTargetList((prevSelectTargetList) => prevSelectTargetList.filter((data) => data.truckOwnerSeq !== seq));
+				}
+			});
 		}
 	}, [selectTargetList]);
 

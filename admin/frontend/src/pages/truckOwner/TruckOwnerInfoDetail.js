@@ -142,6 +142,7 @@ function TruckOwnerInfoDetail(props) {
 			corpState: array[userSeq].corpState,
 			personalNumber: array[userSeq].personalNumber,
 			companyName: array[userSeq].companyName,
+			companyOwnerName: array[userSeq].companyOwnerName,
 			businessCondition: array[userSeq].businessCondition,
 			businessOption: array[userSeq].businessOption,
 			businessNumber: array[userSeq].businessNumber,
@@ -171,7 +172,7 @@ function TruckOwnerInfoDetail(props) {
 										type="text"
 										id="truckOwnerName"
 										name="truckOwnerName"
-										class="form-control"
+										className="form-control"
 										value={props.data.truckOwnerName || ""}
 										onChange={props.onInputsChange}
 									/>
@@ -184,7 +185,7 @@ function TruckOwnerInfoDetail(props) {
 										type="text"
 										id="truckOwnerCode"
 										name="truckOwnerCode"
-										class="form-control"
+										className="form-control"
 										value={props.data.truckOwnerCode || ""}
 										onChange={props.onInputsChange}
 									/>
@@ -197,7 +198,7 @@ function TruckOwnerInfoDetail(props) {
 										type="text"
 										id="phoneNumber"
 										name="phoneNumber"
-										class="form-control"
+										className="form-control"
 										value={props.data.phoneNumber || ""}
 										onChange={props.onInputsChange}
 									/>
@@ -262,7 +263,7 @@ function TruckOwnerInfoDetail(props) {
 					<button
 						name="businessInfo"
 						id="stage"
-						class="btn btn-info ml-1"
+						className="btn btn-info ml-1"
 						onClick={() => console.log(props.data)}
 						style={{ float: "right" }}
 					>
@@ -286,12 +287,12 @@ function TruckOwnerInfoDetail(props) {
 												onChange={handleChange}
 												name="registrationNumber"
 												id="registrationNumber"
-												class="form-control"
+												className="form-control"
 												value={registrationNumber || ""}
 											/>
 										</td>
 										<td>
-											<button class="btn btn-info ml-1">조회</button>
+											<button className="btn btn-info ml-1">조회</button>
 										</td>
 									</tr>
 									<tr>
@@ -302,7 +303,7 @@ function TruckOwnerInfoDetail(props) {
 												onChange={handleChange}
 												name="taxType"
 												id="taxType"
-												class="form-control"
+												className="form-control"
 												value={taxType || ""}
 											/>
 										</td>
@@ -315,7 +316,7 @@ function TruckOwnerInfoDetail(props) {
 												onChange={handleChange}
 												name="corpState"
 												id="corpState"
-												class="form-control"
+												className="form-control"
 												value={corpState || ""}
 											/>
 										</td>
@@ -328,7 +329,7 @@ function TruckOwnerInfoDetail(props) {
 												onChange={handleChange}
 												name="personalNumber"
 												id="personalNumber"
-												class="form-control"
+												className="form-control"
 												value={personalNumber || ""}
 											/>
 										</td>
@@ -348,7 +349,7 @@ function TruckOwnerInfoDetail(props) {
 													onChange={handleChange}
 													name="companyName"
 													id="companyName"
-													class="form-control"
+													className="form-control"
 													value={companyName || ""}
 												/>
 											</td>
@@ -361,7 +362,7 @@ function TruckOwnerInfoDetail(props) {
 													onChange={handleChange}
 													name="companyOwnerName"
 													id="companyOwnerName"
-													class="form-control"
+													className="form-control"
 													value={companyOwnerName || ""}
 												/>
 											</td>
@@ -374,7 +375,7 @@ function TruckOwnerInfoDetail(props) {
 													onChange={handleChange}
 													name="businessCondition"
 													id="businessCondition"
-													class="form-control"
+													className="form-control"
 													value={businessCondition || ""}
 												/>
 											</td>
@@ -387,7 +388,7 @@ function TruckOwnerInfoDetail(props) {
 													onChange={handleChange}
 													name="businessOption"
 													id="businessOption"
-													class="form-control"
+													className="form-control"
 													value={businessOption || ""}
 												/>
 											</td>
@@ -396,10 +397,10 @@ function TruckOwnerInfoDetail(props) {
 								</table>
 							</div>
 							<div className="btnArea" style={{ float: "right" }}>
-								<button name="businessInfo" id="stage" class="btn btn-info ml-1" onClick={handleClick}>
+								<button name="businessInfo" id="stage" className="btn btn-info ml-1" onClick={handleClick}>
 									저장
 								</button>
-								<button name="businessInfo" id="commit" class="btn btn-info ml-1" onClick={handleClick}>
+								<button name="businessInfo" id="commit" className="btn btn-info ml-1" onClick={handleClick}>
 									완료
 								</button>
 							</div>
@@ -423,7 +424,7 @@ function TruckOwnerInfoDetail(props) {
 												onChange={handleChange}
 												name="businessNumber"
 												id="businessNumber"
-												class="form-control"
+												className="form-control"
 												value={businessNumber || ""}
 											/>
 										</td>
@@ -433,10 +434,10 @@ function TruckOwnerInfoDetail(props) {
 						</div>
 						<div className="inner-right" style={{ float: "right", width: "50%" }}>
 							<div className="btnArea" style={{ float: "right" }}>
-								<button name="certificateInfo" id="state" class="btn btn-info ml-1" onClick={handleClick}>
+								<button name="certificateInfo" id="state" className="btn btn-info ml-1" onClick={handleClick}>
 									저장
 								</button>
-								<button name="certificateInfo" id="commit" class="btn btn-info ml-1" onClick={handleClick}>
+								<button name="certificateInfo" id="commit" className="btn btn-info ml-1" onClick={handleClick}>
 									완료
 								</button>
 							</div>
@@ -460,7 +461,7 @@ function TruckOwnerInfoDetail(props) {
 												onChange={handleChange}
 												name="vehicleNumber"
 												id="vehicleNumber"
-												class="form-control"
+												className="form-control"
 												value={vehicleNumber || ""}
 											/>
 										</td>
@@ -472,7 +473,7 @@ function TruckOwnerInfoDetail(props) {
 												name="tonType"
 												id="tonType"
 												value={tonType || ""}
-												class="form-control"
+												className="form-control"
 												onChange={handleChange}
 												style={{ width: "100%" }}
 											>
@@ -490,7 +491,7 @@ function TruckOwnerInfoDetail(props) {
 											<select
 												name="carType"
 												id="carType"
-												class="form-control"
+												className="form-control"
 												value={carType || ""}
 												onChange={handleChange}
 												style={{ width: "100%" }}
@@ -505,10 +506,10 @@ function TruckOwnerInfoDetail(props) {
 						</div>
 						<div className="inner-right" style={{ float: "right", width: "50%" }}>
 							<div className="btnArea" style={{ float: "right" }}>
-								<button name="vehicleInfo" id="state" class="btn btn-info ml-1" onClick={handleClick}>
+								<button name="vehicleInfo" id="state" className="btn btn-info ml-1" onClick={handleClick}>
 									저장
 								</button>
-								<button name="vehicleInfo" id="commit" class="btn btn-info ml-1" onClick={handleClick}>
+								<button name="vehicleInfo" id="commit" className="btn btn-info ml-1" onClick={handleClick}>
 									완료
 								</button>
 							</div>
@@ -530,7 +531,7 @@ function TruckOwnerInfoDetail(props) {
 											<select
 												name="bankName"
 												id="bankName"
-												class="form-control"
+												className="form-control"
 												value={bankName || ""}
 												onChange={handleChange}
 												style={{ width: "100%" }}
@@ -547,12 +548,12 @@ function TruckOwnerInfoDetail(props) {
 												onChange={handleChange}
 												name="bankAccount"
 												id="bankAccount"
-												class="form-control"
+												className="form-control"
 												value={bankAccount || ""}
 											/>
 										</td>
 										<td>
-											<button class="btn btn-info ml-1">조회</button>
+											<button className="btn btn-info ml-1">조회</button>
 										</td>
 									</tr>
 									<tr>
@@ -561,7 +562,7 @@ function TruckOwnerInfoDetail(props) {
 											<select
 												name="taxBillType"
 												id="taxBillType"
-												class="form-control"
+												className="form-control"
 												value={taxBillType || ""}
 												onChange={handleChange}
 											>
@@ -575,10 +576,10 @@ function TruckOwnerInfoDetail(props) {
 						</div>
 						<div className="inner-right" style={{ float: "right", width: "50%" }}>
 							<div className="btnArea" style={{ float: "right" }}>
-								<button name="paymentInfo" id="state" class="btn btn-info ml-1" onClick={handleClick}>
+								<button name="paymentInfo" id="state" className="btn btn-info ml-1" onClick={handleClick}>
 									저장
 								</button>
-								<button name="paymentInfo" id="commit" class="btn btn-info ml-1" onClick={handleClick}>
+								<button name="paymentInfo" id="commit" className="btn btn-info ml-1" onClick={handleClick}>
 									완료
 								</button>
 							</div>

@@ -55,9 +55,21 @@ function TruckOwnerInfoAccountManagement(props) {
 		registDate: "2020/08/21",
 		registPath: "mobile",
 		lastLoginDate: "2020/08/25",
+		agreement1: {
+			agree: true,
+			reject: false,
+		},
+		agreement2: {
+			agree: true,
+			reject: false,
+		},
+		agreement3: {
+			agree: true,
+			reject: false,
+		},
 	});
 
-	const { registDate, registPath, lastLoginDate } = inputs;
+	const { registDate, registPath, lastLoginDate, agreement1, agreement2, agreement3 } = inputs;
 
 	// inputs값 세팅
 	const handleChange = React.useCallback((e) => {
@@ -67,6 +79,18 @@ function TruckOwnerInfoAccountManagement(props) {
 			[name]: value,
 		}));
 	}, []);
+
+	// radio값 세팅
+	const handleRadio = React.useCallback((e) => {
+		const { name, value, checked } = e.target;
+		const obj = {
+			[value]: checked,
+		};
+		setInputs((prevInputs) => ({
+			...prevInputs,
+			[name]: obj,
+		}));
+	});
 
 	// 더미 데이터 -----------------------------------------------
 	const array = [
@@ -143,28 +167,76 @@ function TruckOwnerInfoAccountManagement(props) {
 							<tr>
 								<td style={{ width: "10rem" }}>약관1</td>
 								<td style={{ width: "6rem" }}>
-									<input type="radio" id="agreeMent1" name="agreeMent1" /> 동의
+									<input
+										type="radio"
+										id="agreement1"
+										value="agree"
+										name="agreement1"
+										checked={agreement1.agree || ""}
+										onChange={handleRadio}
+									/>{" "}
+									동의
 								</td>
 								<td>
-									<input type="radio" id="agreeMent1" name="agreeMent1" /> 철회
+									<input
+										type="radio"
+										id="agreement1"
+										value="reject"
+										name="agreement1"
+										checked={agreement1.reject || ""}
+										onChange={handleRadio}
+									/>{" "}
+									철회
 								</td>
 							</tr>
 							<tr>
 								<td style={{ width: "10rem" }}>약관2</td>
 								<td style={{ width: "6rem" }}>
-									<input type="radio" id="agreeMent2" name="agreeMent2" /> 동의
+									<input
+										type="radio"
+										id="agreement2"
+										value="agree"
+										name="agreement2"
+										checked={agreement2.agree || ""}
+										onChange={handleRadio}
+									/>{" "}
+									동의
 								</td>
 								<td>
-									<input type="radio" id="agreeMent2" name="agreeMent2" /> 철회
+									<input
+										type="radio"
+										id="agreement2"
+										value="reject"
+										name="agreement2"
+										checked={agreement2.reject || ""}
+										onChange={handleRadio}
+									/>{" "}
+									철회
 								</td>
 							</tr>
 							<tr>
 								<td style={{ width: "10rem" }}>약관3</td>
 								<td style={{ width: "6rem" }}>
-									<input type="radio" id="agreeMent3" name="agreeMent3" /> 동의
+									<input
+										type="radio"
+										id="agreement3"
+										value="agree"
+										name="agreement3"
+										checked={agreement3.agree || ""}
+										onChange={handleRadio}
+									/>{" "}
+									동의
 								</td>
 								<td>
-									<input type="radio" id="agreeMent3" name="agreeMent3" /> 철회
+									<input
+										type="radio"
+										id="agreement3"
+										value="reject"
+										name="agreement3"
+										checked={agreement3.reject || ""}
+										onChange={handleRadio}
+									/>{" "}
+									철회
 								</td>
 							</tr>
 						</tbody>

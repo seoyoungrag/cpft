@@ -31,7 +31,7 @@ function VocManage(props) {
 					data: "vocSeq",
 					width: "10%",
 					render: function (data, type, row) {
-						return '<button id="' + data + '" name="vocManageDetail" class="btn btn-info ml-2">상세보기</button>';
+						return '<button id="' + data + '" name="vocManageDetail" class="btn btn-info">상세보기</button>';
 					},
 				},
 			],
@@ -347,6 +347,18 @@ function VocManage(props) {
 	const handleShow = () => setShow(true);
 	const handleClose = () => setShow(false);
 
+	const [inputs, setInputs] = React.useState({
+		csReply: null,
+	});
+
+	const handleChagne = (e) => {
+		const { name, value } = e.target;
+		setInputs((prevInputs) => ({
+			...prevInputs,
+			[name]: value,
+		}));
+	};
+
 	//--------------------------------------------
 
 	return (
@@ -474,6 +486,7 @@ function VocManage(props) {
 														id="vocChannel"
 														name="vocChannel"
 														value={modalData.vocChannel}
+														onChange={handleChagne}
 													>
 														<option value="전체">전체</option>
 														<option value="전화">전화</option>
@@ -504,6 +517,7 @@ function VocManage(props) {
 															className="form-control col-12 col-sm-8"
 															id="customerType"
 															name="customerType"
+															onChange={handleChagne}
 														>
 															<option value="전체">전체</option>
 														</select>
@@ -652,6 +666,7 @@ function VocManage(props) {
 															id="vocStatus"
 															name="vocStatus"
 															value={modalData.vocStatus}
+															onChange={handleChagne}
 														>
 															<option value="전체">전체</option>
 															<option value="처리완료">처리완료</option>
@@ -695,6 +710,7 @@ function VocManage(props) {
 															name="csReply"
 															value={modalData.csReply}
 															required
+															onChange={handleChagne}
 														></textarea>
 													</span>
 												</td>
@@ -708,7 +724,7 @@ function VocManage(props) {
 				</Modal.Body>
 				<Modal.Footer>
 					<button className="btn btn-info ml-2" onClick={() => setModalShow(false)}>
-						닫기
+						수정
 					</button>
 				</Modal.Footer>
 			</Modal>
@@ -780,7 +796,12 @@ function VocManage(props) {
 														textAlign: "center",
 													}}
 												>
-													<select className="form-control col-12 col-sm-8" id="vocChannel" name="vocChannel">
+													<select
+														className="form-control col-12 col-sm-8"
+														id="vocChannel"
+														name="vocChannel"
+														onChange={handleChagne}
+													>
 														<option value="전체">전체</option>
 														<option value="전화">전화</option>
 														<option value="기타">기타</option>
@@ -810,6 +831,7 @@ function VocManage(props) {
 															className="form-control col-12 col-sm-8"
 															id="customerType"
 															name="customerType"
+															onChange={handleChagne}
 														>
 															<option value="전체">전체</option>
 														</select>
@@ -949,7 +971,12 @@ function VocManage(props) {
 													}}
 												>
 													<span id="vocStatus">
-														<select className="form-control col-12 col-sm-8" id="vocStatus" name="vocStatus">
+														<select
+															className="form-control col-12 col-sm-8"
+															id="vocStatus"
+															name="vocStatus"
+															onChange={handleChagne}
+														>
 															<option value="전체">전체</option>
 															<option value="처리완료">처리완료</option>
 															<option value="확인중">확인중</option>
@@ -990,6 +1017,7 @@ function VocManage(props) {
 															className="form-control col-12 col-sm-12"
 															id="csReply"
 															name="csReply"
+															onChange={handleChagne}
 															required
 														></textarea>
 													</span>

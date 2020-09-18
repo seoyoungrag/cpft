@@ -21,7 +21,7 @@ function OrderBoard(props) {
 				{ title: "작성일", data: "createdDay" },
 				{ title: "운송사", data: "carrierName" },
 				{ title: "운송그룹", data: "carrierGroup" },
-				{ title: "오너코드", data: "orderCode" },
+				{ title: "오더코드", data: "orderCode" },
 				{ title: "업무형태", data: "workType" },
 				{ title: "모집인원", data: "recruitment" },
 				{ title: "운송료", data: "deliveryPrice" },

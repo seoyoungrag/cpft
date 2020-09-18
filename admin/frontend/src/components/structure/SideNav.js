@@ -67,6 +67,11 @@ function SideNav(props) {
 			case "carrierInfoDetail":
 				key = "carrierInfoList";
 				break;
+			case "csInfoDetail":
+				key = "csInfo";
+				break;
+			case "transportDetail":
+				key = "transportList";
 		}
 
 		// 계단 sideNav 활성화
