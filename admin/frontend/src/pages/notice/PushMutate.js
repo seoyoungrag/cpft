@@ -259,6 +259,8 @@ function PushMutate(props) {
 			$("#selectList").dataTable().fnAddData(selectTargetList);
 			$("#selectList input[type=checkbox]").on("change", function () {
 				const seq = parseInt($(this).attr("id"));
+				$("#targetList input[id=" + seq + "]").prop("checked", false);
+
 				if (!$(this).is(":checked")) {
 					setSelectTargetList((prevSelectTargetList) => prevSelectTargetList.filter((data) => data.truckOwnerSeq !== seq));
 				}
