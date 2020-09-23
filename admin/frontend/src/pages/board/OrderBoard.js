@@ -2,27 +2,35 @@ import React from "react";
 import MainStructure from "components/structure/MainStructure";
 import Modal from "react-bootstrap/Modal";
 import * as Calc from "util/Calc";
+import * as dl from "util/DataTableLang";
 
 function OrderBoard(props) {
 	// 컴포넌트 마운트
 	React.useEffect(() => {
 		// 더미 테이블
 		const dummyTable = $("#orderBoardList").DataTable({
+			language: dl.DataTable_language,
+			responsive: true,
 			data: array,
+			dom:
+				"<'row'<'col-3 d-flex justify-content-start ODB_start'><'col-6 d-flex justify-content-center ODB_center'><'col-3 d-flex justify-content-end ODB_end'>>" +
+				"<'row'<'col-sm-12'rt>>" +
+				"<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
 			columns: [
-				{ data: null },
-				{ data: "createdDay" },
-				{ data: "carrierName" },
-				{ data: "carrierGroup" },
-				{ data: "orderCode" },
-				{ data: "workType" },
-				{ data: "recruitment" },
-				{ data: "deliveryPrice" },
-				{ data: "orderStatus" },
+				{ title: "no.", data: null },
+				{ title: "작성일", data: "createdDay" },
+				{ title: "운송사", data: "carrierName" },
+				{ title: "운송그룹", data: "carrierGroup" },
+				{ title: "오더코드", data: "orderCode" },
+				{ title: "업무형태", data: "workType" },
+				{ title: "모집인원", data: "recruitment" },
+				{ title: "운송료", data: "deliveryPrice" },
+				{ title: "상태값", data: "orderStatus" },
 				{
+					title: "상세보기",
 					data: "orderNum",
 					render: function (data, type, row) {
-						return '<button id="' + data + '" name="boardDetail">상세보기</button>';
+						return '<button id="' + data + '" name="boardDetail" class="btn btn-info">상세보기</button>';
 					},
 				},
 			],
@@ -42,6 +50,7 @@ function OrderBoard(props) {
 				$(row).attr("id", dataIndex + 1);
 			},
 			initComplete: function (settings, json) {
+				// 상세보기 버튼
 				$("button[name=boardDetail").on("click", function () {
 					const id = $(this).attr("id");
 					for (let i = 0; i < modalArray.length; i++) {
@@ -66,6 +75,60 @@ function OrderBoard(props) {
 					setModalShow(true);
 				});
 
+				// 범위 버튼
+				$(".ODB_start").append(
+					'<button id="7" class="btn btn-secondary mx-1 calBtns">1주일</button>' +
+						'<button id="30" class="btn btn-secondary mx-1 calBtns">1개월</button>' +
+						'<button id="60" class="btn btn-secondary mx-1 calBtns">3개월</button>' +
+						'<button id="90" class="btn btn-secondary mx-1 calBtns">6개월</button>'
+				);
+
+				// 범위 버튼 동작
+				$(".calBtns").on("click", function () {
+					const dateFilter = parseInt($(this).attr("id"));
+					switch (dateFilter) {
+						case 7:
+							Calc.getLastWeek();
+							break;
+						case 30:
+							Calc.getLastMonth();
+							break;
+						case 60:
+							Calc.getLast3Month();
+							break;
+						case 90:
+							Calc.getLast6Month();
+							break;
+						default:
+							break;
+					}
+				});
+
+				// 달력 추가
+				$(".ODB_end").append(
+					'<input type="text" id="fromDate" class="form-control datepicker col-4" placeholder="2020-00-00" />' +
+						'<label class="col-form-label ml-3 mr-3">~</label>' +
+						'<input type="text" id="toDate" class="form-control datepicker col-4" placeholder="2020-12-31" />'
+				);
+
+				// 달력 초기화 버튼
+				$(".ODB_end").append('<button class="btn btn-primary" id="resetCalendar">초기화</button>');
+
+				// 달력 초기화
+				$("#resetCalendar").on("click", function () {
+					$("#fromDate").datepicker("setDate", "");
+					$("#toDate").datepicker("setDate", "");
+				});
+
+				// datepicker
+				$("#fromDate, #toDate").datepicker();
+
+				// 달력 검색
+				$("#fromDate, #toDate").on("change", function () {
+					dummyTable.draw();
+				});
+
+				// 달력 검색 추가
 				$.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
 					const from = $("#fromDate").datepicker("getDate");
 					const to = $("#toDate").datepicker("getDate");
@@ -92,18 +155,10 @@ function OrderBoard(props) {
 			})
 			.draw();
 
-		$("#fromDate, #toDate").datepicker();
-
-		$("#fromDate, #toDate").on("change", function () {
-			dummyTable.draw();
-		});
-
 		// 컴포넌트 언마운트
 		return () => {
-			dummyTable.destroy(true);
 			$.fn.dataTable.ext.search.pop();
-			$("button[name=boardDetail]").off();
-			$("#fromDate, #toDate").off();
+			dummyTable.destroy(true);
 		};
 	}, []);
 
@@ -365,7 +420,9 @@ function OrderBoard(props) {
 					</div>
 				</Modal.Body>
 				<Modal.Footer>
-					<button onClick={() => setModalShow(false)}>닫기</button>
+					<button onClick={() => setModalShow(false)} className="btn btn-info">
+						닫기
+					</button>
 				</Modal.Footer>
 			</Modal>
 			<main>
@@ -399,40 +456,9 @@ function OrderBoard(props) {
 				<div className="container-fluid mt-n10">
 					<div className="card mb-4">
 						<div className="card-header row">
-							<div className="col-6">게시글 관리</div>
-							<div className="col-sm-12 col-md-6 row">
-								<div className="col-12 d-flex justify-content-end"></div>
-							</div>
-						</div>
-						<div className="card-header row">
-							<div className="col-12 row mt-3">
-								<div className="col-3">
-									<div className="d-flex justify-content-start">
-										<button onClick={Calc.getLastWeek}>1주일</button>
-										<button onClick={Calc.getLastMonth}>1개월</button>
-										<button onClick={Calc.getLast3Month}>3개월</button>
-										<button onClick={Calc.getLast6Month}>6개월</button>
-									</div>
-								</div>
-								<div className="col-5 d-flex justify-content-center"></div>
-								<div className="form-group row col-4 d-flex justify-content-end m-auto p-auto">
-									<input
-										className="form-control datepicker col-3"
-										id="fromDate"
-										name="fromDate"
-										type="text"
-										placeholder="2020-01-01"
-									/>
-									<label className="col-form-label ml-3 mr-3">~</label>
-									<input
-										className="form-control datepicker col-3"
-										id="toDate"
-										name="toDate"
-										type="text"
-										placeholder="2020-12-31"
-									/>
-								</div>
-							</div>
+							<div className="col-3 d-flex justify-content-start"></div>
+							<div className="col-6 d-flex justify-content-center"></div>
+							<div className="col-3 d-flex justify-content-end"></div>
 						</div>
 						<div className="card-body">
 							<div className="datatable table-responsive">
@@ -444,22 +470,7 @@ function OrderBoard(props) {
 									role="grid"
 									aria-describedby="dataTable_info"
 									style={{ textAlign: "center" }}
-								>
-									<thead>
-										<tr>
-											<th style={{ width: "1rem" }}>no.</th>
-											<th style={{ width: "5rem" }}>작성일</th>
-											<th style={{ width: "5rem" }}>운송사</th>
-											<th style={{ width: "5rem" }}>운송그룹</th>
-											<th style={{ width: "15rem" }}>오더코드</th>
-											<th style={{ width: "5rem" }}>업무 형태</th>
-											<th style={{ width: "5rem" }}>모집인원</th>
-											<th style={{ width: "5rem" }}>운송료</th>
-											<th style={{ width: "5rem" }}>상태값</th>
-											<th style={{ width: "5rem" }}>상세보기</th>
-										</tr>
-									</thead>
-								</table>
+								/>
 							</div>
 						</div>
 					</div>

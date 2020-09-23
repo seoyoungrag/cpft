@@ -51,71 +51,73 @@ import ReactStore from "ReactStore";
 import NoticeContainer from "pages/notice/NoticeContainer";
 
 function App(props) {
-    useEffect(() => {
-        props.initNav();
+	useEffect(() => {
+		props.initNav();
 
-        return () => {};
-    }, []);
+		return () => {};
+	}, []);
 
-    return (
-        <>
-            <Switch>
-                <Route exact path="/" component={Main} />
-                <Route exact path="/auth/passwordRecovery" component={PasswordRecovery} />
-                <Route exact path="/auth/:kind" component={Auth} />
-                <Route exact path="/test" component={Test} />
-                <Route exact path="/order/regist" component={OrderRegist} />
-                <Route exact path="/order/manage" component={OrderManage} />
-                <Route exact path="/order/applicant/manage" component={ApplicantManage} />
-                <Route exact path="/order/black/list" component={BlackList} />
-                <Route exact path="/auth/black/list" component={PasswordRecovery} />
-                <Route exact path="/truckOwner/list" component={CarOwnerList} />
-                <Route exact path="/dtStmn/list" component={DtStmnList} />
-                <Route exact path="/elctrnTaxBill/list" component={ElctrnTaxBill} />
-                <Route exact path="/dashboard/dashboard" component={DashBoard} />
-                <Route exact path="/calculate/transportList" component={TransportList} />
-                <Route exact path="/calculate/transportDetail" component={TransportDetail} />
-                <Route exact path="/calculate/carrierCalc" component={CarrierCalc} />
-                <Route exact path="/calculate/truckOwnerCalc" component={TruckOwnerCalc} />
-                <Route exact path="/carrier/carrierService" component={CarrierService} />
-                <Route exact path="/truckOwner/carrierService" component={CarrierService} />
-                <Route exact path="/truckOwner/truckOwnerService" component={TruckOwnerService} />
-                <Route exact path="/board/orderBoard" component={OrderBoard} />
-                <Route exact path="/account/carrierAccount" component={CarrierAccount} />
-                <Route exact path="/account/truckOwnerAccount" component={TruckOwnerAccount} />
-                <Route exact path="/account/adminAccount" component={AdminAccount} />
-                <Route exact path="/account/carrierAccountDetail" component={CarrierAccountDetail} />
-                <Route exact path="/account/truckOwnerAccountDetail" component={TruckOwnerAccountDetail} />
-                <Route exact path="/account/adminAccountDetail" component={AdminAccountDetail} />
+	return (
+		<React.Fragment>
+			<Switch>
+				<Route exact path="/" component={Main} />
+				<Route exact path="/auth/passwordRecovery" component={PasswordRecovery} />
+				<Route exact path="/auth/:kind" component={Auth} />
+				<Route exact path="/test" component={Test} />
+				<Route exact path="/order/regist" component={OrderRegist} />
+				<Route exact path="/order/manage" component={OrderManage} />
+				<Route exact path="/order/applicant/manage" component={ApplicantManage} />
+				<Route exact path="/order/black/list" component={BlackList} />
+				<Route exact path="/auth/black/list" component={PasswordRecovery} />
+				<Route exact path="/truckOwner/list" component={CarOwnerList} />
+				<Route exact path="/dtStmn/list" component={DtStmnList} />
+				<Route exact path="/elctrnTaxBill/list" component={ElctrnTaxBill} />
+				<Route exact path="/dashboard/dashboard" component={DashBoard} />
+				<Route exact path="/calculate/transportList" component={TransportList} />
+				<Route exact path="/calculate/transportDetail" component={TransportDetail} />
+				<Route exact path="/calculate/carrierCalc" component={CarrierCalc} />
+				<Route exact path="/calculate/truckOwnerCalc" component={TruckOwnerCalc} />
+				<Route exact path="/carrier/carrierService" component={CarrierService} />
+				<Route exact path="/truckOwner/carrierService" component={CarrierService} />
+				<Route exact path="/truckOwner/truckOwnerService" component={TruckOwnerService} />
+				<Route exact path="/board/orderBoard" component={OrderBoard} />
+				<Route exact path="/account/carrierAccount" component={CarrierAccount} />
+				<Route exact path="/account/truckOwnerAccount" component={TruckOwnerAccount} />
+				<Route exact path="/account/adminAccount" component={AdminAccount} />
+				<Route exact path="/account/carrierAccountDetail" component={CarrierAccountDetail} />
+				<Route exact path="/account/truckOwnerAccountDetail" component={TruckOwnerAccountDetail} />
+				<Route exact path="/account/adminAccountDetail" component={AdminAccountDetail} />
 
-                {/* 고객센터VOC 관리 */}
-                <Route exact path="/customerCenter/csInfo" component={CsInfo} />
-                <Route exact path="/customerCenter/vocManage" component={VocManage} />
-                <Route exact path="/customerCenter/csInfoDetail" component={CsInfoDetail} />
-                <Route exact path="/serviceTerms/serviceTerms" component={ServiceTerms} />
+				{/* 추후 사용예정? */}
+				<Route exact path="/serviceTerms/serviceTerms" component={ServiceTerms} />
 
-                {/* 공지사항 & PUSH */}
-                <Route exact path="/notice/noticeContainer" component={NoticeContainer} />
+				{/* 고객센터VOC 관리 */}
+				<Route exact path="/customerCenter/csInfo" component={CsInfo} />
+				<Route exact path="/customerCenter/csInfoDetail" component={CsInfoDetail} />
+				<Route exact path="/customerCenter/vocManage" component={VocManage} />
 
-                {/* 차주 관리 */}
-                <Route exact path="/truckOwner/truckOwnerInfoList" component={TruckOwnerInfoList} />
-                <Route exact path="/truckOwner/truckOwnerInfoDetail" component={TruckOwnerInfoContainer} />
+				{/* 공지사항 & PUSH */}
+				<Route exact path="/notice/noticeContainer" component={NoticeContainer} />
 
-                {/* 운송사 관리 */}
-                <Route exact path="/carrier/carrierInfoList" component={CarrierInfoList} />
-                <Route exact path="/carrier/carrierInfoDetail" component={CarrierInfoContainer} />
+				{/* 차주 관리 */}
+				<Route exact path="/truckOwner/truckOwnerInfoList" component={TruckOwnerInfoList} />
+				<Route exact path="/truckOwner/truckOwnerInfoDetail" component={TruckOwnerInfoContainer} />
 
-                <Route exact path="/400" component={Error400} />
-                <Route exact path="/401" component={Error401} />
-                <Route exact path="/403" component={Error403} />
-                <Route exact path="/404" component={Error404} />
-                <Route exact path="/500" component={Error500} />
-                <Route exact path="/503" component={Error503} />
-                <Route component={NotFound} />
-            </Switch>
-            <BaseContainer />
-        </>
-    );
+				{/* 운송사 관리 */}
+				<Route exact path="/carrier/carrierInfoList" component={CarrierInfoList} />
+				<Route exact path="/carrier/carrierInfoDetail" component={CarrierInfoContainer} />
+
+				<Route exact path="/400" component={Error400} />
+				<Route exact path="/401" component={Error401} />
+				<Route exact path="/403" component={Error403} />
+				<Route exact path="/404" component={Error404} />
+				<Route exact path="/500" component={Error500} />
+				<Route exact path="/503" component={Error503} />
+				<Route component={NotFound} />
+			</Switch>
+			<BaseContainer />
+		</React.Fragment>
+	);
 }
 
 export default withRouter((props) => <App {...props} />);

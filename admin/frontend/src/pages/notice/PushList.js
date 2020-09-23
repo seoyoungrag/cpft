@@ -1,17 +1,24 @@
 import React from "react";
+import * as dl from "util/DataTableLang";
 
 function PushList(props) {
 	React.useEffect(() => {
 		// 더미 테이블
 		const dummyTable = $("#pushList").DataTable({
+			language: dl.DataTable_language,
+			responsive: true,
 			data: dummyData,
+			dom:
+				"<'row'<'col-3 d-flex justify-content-start PSL_start'><'col-6 d-flex justify-content-center PSL_center'><'col-3 d-flex justify-content-end PSL_end'>>" +
+				"<'row'<'col-sm-12'rt>>" +
+				"<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
 			columns: [
-				{ data: null },
-				{ data: "classification" },
-				{ data: "target" },
-				{ data: "content" },
-				{ data: "writer" },
-				{ data: "sendDate" },
+				{ title: "no.", data: null },
+				{ title: "분류", data: "classification" },
+				{ title: "대상", data: "target" },
+				{ title: "내용", data: "content" },
+				{ title: "작성자", data: "writer" },
+				{ title: "발송일자", data: "sendDate" },
 			],
 			columnDefs: [
 				{
@@ -29,13 +36,22 @@ function PushList(props) {
 				$(row).attr("id", dataIndex + 1);
 			},
 			initComplete: function (settings, json) {
+				// 테이블 클릭 상세보기
 				$("#pushList tbody tr").on("click", function () {
 					const pushSeq = $(this).attr("id");
 					props.pushDetail(pushSeq);
 				});
 
+				// 테이블 마우스 hover
 				$("#pushList tbody tr").on("mouseenter", function () {
 					$(this).css("cursor", "pointer");
+				});
+
+				// push등록 버튼
+				$(".PSL_end").append('<button id="insertPush" class="btn btn-info">PUSH 등록</button>');
+				// push등록 버튼 동작
+				$("#insertPush").on("click", function () {
+					props.onClick();
 				});
 			},
 		});
@@ -88,19 +104,6 @@ function PushList(props) {
 
 	return (
 		<React.Fragment>
-			<div className="card-header-row">
-				<div className="col-12 row mt-3">
-					<div className="col-3">
-						<div className="d-flex justify-content-start" id="searchTab"></div>
-						<div className="col-5 d-flex justify-content-center"></div>
-						<div className="form-group row col-4 d-flex justify-content-end m-auto p-auto"></div>
-					</div>
-					<div className="col-5 d-flex justify-content-center"></div>
-					<div className="form-group row col-4 d-flex justify-content-end m-auto p-auto">
-						<button onClick={props.onClick}>PUSH 등록</button>
-					</div>
-				</div>
-			</div>
 			<div className="form-row my-2 mb-3">
 				<div className="datatable table-responsive">
 					<table
@@ -111,18 +114,7 @@ function PushList(props) {
 						role="grid"
 						aria-describedby="dataTable_info"
 						style={{ textAlign: "center" }}
-					>
-						<thead>
-							<tr>
-								<th style={{ width: "1rem" }}>no.</th>
-								<th style={{ width: "3rem" }}>분류</th>
-								<th style={{ width: "3rem" }}>대상</th>
-								<th style={{ width: "15rem" }}>내용</th>
-								<th style={{ width: "5rem" }}>작성자</th>
-								<th style={{ width: "5rem" }}>발송일자</th>
-							</tr>
-						</thead>
-					</table>
+					/>
 				</div>
 			</div>
 		</React.Fragment>

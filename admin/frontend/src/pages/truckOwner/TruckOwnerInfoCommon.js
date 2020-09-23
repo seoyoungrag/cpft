@@ -16,10 +16,7 @@ function TruckOwnerInfoCommon(props) {
 		setData(userSeq - 1);
 
 		// 컴포넌트 언마운트
-		return () => {
-			$.fn.dataTable.ext.search.pop();
-			$.fn.dataTable.ext.search.pop();
-		};
+		return () => {};
 	}, []);
 
 	// inputs
@@ -177,10 +174,9 @@ function TruckOwnerInfoCommon(props) {
 			<div className="container-fluid mt-n10">
 				<div className="card mb-4">
 					<div className="card-header row">
-						<div className="col-6">차주 정보</div>
-						<div className="col-sm-12 col-md-6 row">
-							<div className="col-12 d-flex justify-content-end"></div>
-						</div>
+						<div className="col-3 d-flex justify-content-start"></div>
+						<div className="col-6 d-flex justify-content-center"></div>
+						<div className="col-3 d-flex justify-content-end"></div>
 					</div>
 					<div className="card-body">
 						<div className="basicInfoArea" style={{ overflow: "hidden", marginBottom: "20px", height: "70px" }}>
@@ -230,12 +226,7 @@ function TruckOwnerInfoCommon(props) {
 											</a>
 										</li>
 										<li className="nav-item">
-											<a
-												className="nav-link d-flex align-items-center"
-												href="#calculateHistory"
-												data-toggle="tab"
-												// onClick={() => dispatch({ type: "SET_ACTIVE", activeTab: "calculateHistory" })}
-											>
+											<a className="nav-link d-flex align-items-center" href="#calculateHistory" data-toggle="tab">
 												<span className="sm-display-none">정산내역</span>
 												<div className="ripple-container"></div>
 											</a>

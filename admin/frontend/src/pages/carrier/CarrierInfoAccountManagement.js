@@ -1,11 +1,18 @@
 import React from "react";
+import * as dl from "util/DataTableLang";
 
 function CarrierInfoAccountManagement(props) {
 	// 컴포넌트 마운트
 	React.useEffect(() => {
 		setData(userSeq - 1);
 		const dummyTable = $("#accountList").DataTable({
+			language: dl.DataTable_language,
+			responsive: true,
 			data: accountData,
+			dom:
+				"<'row'<'col-3 d-flex justify-content-start CIA_start'><'col-6 d-flex justify-content-center CIA_center'><'col-3 d-flex justify-content-end CIA_end'>>" +
+				"<'row'<'col-sm-12'rt>>" +
+				"<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
 			columns: [
 				{ data: null },
 				{ data: "createdAt" },
@@ -55,13 +62,14 @@ function CarrierInfoAccountManagement(props) {
 	const [inputs, setInputs] = React.useState({
 		masterId: null,
 		accountType: null,
+		masterIdCreatedAt: null,
 		masterPw: null,
 		masterPwChk: null,
 		userName: null,
 		userEmail: null,
 	});
 
-	const { masterId, accountType, masterPw, masterPwChk, userName, userEmail } = inputs;
+	const { masterId, masterIdCreatedAt, accountType, masterPw, masterPwChk, userName, userEmail } = inputs;
 
 	// inputs 값 세팅
 	const handleChange = React.useCallback((e) => {
@@ -80,6 +88,7 @@ function CarrierInfoAccountManagement(props) {
 			masterPw: "timfDev1",
 			userName: "홍길동",
 			userEmail: "hoho@gmail.com",
+			masterIdCreatedAt: "2020/09/10",
 		},
 		{
 			masterId: "timf002",
@@ -87,6 +96,7 @@ function CarrierInfoAccountManagement(props) {
 			masterPw: "timfDev2",
 			userName: "고길동",
 			userEmail: "gogo@gmail.com",
+			masterIdCreatedAt: "2020/09/12",
 		},
 		{
 			masterId: "timf003",
@@ -94,6 +104,7 @@ function CarrierInfoAccountManagement(props) {
 			masterPw: "timfDev3",
 			userName: "대길동",
 			userEmail: "jojo@gmail.com",
+			masterIdCreatedAt: "2020/09/14",
 		},
 	];
 
@@ -173,6 +184,7 @@ function CarrierInfoAccountManagement(props) {
 			masterPw: array[userSeq].masterPw,
 			userName: array[userSeq].userName,
 			userEmail: array[userSeq].userEmail,
+			masterIdCreatedAt: array[userSeq].masterIdCreatedAt,
 		}));
 		setAccountList(array[userSeq].masterId);
 	}, []);
@@ -188,43 +200,72 @@ function CarrierInfoAccountManagement(props) {
 					<table>
 						<tbody>
 							<tr>
-								<td style={{ width: "7rem" }}>마스터 ID</td>
+								<td style={{ width: "6rem" }}>마스터 ID</td>
 								<td style={{ width: "13rem" }}>
-									<input type="text" id="masterId" name="masterId" value={masterId || ""} onChange={handleChange} />
+									<input
+										type="text"
+										id="masterId"
+										name="masterId"
+										value={masterId || ""}
+										className="form-control col-10"
+										onChange={handleChange}
+									/>
 								</td>
-								<td style={{ width: "7rem" }}></td>
+								<td style={{ width: "6rem" }}></td>
 							</tr>
 							<tr>
-								<td style={{ width: "7rem" }}>PW</td>
+								<td style={{ width: "6rem" }}>PW</td>
 								<td style={{ width: "13rem" }}>
-									<input type="text" id="masterPw" name="masterPw" value={masterPw || ""} onChange={handleChange} />
+									<input
+										type="text"
+										id="masterPw"
+										name="masterPw"
+										value={masterPw || ""}
+										className="form-control col-10"
+										onChange={handleChange}
+									/>
 								</td>
-								<td style={{ width: "7rem" }}>PW 확인</td>
+								<td style={{ width: "6rem" }}>PW 확인</td>
 								<td>
 									<input
 										type="text"
 										id="masterPwChk"
 										name="masterPwChk"
 										value={masterPwChk || ""}
+										className="form-control col-10"
 										onChange={handleChange}
 									/>
 								</td>
 							</tr>
 							<tr>
-								<td style={{ width: "7rem" }}>이름</td>
+								<td style={{ width: "6rem" }}>이름</td>
 								<td>
-									<input type="text" id="userName" name="userName" value={userName || ""} onChange={handleChange} />
+									<input
+										type="text"
+										id="userName"
+										name="userName"
+										value={userName || ""}
+										className="form-control col-10"
+										onChange={handleChange}
+									/>
 								</td>
 							</tr>
 							<tr>
-								<td style={{ width: "7rem" }}>이메일</td>
+								<td style={{ width: "6rem" }}>이메일</td>
 								<td>
-									<input type="text" id="userEmail" name="userEmail" value={userEmail || ""} onChange={handleChange} />
+									<input
+										type="text"
+										id="userEmail"
+										name="userEmail"
+										value={userEmail || ""}
+										className="form-control col-10"
+										onChange={handleChange}
+									/>
 								</td>
 							</tr>
 						</tbody>
 					</table>
-					<button type="button" style={{ float: "right" }}>
+					<button type="button" className="btn btn-info" style={{ float: "right" }}>
 						저장
 					</button>
 				</div>
@@ -253,6 +294,16 @@ function CarrierInfoAccountManagement(props) {
 									<th>이름</th>
 									<th>이메일</th>
 									<th>비고</th>
+								</tr>
+								<tr>
+									<th>-</th>
+									<th>{masterIdCreatedAt || ""}</th>
+									<th>{accountType || ""}</th>
+									<th>{masterId || ""}</th>
+									<th>{masterPw || ""}</th>
+									<th>{userName || ""}</th>
+									<th>{userEmail || ""}</th>
+									<th>마스터 계정</th>
 								</tr>
 							</thead>
 						</table>

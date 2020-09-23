@@ -1,10 +1,8 @@
 import React from "react";
-$.datepicker = require("bootstrap-datepicker");
 import * as Calc from "util/Calc";
 
 function NoticeMutate(props) {
 	React.useEffect(() => {
-		$("#from, #to").datepicker();
 		if (props.noticeSeq !== null) {
 			const index = props.noticeSeq - 1;
 			setInputs((prevInputs) => ({
@@ -20,6 +18,9 @@ function NoticeMutate(props) {
 				content: dummyData[index].content,
 			}));
 		}
+
+		$("#from, #to").datepicker();
+
 		return () => {};
 	}, []);
 
@@ -88,17 +89,6 @@ function NoticeMutate(props) {
 
 	return (
 		<React.Fragment>
-			<div className="card-header-row">
-				<div className="col-12 row mt-3">
-					<div className="col-3">
-						<div className="d-flex justify-content-start" id="searchTab"></div>
-						<div className="col-5 d-flex justify-content-center"></div>
-						<div className="form-group row col-4 d-flex justify-content-end m-auto p-auto"></div>
-					</div>
-					<div className="col-5 d-flex justify-content-center"></div>
-					<div className="form-group row col-4 d-flex justify-content-end m-auto p-auto"></div>
-				</div>
-			</div>
 			<div className="form-row my-2 mb-3">
 				<div className="noticeArea" style={{ border: "1px solid black", width: "100%" }}>
 					<div
@@ -114,6 +104,7 @@ function NoticeMutate(props) {
 											id="target"
 											name="target"
 											value={target || ""}
+											className="form-control"
 											onChange={handleChange}
 											style={{ width: "100%" }}
 										>
@@ -132,8 +123,8 @@ function NoticeMutate(props) {
 										/>
 									</td>
 									<td style={{ width: "7%" }}>팝업사용</td>
-									<td style={{ width: "10%" }}>팝업 공지 기간</td>
-									<td style={{ width: "15%" }}>
+									<td style={{ width: "8%" }}>팝업 공지 기간</td>
+									<td style={{ width: "8%" }}>
 										<input
 											type="text"
 											id="from"
@@ -142,36 +133,42 @@ function NoticeMutate(props) {
 											className="form-control datepicker"
 											value={from || ""}
 											onChange={handleChange}
-											style={{ width: "100%" }}
 										/>
 									</td>
-									<td>
+									<td style={{ width: "9%" }}>
 										<input
 											type="time"
 											id="startTime"
 											name="startTime"
 											value={startTime || "00:00"}
+											className="form-control"
 											onChange={handleChange}
 										/>
 									</td>
-									<td>&nbsp;~&nbsp;</td>
-									<td style={{ width: "15%" }}>
+									<td style={{ width: "3%", textAlign: "center" }}>&nbsp;~&nbsp;</td>
+									<td style={{ width: "8%" }}>
 										<input
 											type="text"
 											id="to"
 											name="to"
-											placeholder="2020-01-01"
+											placeholder="2020-12-31"
 											className="form-control datepicker"
 											value={to || ""}
 											onChange={handleChange}
-											style={{ width: "100%" }}
 										/>
 									</td>
-									<td style={{ width: "10%" }}>
-										<input type="time" id="endTime" name="endTime" value={endTime || "24:00"} onChange={handleChange} />
+									<td style={{ width: "9%" }}>
+										<input
+											type="time"
+											id="endTime"
+											name="endTime"
+											value={endTime || "23:59"}
+											className="form-control"
+											onChange={handleChange}
+										/>
 									</td>
-									<td style={{ width: "8%" }}>최초 작성일</td>
-									<td>{createdAt || ""}</td>
+									<td style={{ width: "8%", textAlign: "right" }}>최초 작성일</td>
+									<td style={{ width: "8%", textAlign: "right" }}>{createdAt || ""}</td>
 								</tr>
 							</tbody>
 						</table>
@@ -197,8 +194,8 @@ function NoticeMutate(props) {
 											id="title"
 											name="title"
 											value={title || ""}
+											className="form-control"
 											onChange={handleChange}
-											style={{ width: "100%" }}
 										/>
 									</td>
 								</tr>
@@ -210,8 +207,8 @@ function NoticeMutate(props) {
 											name="content"
 											rows="20"
 											value={content || ""}
+											className="form-control"
 											onChange={handleChange}
-											style={{ width: "100%" }}
 										/>
 									</td>
 								</tr>
@@ -219,11 +216,17 @@ function NoticeMutate(props) {
 						</table>
 						<div style={{ paddingTop: "2rem", paddingBottom: "2rem", width: "100%" }}>
 							{props.noticeSeq === null ? (
-								<button style={{ float: "right" }}>저장</button>
+								<button style={{ float: "right" }} className="btn btn-info">
+									저장
+								</button>
 							) : (
 								<React.Fragment>
-									<button style={{ float: "right" }}>수정</button>
-									<button style={{ float: "right" }}>삭제</button>
+									<button style={{ float: "right" }} className="btn btn-info">
+										수정
+									</button>
+									<button style={{ float: "right" }} className="btn btn-info mr-1">
+										삭제
+									</button>
 								</React.Fragment>
 							)}
 						</div>

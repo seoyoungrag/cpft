@@ -1,19 +1,26 @@
 import React from "react";
+import * as dl from "util/DataTableLang";
 
 function NoticeList(props) {
 	React.useEffect(() => {
 		// 더미 테이블
 		const dummyTable = $("#noticeList").DataTable({
+			language: dl.DataTable_language,
+			responsive: true,
 			data: dummyData,
+			dom:
+				"<'row'<'col-3 d-flex justify-content-start NTL_start'><'col-6 d-flex justify-content-center NTL_center'><'col-3 d-flex justify-content-end NTL_end'>>" +
+				"<'row'<'col-sm-12'rt>>" +
+				"<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
 			columns: [
-				{ data: null },
-				{ data: "target" },
-				{ data: "title" },
-				{ data: "writer" },
-				{ data: "regDate" },
-				{ data: "noticeStartDay" },
-				{ data: "noticeEndDay" },
-				{ data: "noticeType" },
+				{ title: "no.", data: null },
+				{ title: "대상", data: "target" },
+				{ title: "제목", data: "title" },
+				{ title: "작성자", data: "writer" },
+				{ title: "작성일", data: "regDate" },
+				{ title: "공지시작일", data: "noticeStartDay" },
+				{ title: "공지종료일", data: "noticeEndDay" },
+				{ title: "공지형식", data: "noticeType" },
 			],
 			columnDefs: [
 				{
@@ -31,9 +38,21 @@ function NoticeList(props) {
 				$(row).attr("id", dataIndex + 1);
 			},
 			initComplete: function (settings, json) {
+				// 테이블 클릭 상세보기
+				$("#noticeList tbody tr").on("click", function () {
+					const noticeSeq = $(this).attr("id");
+					props.noticeDetail(noticeSeq);
+				});
+
+				// 테이블 마우스 hover
+				$("#noticeList tbody tr").on("mouseenter", function () {
+					$(this).css("cursor", "pointer");
+				});
+
+				// 카테고리 추가
 				const column = this.api().column(1);
-				const select = $("<select><option value=''>전체</option></select>")
-					.appendTo("#searchTab")
+				const select = $("<select class='form-control col-3'><option value=''>전체</option></select>")
+					.appendTo(".NTL_start")
 					.on("change", function () {
 						const val = $(this).val();
 						column.search(val ? "^" + $(this).val() + "$" : val, true, false).draw();
@@ -46,13 +65,11 @@ function NoticeList(props) {
 						select.append("<option>" + data + "</option>");
 					});
 
-				$("#noticeList tbody tr").on("click", function () {
-					const noticeSeq = $(this).attr("id");
-					props.noticeDetail(noticeSeq);
-				});
-
-				$("#noticeList tbody tr").on("mouseenter", function () {
-					$(this).css("cursor", "pointer");
+				// 공지사항 등록 버튼
+				$(".NTL_end").append('<button id="insertNotice" class="btn btn-info">공지사항 등록</button>');
+				// 공지사항 등록 버튼 동작
+				$("#insertNotice").on("click", function () {
+					props.onClick();
 				});
 			},
 		});
@@ -71,7 +88,6 @@ function NoticeList(props) {
 
 		return () => {
 			dummyTable.destroy(true);
-			$("#noticeList tbody tr").off();
 		};
 	}, []);
 
@@ -111,19 +127,6 @@ function NoticeList(props) {
 
 	return (
 		<React.Fragment>
-			<div className="card-header-row">
-				<div className="col-12 row mt-3">
-					<div className="col-3">
-						<div className="d-flex justify-content-start" id="searchTab"></div>
-						<div className="col-5 d-flex justify-content-center"></div>
-						<div className="form-group row col-4 d-flex justify-content-end m-auto p-auto"></div>
-					</div>
-					<div className="col-5 d-flex justify-content-center"></div>
-					<div className="form-group row col-4 d-flex justify-content-end m-auto p-auto">
-						<button onClick={props.onClick}>공지사항 등록</button>
-					</div>
-				</div>
-			</div>
 			<div className="form-row my-2 mb-3">
 				<div className="datatable table-responsive">
 					<table
@@ -134,20 +137,7 @@ function NoticeList(props) {
 						role="grid"
 						aria-describedby="dataTable_info"
 						style={{ textAlign: "center" }}
-					>
-						<thead>
-							<tr>
-								<th style={{ width: "1rem" }}>no.</th>
-								<th style={{ width: "3rem" }}>대상</th>
-								<th style={{ width: "15rem" }}>제목</th>
-								<th style={{ width: "5rem" }}>작성자</th>
-								<th style={{ width: "5rem" }}>작성일</th>
-								<th style={{ width: "5rem" }}>공지시작일</th>
-								<th style={{ width: "5rem" }}>공지종료일</th>
-								<th style={{ width: "5rem" }}>공지형식</th>
-							</tr>
-						</thead>
-					</table>
+					/>
 				</div>
 			</div>
 		</React.Fragment>

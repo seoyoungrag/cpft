@@ -1,70 +1,32 @@
-import React, { Component, useEffect, useRef } from "react";
+import React from "react";
 import MainStructure from "components/structure/MainStructure";
-import { Link } from "react-router-dom";
-import $ from "jquery";
-import "vendor/datatables/dataTables.bootstrap4.min.css";
-import "vendor/datatables/jquery.dataTables.min.js";
-$.DataTable = require("vendor/datatables/dataTables.bootstrap4.min.js");
-import "datatables.net-dt";
-import TruckOwnerInfoDetail from "./TruckOwnerInfoDetail";
-import Loader from "../../util/Loader";
 
 function TruckOwnerInfoList(props) {
-	// 컴포넌트 마운트
-	useEffect(() => {
-		// DataTables
-		// $("#truckOwnerInfoList").DataTable({
-		//     serverSide: false,
-		//     processing: true,
-		//     responsive: true,
-		//     autoWidth: false,
-		//     width: "100%",
-		//     ordering: false,
-		//     select: false,
-		//     dom:
-		//         "<'row'<'col-sm-12'rt>>" +
-		//         "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-		//     ajax: {
-		//         url: "/v1/truckOwner/truckOwnerInfoList",
-		//         type: "GET",
-		//         data: { length: 100 },
-		//         dataSrc: function (res) {
-		//             var data = res.data;
-		//             return data;
-		//         }
-		//     },
-		//     columnDefs: [
-		//         {
-		//             defaultContent: "-",
-		//             targets: "_all",
-		//         },
-		//         {
-		//             targets: [0],
-		//             createdCell: function (td, cellData, rowData, row, col) {
-		//                 $(td).text(row + 1);
-		//             }
-		//         }
-		//     ],
-		//     columns: [
-		//         { title: "no.", data: null },
-		//         { title: "운송사", data: "carrierNm" },
-		//         { title: "이름", data: "userNm" },
-		//         { title: "코드", data: null },
-		//         { title: "가입 상태", data: null },
-		//         { title: "사업자 정보", data: "crqfcs.2" },
-		//         { title: "자격 정보", data: "crqfcs.1" },
-		//         { title: "차량등록 정보", data: "crqfcs.0" },
-		//         { title: "결제 정보", data: null },
-		//         { title: "근무 여부", data: null }
-		//     ],
-		//     createdRow: function (row, data) {
-		//         $(row).attr("id", data.userSeq);
-		//     }
-		// });
+	const DataTable_language = {
+		decimal: ",",
+		thousands: ".",
+		paginate: {
+			first: "",
+			last: "",
+			previous: "<",
+			next: ">",
+		},
+		processing: "처리 중 입니다.",
+		emptyTable: "처리할 내용이 없습니다.",
+		info: "총 _PAGES_페이지/_TOTAL_개 중 (_START_ ~ _END_) ",
+	};
 
+	// 컴포넌트 마운트
+	React.useEffect(() => {
 		// 더미 테이블 -----------------------------------------------------------
 		const dummyTable = $("#truckOwnerInfoList").DataTable({
+			language: DataTable_language,
+			responsive: true,
 			data: array,
+			dom:
+				"<'row'<'col-3 d-flex justify-content-start TOL_start'><'col-6 d-flex justify-content-center TOL_center'><'col-3 d-flex justify-content-end TOL_end'>>" +
+				"<'row'<'col-sm-12'rt>>" +
+				"<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
 			columns: [
 				{ data: null },
 				{ data: "ownerName" },
@@ -90,7 +52,6 @@ function TruckOwnerInfoList(props) {
 				{
 					targets: 9,
 					visible: false,
-					// searchable: false,
 				},
 			],
 			order: [[1, "asc"]],
@@ -110,9 +71,10 @@ function TruckOwnerInfoList(props) {
 					$(this).css("cursor", "pointer");
 				});
 
+				// 카테고리1 추가
 				const column1 = this.api().column(9);
-				const select1 = $("<select><option value=''>전체</option></select>")
-					.appendTo("#searchTab1")
+				const select1 = $("<select class='form-control col-4'><option value=''>전체</option></select>")
+					.appendTo(".TOL_start")
 					.on("change", function () {
 						const val1 = $(this).val();
 						column1.search(val1 ? "^" + $(this).val() + "$" : val1, true, false).draw();
@@ -125,9 +87,10 @@ function TruckOwnerInfoList(props) {
 						select1.append("<option>" + data + "</option>");
 					});
 
+				// 카테고리2 추가
 				const column2 = this.api().column(3);
-				const select2 = $("<select><option value=''>전체</option></select>")
-					.appendTo("#searchTab2")
+				const select2 = $("<select class='form-control col-4' id='searchOption'><option value=''>전체</option></select>")
+					.appendTo(".TOL_end")
 					.on("change", function () {
 						const val2 = $(this).val();
 						column2.search(val2 ? "^" + $(this).val() + "$" : val2, true, false).draw();
@@ -139,6 +102,15 @@ function TruckOwnerInfoList(props) {
 					.each(function (data, j) {
 						select2.append("<option>" + data + "</option>");
 					});
+
+				// 검색창 추가
+				$(".TOL_end").append('<input type="text" id="searchVal" class="form-control" placeholder="검색" />');
+
+				// 검색 자동검색
+				$("#searchVal").on("keyup", function () {
+					const searchVal = $(this).val();
+					dummyTable.search(searchVal).draw();
+				});
 			},
 		});
 
@@ -157,7 +129,6 @@ function TruckOwnerInfoList(props) {
 		// 컴포넌트 언마운트
 		return () => {
 			dummyTable.destroy(true);
-			$("#truckOwnerInfoList tbody tr").off();
 		};
 	}, []);
 
@@ -232,25 +203,10 @@ function TruckOwnerInfoList(props) {
 				<div className="container-fluid mt-n10">
 					<div className="card mb-4">
 						<div className="card-header row">
-							<div className="col-6">전체 차주 리스트</div>
-							<div className="col-sm-12 col-md-6 row">
-								<div className="col-12 d-flex justify-content-end">
-									<button className="btn btn-info" onClick={() => $("#truckOwnerInfoList").DataTable().destroy(true)}>
-										<span>관리</span>
-									</button>
-								</div>
-							</div>
+							<div className="col-3 d-flex justify-content-start"></div>
+							<div className="col-6 d-flex justify-content-center"></div>
+							<div className="col-3 d-flex justify-content-end"></div>
 						</div>
-						<div className="card-header row">
-							<div className="col-12 row mt-3">
-								<div className="col-3">
-									<div className="d-flex justify-content-start" id="searchTab1"></div>
-								</div>
-								<div className="col-5 d-flex justify-content-center"></div>
-								<div className="form-group row col-4 d-flex justify-content-end m-auto p-auto" id="searchTab2"></div>
-							</div>
-						</div>
-
 						<div className="card-body">
 							<div className="datatable table-responsive">
 								<table
@@ -264,31 +220,31 @@ function TruckOwnerInfoList(props) {
 								>
 									<thead>
 										<tr>
-											<th rowSpan="2" style={{ width: "1rem", verticalAlign: "middle" }}>
+											<th rowSpan="2" style={{ verticalAlign: "middle" }}>
 												no.
 											</th>
-											<th rowSpan="2" style={{ width: "5rem", verticalAlign: "middle" }}>
+											<th rowSpan="2" style={{ verticalAlign: "middle" }}>
 												이름
 											</th>
-											<th rowSpan="2" style={{ width: "5rem", verticalAlign: "middle" }}>
+											<th rowSpan="2" style={{ verticalAlign: "middle" }}>
 												차주코드
 											</th>
-											<th rowSpan="2" style={{ width: "5rem", verticalAlign: "middle" }}>
+											<th rowSpan="2" style={{ verticalAlign: "middle" }}>
 												서류 제출 여부
 											</th>
-											<th colSpan="4" style={{ width: "15rem" }}>
-												정보 기입 완료 상태
-											</th>
-											<th rowSpan="2" style={{ width: "5rem", verticalAlign: "middle" }}>
+											<th colSpan="4">정보 기입 완료 상태</th>
+											<th rowSpan="2" style={{ verticalAlign: "middle" }}>
 												계정 상태
 											</th>
-											<th rowSpan="2">운송사이름(히든)</th>
+											<th rowSpan="2" style={{ verticalAlign: "middle" }}>
+												운송사이름(히든)
+											</th>
 										</tr>
 										<tr>
-											<th style={{ width: "3rem" }}>사업자 정보</th>
-											<th style={{ width: "3rem" }}>자격 정보</th>
-											<th style={{ width: "3rem" }}>차량등록 정보</th>
-											<th style={{ width: "3rem" }}>결제 정보</th>
+											<th>사업자 정보</th>
+											<th>자격 정보</th>
+											<th>차량등록 정보</th>
+											<th>결제 정보</th>
 										</tr>
 									</thead>
 								</table>

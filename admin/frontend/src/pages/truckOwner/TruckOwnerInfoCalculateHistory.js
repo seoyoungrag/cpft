@@ -1,4 +1,5 @@
 import React from "react";
+import * as dl from "util/DataTableLang";
 
 function TruckOwnerInfoCalculateHistory(props) {
 	// 컴포넌트 마운트
@@ -53,16 +54,22 @@ function TruckOwnerInfoCalculateHistory(props) {
 
 		// 더미 테이블
 		const dummyTable = $("#calculateHistoryList").DataTable({
+			language: dl.DataTable_language,
+			responsive: true,
 			data: array,
+			dom:
+				"<'row'<'col-3 d-flex justify-content-start TOCH_start'><'col-6 d-flex justify-content-center TOCH_center'><'col-3 d-flex justify-content-end TOCH_end'>>" +
+				"<'row'<'col-sm-12'rt>>" +
+				"<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
 			columns: [
-				{ data: null },
-				{ data: "companyName" },
-				{ data: "calculateCode" },
-				{ data: "workKindOf" },
-				{ data: "carrierCalculateDate" },
-				{ data: "carrierCalculatePrice" },
-				{ data: "platformPay" },
-				{ data: "calculateStatus" },
+				{ title: "no.", data: null },
+				{ title: "운송사", data: "companyName" },
+				{ title: "정산코드", data: "calculateCode" },
+				{ title: "업무형태", data: "workKindOf" },
+				{ title: "운송사 정산일", data: "carrierCalculateDate" },
+				{ title: "운송사정산 금액", data: "carrierCalculatePrice" },
+				{ title: "플랫폼 지불금액", data: "platformPay" },
+				{ title: "정산상태", data: "calculateStatus" },
 			],
 			columnDefs: [
 				{
@@ -80,7 +87,31 @@ function TruckOwnerInfoCalculateHistory(props) {
 				$(row).attr("id", dataIndex + 1);
 			},
 			initComplete: function () {
-				// 검색 옵션(filter)를 추가로 만들고 싶을때 아래와 같은 유형으로 설정 (아래는 달력 검색 기능 추가)
+				// 달력 추가
+				$(".TOCH_end").append(
+					'<input class="form-control datepicker col-4" id="fromDateB" type="text" placeholder="2020-00-00" />' +
+						'<label class="col-form-label ml-3 mr-3">~</label>' +
+						'<input class="form-control datepicker col-4" id="toDateB" type="text" placeholder="2020-12-31" />'
+				);
+
+				// 달력 초기화
+				$(".TOCH_end").append('<button class="btn btn-primary" id="resetCalendarB">초기화</button>');
+
+				// 초기화 동작
+				$("#resetCalendarB").on("click", function () {
+					$("#fromDateB").datepicker("setDate", "");
+					$("#toDateB").datepicker("setDate", "");
+				});
+
+				// datepicker
+				$("#fromDateB, #toDateB").datepicker();
+
+				// 달력 검색
+				$("#fromDateB, #toDateB").on("change", function () {
+					dummyTable.draw();
+				});
+
+				// 달력 검색 추가
 				$.fn.dataTable.ext.search.push(function (settings, data, dataInex) {
 					if (settings.nTable.id !== "calculateHistoryList") return true;
 
@@ -109,16 +140,9 @@ function TruckOwnerInfoCalculateHistory(props) {
 			})
 			.draw();
 
-		// 날짜 기능
-		$("#fromDateB, #toDateB").datepicker();
-
-		// 날짜가 바뀌면 table을 다시 그린다
-		$("#fromDateB, #toDateB").change(function () {
-			dummyTable.draw();
-		});
-
 		// 컴포넌트 언마운트
 		return () => {
+			$.fn.dataTable.ext.search.pop();
 			dummyTable.destroy(true);
 		};
 	}, []);
@@ -157,23 +181,11 @@ function TruckOwnerInfoCalculateHistory(props) {
 
 	return (
 		<React.Fragment>
-			<div className="card-header row">
-				<div className="col-12 row mt-3">
-					<div className="col-3"></div>
-					<div className="col-5 d-flex justify-content-center"></div>
-					<div className="form-group row col-4 d-flex justify-content-end m-auto p-auto">
-						<input
-							className="form-control datepicker col-3"
-							id="fromDateB"
-							name="fromDateB"
-							type="text"
-							placeholder="2020-01-01"
-						/>
-						<label className="col-form-label ml-3 mr-3">~</label>
-						<input className="form-control datepicker col-3" id="toDateB" name="toDateB" type="text" placeholder="2020-12-31" />
-					</div>
-				</div>
-			</div>
+			{/* <div className="card-header row">
+				<div className="col-3 d-flex justify-content-start"></div>
+				<div className="col-6 d-flex justify-content-center"></div>
+				<div className="col-3 d-flex justify-content-end"></div>
+			</div> */}
 			<div className="form-row my-2 mb-3">
 				<div className="datatable table-responsive">
 					<table
@@ -184,20 +196,7 @@ function TruckOwnerInfoCalculateHistory(props) {
 						role="grid"
 						aria-describedby="dataTable_info"
 						style={{ textAlign: "center" }}
-					>
-						<thead>
-							<tr>
-								<th>no.</th>
-								<th>운송사</th>
-								<th>정산코드</th>
-								<th>업무형태</th>
-								<th>운송사 정산일</th>
-								<th>운송사정산 금액</th>
-								<th>플랫폼 지불금액</th>
-								<th>정산상태</th>
-							</tr>
-						</thead>
-					</table>
+					/>
 				</div>
 			</div>
 		</React.Fragment>

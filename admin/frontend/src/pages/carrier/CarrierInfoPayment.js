@@ -87,9 +87,15 @@ function CarrierInfoPayment(props) {
 						<table style={{ width: "100%" }}>
 							<tbody>
 								<tr>
-									<td style={{ width: "8rem" }}>계좌번호</td>
-									<td style={{ width: "5rem" }}>
-										<select id="bankName" name="bankName" value={bankName || ""} onChange={handleChange}>
+									<td style={{ width: "5rem" }}>계좌번호</td>
+									<td style={{ width: "7rem" }}>
+										<select
+											id="bankName"
+											name="bankName"
+											value={bankName || ""}
+											className="form-control"
+											onChange={handleChange}
+										>
 											<option>은행선택</option>
 											<option value="nh">농협</option>
 											<option value="kb">국민</option>
@@ -102,6 +108,7 @@ function CarrierInfoPayment(props) {
 											id="bankAccountNumber"
 											name="bankAccountNumber"
 											value={bankAccountNumber || ""}
+											className="form-control col-10"
 											onChange={handleChange}
 										/>
 									</td>
@@ -112,6 +119,7 @@ function CarrierInfoPayment(props) {
 											id="bankAccountOwner"
 											name="bankAccountOwner"
 											value={bankAccountOwner || ""}
+											className="form-control col-4"
 											onChange={handleChange}
 										/>
 									</td>
@@ -141,7 +149,7 @@ function CarrierInfoPayment(props) {
 						</table>
 					</div>
 					<div className="btnArea" style={{ width: "100%", marginTop: "10rem" }}>
-						<button type="button" style={{ float: "right" }}>
+						<button type="button" className="btn btn-info" style={{ float: "right" }}>
 							저장
 						</button>
 					</div>

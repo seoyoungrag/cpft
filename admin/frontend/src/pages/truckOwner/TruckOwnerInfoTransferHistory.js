@@ -1,4 +1,5 @@
 import React from "react";
+import * as dl from "util/DataTableLang";
 
 function TruckOwnerInfoTransferHistory(props) {
 	// 컴포넌트 마운트
@@ -98,13 +99,19 @@ function TruckOwnerInfoTransferHistory(props) {
 
 		// 더미 고정 테이블
 		const dummyFixedTable = $("#fixedTransferList").DataTable({
+			language: dl.DataTable_language,
+			responsive: true,
 			data: fixedArray,
+			dom:
+				"<'row'<'col-3 d-flex justify contentStart'><'col-5 d-flex justify contentCenter'><'col-4 d-flex justify contentEnd'>>" +
+				"<'row'<'col-sm-12'rt>>" +
+				"<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
 			columns: [
-				{ data: null },
-				{ data: "companyName" },
-				{ data: "contractDate" },
-				{ data: "contractEndData" },
-				{ data: "deliveryStatus" },
+				{ title: "no.", data: null },
+				{ title: "운송사", data: "companyName" },
+				{ title: "계약일", data: "contractDate" },
+				{ title: "계약종료일", data: "contractEndData" },
+				{ title: "운송상태", data: "deliveryStatus" },
 			],
 			columnDefs: [
 				{
@@ -125,7 +132,13 @@ function TruckOwnerInfoTransferHistory(props) {
 
 		// 더미 단기 테이블
 		const dummyShortTermTable = $("#shortTermTransferList").DataTable({
+			language: dl.DataTable_language,
+			responsive: true,
 			data: shortTermArray,
+			dom:
+				"<'row'<'col-3 d-flex justify contentStart'><'col-5 d-flex justify contentCenter'><'col-4 d-flex justify contentEnd'>>" +
+				"<'row'<'col-sm-12'rt>>" +
+				"<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
 			columns: [
 				{ data: null },
 				{ data: "companyName" },
@@ -287,17 +300,7 @@ function TruckOwnerInfoTransferHistory(props) {
 											role="grid"
 											aria-describedby="dataTable_info"
 											style={{ textAlign: "center" }}
-										>
-											<thead>
-												<tr>
-													<th>no.</th>
-													<th>운송사</th>
-													<th>계약일</th>
-													<th>계약종료일</th>
-													<th>운송상태</th>
-												</tr>
-											</thead>
-										</table>
+										/>
 									</div>
 								</div>
 							</div>
@@ -315,30 +318,26 @@ function TruckOwnerInfoTransferHistory(props) {
 										>
 											<thead>
 												<tr>
-													<th rowSpan="2" style={{ width: "1rem", verticalAlign: "middle" }}>
-														No.
+													<th rowSpan="2" style={{ verticalAlign: "middle" }}>
+														no.
 													</th>
-													<th rowSpan="2" style={{ width: "5rem", verticalAlign: "middle" }}>
+													<th rowSpan="2" style={{ verticalAlign: "middle" }}>
 														운송사
 													</th>
-													<th rowSpan="2" style={{ width: "5rem", verticalAlign: "middle" }}>
+													<th rowSpan="2" style={{ verticalAlign: "middle" }}>
 														매칭일
 													</th>
-													<th colSpan="2" style={{ width: "6rem" }}>
-														상차
-													</th>
-													<th colSpan="2" style={{ width: "6rem" }}>
-														하차
-													</th>
-													<th rowSpan="2" style={{ width: "5rem", verticalAlign: "middle" }}>
+													<th colSpan="2">상차</th>
+													<th colSpan="2">하차</th>
+													<th rowSpan="2" style={{ verticalAlign: "middle" }}>
 														운송상태
 													</th>
 												</tr>
 												<tr>
-													<th style={{ width: "3rem" }}>상차일</th>
-													<th style={{ width: "3rem" }}>출발지</th>
-													<th style={{ width: "3rem" }}>하차일</th>
-													<th style={{ width: "3rem" }}>도착지</th>
+													<th>상차일</th>
+													<th>출발지</th>
+													<th>하차일</th>
+													<th>도착지</th>
 												</tr>
 											</thead>
 										</table>

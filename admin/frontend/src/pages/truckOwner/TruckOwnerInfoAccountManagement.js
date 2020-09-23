@@ -1,11 +1,23 @@
 import React from "react";
+import * as dl from "util/DataTableLang";
 
 function TruckOwnerInfoAccountManagement(props) {
 	// 컴포넌트 마운트
 	React.useEffect(() => {
 		const dummyTable = $("#accountHistory").DataTable({
+			language: dl.DataTable_language,
+			responsive: true,
 			data: array,
-			columns: [{ data: null }, { data: "Revision" }, { data: "useCategory" }, { data: "accountStatus" }],
+			dom:
+				"<'row'<'col-3 d-flex justify-content-start TOA_start'><'col-6 d-flex justify-content-center TOA_center'><'col-3 d-flex justify-content-end TOA_end'>>" +
+				"<'row'<'col-sm-12'rt>>" +
+				"<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+			columns: [
+				{ title: "no.", data: null },
+				{ title: "일자", data: "Revision" },
+				{ title: "이용내역", data: "useCategory" },
+				{ title: "계정상태", data: "accountStatus" },
+			],
 			columnDefs: [
 				{
 					defaultContent: "-",
@@ -43,9 +55,21 @@ function TruckOwnerInfoAccountManagement(props) {
 		registDate: "2020/08/21",
 		registPath: "mobile",
 		lastLoginDate: "2020/08/25",
+		agreement1: {
+			agree: true,
+			reject: false,
+		},
+		agreement2: {
+			agree: true,
+			reject: false,
+		},
+		agreement3: {
+			agree: true,
+			reject: false,
+		},
 	});
 
-	const { registDate, registPath, lastLoginDate } = inputs;
+	const { registDate, registPath, lastLoginDate, agreement1, agreement2, agreement3 } = inputs;
 
 	// inputs값 세팅
 	const handleChange = React.useCallback((e) => {
@@ -55,6 +79,18 @@ function TruckOwnerInfoAccountManagement(props) {
 			[name]: value,
 		}));
 	}, []);
+
+	// radio값 세팅
+	const handleRadio = React.useCallback((e) => {
+		const { name, value, checked } = e.target;
+		const obj = {
+			[value]: checked,
+		};
+		setInputs((prevInputs) => ({
+			...prevInputs,
+			[name]: obj,
+		}));
+	});
 
 	// 더미 데이터 -----------------------------------------------
 	const array = [
@@ -82,12 +118,45 @@ function TruckOwnerInfoAccountManagement(props) {
 					<h4>
 						<b>가입 정보</b>
 					</h4>
-					<span style={{ marginRight: "100px" }}>가입일자</span>
-					<input type="text" id="registDate" name="registDate" onChange={handleChange} value={registDate} />
-					<span style={{ marginRight: "50px", marginLeft: "50px" }}>가입경로</span>
-					<input type="text" id="registPath" name="registPath" onChange={handleChange} value={registPath} />
-					<span style={{ marginRight: "50px", marginLeft: "50px" }}>마지막 로그인 일자</span>
-					<input type="text" id="lastLoginDate" name="lastLoginDate" onChange={handleChange} value={lastLoginDate} />
+					<table>
+						<tbody>
+							<tr>
+								<td style={{ width: "5rem" }}>가입일자</td>
+								<td style={{ width: "15rem" }}>
+									<input
+										type="text"
+										id="registDate"
+										name="registDate"
+										className="form-control col-8"
+										onChange={handleChange}
+										value={registDate}
+									/>
+								</td>
+								<td style={{ width: "5rem" }}>가입경로</td>
+								<td style={{ width: "15rem" }}>
+									<input
+										type="text"
+										id="registPath"
+										name="registPath"
+										className="form-control col-8"
+										onChange={handleChange}
+										value={registPath}
+									/>
+								</td>
+								<td style={{ width: "10rem" }}>마지막 로그인 일자</td>
+								<td style={{ width: "15rem" }}>
+									<input
+										type="text"
+										id="lastLoginDate"
+										name="lastLoginDate"
+										className="form-control col-8"
+										onChange={handleChange}
+										value={lastLoginDate}
+									/>
+								</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 				<div className="agreeHistory" style={{ marginTop: "50px", width: "100%" }}>
 					<h4>
@@ -98,28 +167,76 @@ function TruckOwnerInfoAccountManagement(props) {
 							<tr>
 								<td style={{ width: "10rem" }}>약관1</td>
 								<td style={{ width: "6rem" }}>
-									<input type="radio" id="agreeMent1" name="agreeMent1" /> 동의
+									<input
+										type="radio"
+										id="agreement1"
+										value="agree"
+										name="agreement1"
+										checked={agreement1.agree || ""}
+										onChange={handleRadio}
+									/>{" "}
+									동의
 								</td>
 								<td>
-									<input type="radio" id="agreeMent1" name="agreeMent1" /> 철회
+									<input
+										type="radio"
+										id="agreement1"
+										value="reject"
+										name="agreement1"
+										checked={agreement1.reject || ""}
+										onChange={handleRadio}
+									/>{" "}
+									철회
 								</td>
 							</tr>
 							<tr>
 								<td style={{ width: "10rem" }}>약관2</td>
 								<td style={{ width: "6rem" }}>
-									<input type="radio" id="agreeMent2" name="agreeMent2" /> 동의
+									<input
+										type="radio"
+										id="agreement2"
+										value="agree"
+										name="agreement2"
+										checked={agreement2.agree || ""}
+										onChange={handleRadio}
+									/>{" "}
+									동의
 								</td>
 								<td>
-									<input type="radio" id="agreeMent2" name="agreeMent2" /> 철회
+									<input
+										type="radio"
+										id="agreement2"
+										value="reject"
+										name="agreement2"
+										checked={agreement2.reject || ""}
+										onChange={handleRadio}
+									/>{" "}
+									철회
 								</td>
 							</tr>
 							<tr>
 								<td style={{ width: "10rem" }}>약관3</td>
 								<td style={{ width: "6rem" }}>
-									<input type="radio" id="agreeMent3" name="agreeMent3" /> 동의
+									<input
+										type="radio"
+										id="agreement3"
+										value="agree"
+										name="agreement3"
+										checked={agreement3.agree || ""}
+										onChange={handleRadio}
+									/>{" "}
+									동의
 								</td>
 								<td>
-									<input type="radio" id="agreeMent3" name="agreeMent3" /> 철회
+									<input
+										type="radio"
+										id="agreement3"
+										value="reject"
+										name="agreement3"
+										checked={agreement3.reject || ""}
+										onChange={handleRadio}
+									/>{" "}
+									철회
 								</td>
 							</tr>
 						</tbody>
@@ -138,16 +255,7 @@ function TruckOwnerInfoAccountManagement(props) {
 							role="grid"
 							aria-describedby="dataTable_info"
 							style={{ textAlign: "center" }}
-						>
-							<thead>
-								<tr>
-									<th>no.</th>
-									<th>일자</th>
-									<th>이용내역</th>
-									<th>계정상태</th>
-								</tr>
-							</thead>
-						</table>
+						/>
 					</div>
 				</div>
 			</div>

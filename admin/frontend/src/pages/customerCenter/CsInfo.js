@@ -1,39 +1,29 @@
 import React from "react";
 import MainStructure from "components/structure/MainStructure";
 import * as Calc from "util/Calc";
+import * as dl from "util/DataTableLang";
 
 function CsInfo(props) {
-	const DataTable_language = {
-		decimal: ",",
-		thousands: ".",
-		paginate: {
-			first: "",
-			last: "",
-			previous: "<",
-			next: ">",
-		},
-		processing: "처리 중 입니다.",
-		emptyTable: "처리할 내용이 없습니다.",
-		info: "총 _PAGES_페이지/_TOTAL_개 중 (_START_ ~ _END_) ",
-	};
 	// 컴포넌트 마운트
 	React.useEffect(() => {
 		const dummyTable = $("#CsInfoTbl").DataTable({
-			//language: DataTable_language,
+			language: dl.DataTable_language,
+			responsive: true,
 			data: array,
 			dom:
-				"<'row'<'col-sm-12 col-md-3 contentStart'><'col-sm-12 col-md-6' contentCenter><'col-sm-12 col-md-3 contentEnd'>>" +
+				"<'row mb-2'<'col-3 d-flex justify-content-start CSI1_start'><'col-6 d-flex justify-content-center CSI1_center'><'col-3 d-flex justify-content-end CSI1_end'>>" +
+				"<'row'<'col-3 d-flex justify-content-start CSI2_start'><'col-6 d-flex justify-content-center CSI2_center'><'col-3 d-flex justify-content-end CSI2_end'>>" +
 				"<'row'<'col-sm-12'rt>>" +
 				"<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
 			columns: [
-				{ data: null, width: "5%" },
-				{ data: "csNumber", width: "8%" },
-				{ data: "csCategory", width: "8%" },
-				{ data: "customerType", width: "8%" },
-				{ data: "csTitle", width: "15%" },
-				{ data: "csWriter", width: "15%" },
-				{ data: "regDate", width: "15%" },
-				{ data: "csStatus", width: "15%" },
+				{ title: "no.", data: null },
+				{ title: "문의번호", data: "csNumber" },
+				{ title: "카테고리", data: "csCategory" },
+				{ title: "고객분류", data: "customerType" },
+				{ title: "제목", data: "csTitle" },
+				{ title: "작성자", data: "csWriter" },
+				{ title: "작성일", data: "regDate" },
+				{ title: "처리상태", data: "csStatus" },
 			],
 			columnDefs: [
 				{
@@ -65,9 +55,11 @@ function CsInfo(props) {
 					$(this).css("cursor", "pointer");
 				});
 
+				// 카테고리1 추가
+				$(".CSI2_start").append('<label class="form-control col-3" style="border: 0">카테고리</label>');
 				const column1 = this.api().column(2);
-				const select1 = $("<select><option value=''>전체</option></select>")
-					.appendTo("#searchTab1")
+				const select1 = $("<select class='form-control col-4'><option value=''>전체</option></select>")
+					.appendTo(".CSI2_start")
 					.on("change", function () {
 						const val = $(this).val();
 						column1.search(val ? "^" + $(this).val() + "$" : val, true, false).draw();
@@ -80,9 +72,34 @@ function CsInfo(props) {
 						select1.append("<option>" + data + "</option>");
 					});
 
+				// 검색 옵션 추가
+				$(".CSI2_center").append(
+					'<select id="searchOption" class="form-control col-2">' +
+						'<option value="">전체</option>' +
+						'<option value="4">제목</option>' +
+						'<option value="5">작성자</option>' +
+						"</select>"
+				);
+
+				// 검색창 추가
+				$(".CSI2_center").append('<input type="text" id="searchVal" class="form-control" placeholder="검색" />');
+
+				// 검색 자동검색
+				$("#searchVal").on("keyup", function () {
+					const searchVal = $(this).val();
+					const searchOption = $("#searchOption").val();
+					if (searchOption !== "") {
+						dummyTable.columns(searchOption).search(searchVal).draw();
+					} else {
+						dummyTable.search(searchVal).draw();
+					}
+				});
+
+				// 카테고리2 추가
+				$(".CSI2_end").append('<label class="form-control col-3" style="border: 0">처리 상태</label>');
 				const column2 = this.api().column(7);
-				const select2 = $("<select><option value=''>전체</option></select>")
-					.appendTo("#searchTab2")
+				const select2 = $("<select class='form-control col-4'><option value=''>전체</option></select>")
+					.appendTo(".CSI2_end")
 					.on("change", function () {
 						const val = $(this).val();
 						column2.search(val ? "^" + $(this).val() + "$" : val, true, false).draw();
@@ -95,6 +112,60 @@ function CsInfo(props) {
 						select2.append("<option>" + data + "</option>");
 					});
 
+				// 범위 버튼 추가
+				$(".CSI1_start").append(
+					'<button id="7" class="btn btn-secondary mr-1 calBtns">1주일</button>' +
+						'<button id="30" class="btn btn-secondary mx-1 calBtns">1개월</button>' +
+						'<button id="60" class="btn btn-secondary mx-1 calBtns">3개월</button>' +
+						'<button id="90" class="btn btn-secondary mx-1 calBtns">6개월</button>'
+				);
+
+				// 범위 버튼 동작
+				$(".calBtns").on("click", function () {
+					const dateFilter = parseInt($(this).attr("id"));
+					switch (dateFilter) {
+						case 7:
+							Calc.getLastWeek();
+							break;
+						case 30:
+							Calc.getLastMonth();
+							break;
+						case 60:
+							Calc.getLast3Month();
+							break;
+						case 90:
+							Calc.getLast6Month();
+							break;
+						default:
+							break;
+					}
+				});
+
+				// 달력 추가
+				$(".CSI1_center").append(
+					'<input type="text" id="fromDate" class="form-control datepicker col-2" placeholder="2020-00-00" />' +
+						'<label class="col-form-label ml-3 mr-3">~</label>' +
+						'<input type="text" id="toDate" class="form-control datepicker col-2" placeholder="2020-12-31" />'
+				);
+
+				// 달력 초기화 버튼
+				$(".CSI1_center").append('<button class="btn btn-primary" id="resetCalendar">초기화</button>');
+
+				// 달력 초기화
+				$("#resetCalendar").on("click", function () {
+					$("#fromDate").datepicker("setDate", "");
+					$("#toDate").datepicker("setDate", "");
+				});
+
+				// datepicker
+				$("#fromDate, #toDate").datepicker();
+
+				// 달력 검색
+				$("#fromDate, #toDate").on("change", function () {
+					dummyTable.draw();
+				});
+
+				// 달력 검색 추가
 				$.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
 					const from = $("#fromDate").datepicker("getDate");
 					const to = $("#toDate").datepicker("getDate");
@@ -121,29 +192,10 @@ function CsInfo(props) {
 			})
 			.draw();
 
-		$("#fromDate, #toDate").datepicker();
-
-		$("#fromDate, #toDate").on("change", function () {
-			dummyTable.draw();
-		});
-
-		$("#searchVal").on("keyup", function () {
-			const searchVal = $(this).val();
-			const searchOption = $("#searchOption").val();
-			if (searchOption !== "") {
-				dummyTable.columns(searchOption).search(searchVal).draw();
-			} else {
-				dummyTable.search(searchVal).draw();
-			}
-		});
-
 		// 컴포넌트 언마운트
 		return () => {
-			dummyTable.destroy(true);
 			$.fn.dataTable.ext.search.pop();
-			$("#searchTab1").off();
-			$("#searchTab2").off();
-			$("#searchVal").off();
+			dummyTable.destroy(true);
 		};
 	}, []);
 
@@ -219,73 +271,12 @@ function CsInfo(props) {
 				</div>
 				<div className="container-fluid mt-n10">
 					<div className="card mb-4">
+						<div className="card-header row">
+							<div className="col-3 d-flex justify-content-start"></div>
+							<div className="col-6 d-flex justify-content-center"></div>
+							<div className="col-3 d-flex justify-content-end"></div>
+						</div>
 						<div className="card-body">
-							<div className="col-12 row">
-								<div className="col-3">
-									<div className="d-flex justify-content-start">
-										<label htmlFor="csRegDate" className="col-12 col-sm-3 col-form-label">
-											작성일
-										</label>
-										<button type="button" className="btn btn-secondary ml-0 mr-1" onClick={Calc.getLastWeek}>
-											<span>1주일</span>
-										</button>
-										<button type="button" className="btn btn-secondary mx-1" onClick={Calc.getLastMonth}>
-											<span>1개월</span>
-										</button>
-										<button type="button" className="btn btn-secondary  mx-1" onClick={Calc.getLast3Month}>
-											<span>3개월</span>
-										</button>
-									</div>
-								</div>
-								<div className="col-4">
-									<div className="d-flex justify-content-start">
-										<input
-											className="form-control datepicker col-4"
-											id="fromDate"
-											type="text"
-											placeholder="2020-08-01"
-										/>
-										<label className="col-form-label ml-3 mr-3">~</label>
-										<input className="form-control datepicker col-4" id="toDate" type="text" placeholder="2020-08-30" />
-									</div>
-								</div>
-							</div>
-
-							<br />
-
-							<div className="col-12 row">
-								<div className="col-3">
-									<div className="d-flex justify-content-start" id="searchTab1">
-										<label htmlFor="csCategory" className="col-12 col-sm-3 col-form-label">
-											카테고리
-										</label>
-									</div>
-								</div>
-
-								<div className="col-7">
-									<div className="d-flex justify-content-start">
-										<label htmlFor="csCategory" className="col-12 col-sm-2 col-form-label">
-											조건별 검색
-										</label>
-										<select className="form-control col-12 col-sm-2" id="searchOption" name="searchOption">
-											<option value="">전체</option>
-											<option value="4">제목</option>
-											<option value="1">문의번호</option>
-										</select>
-										<input type="text" id="searchVal" name="searchVal" placeholder="검색" />
-									</div>
-								</div>
-								<div className="col-2">
-									<div className="d-flex justify-content-end" id="searchTab2">
-										<label htmlFor="csStatus" className="col-12 col-sm-5 col-form-label">
-											처리상태
-										</label>
-									</div>
-								</div>
-							</div>
-
-							<br />
-
 							<div className="datatable table-responsive">
 								<table
 									id="CsInfoTbl"
@@ -295,20 +286,7 @@ function CsInfo(props) {
 									role="grid"
 									aria-describedby="dataTable_info"
 									style={{ textAlign: "center" }}
-								>
-									<thead>
-										<tr>
-											<th>no.</th>
-											<th>문의번호</th>
-											<th>카테고리</th>
-											<th>고객분류</th>
-											<th>제목</th>
-											<th>작성자</th>
-											<th>작성일</th>
-											<th>처리상태</th>
-										</tr>
-									</thead>
-								</table>
+								/>
 							</div>
 						</div>
 					</div>
