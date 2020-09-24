@@ -1,4 +1,4 @@
-package kr.co.teamfresh.cpft.carrier.web.backend.dto.code;
+package kr.co.teamfresh.cpft.model.dto.code;
 
 import java.io.Serializable;
 

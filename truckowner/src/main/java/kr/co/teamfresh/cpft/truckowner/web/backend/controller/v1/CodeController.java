@@ -1,12 +1,12 @@
 package kr.co.teamfresh.cpft.truckowner.web.backend.controller.v1;
 
+import kr.co.teamfresh.cpft.model.dto.code.CodeCtgryDTO;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import kr.co.teamfresh.cpft.truckowner.web.backend.dto.code.CodeCtgryDTO;
 import kr.co.teamfresh.cpft.truckowner.web.backend.service.code.CodeService;
 import kr.co.teamfresh.cpft.common.model.response.ListResult;
 import kr.co.teamfresh.cpft.common.service.ResponseService;

@@ -7,7 +7,7 @@ import javax.transaction.Transactional;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import kr.co.teamfresh.cpft.admin.web.backend.dto.code.CodeCtgryDTO;
+import kr.co.teamfresh.cpft.model.dto.code.CodeCtgryDTO;
 import kr.co.teamfresh.cpft.admin.web.backend.service.AbstractService;
 import kr.co.teamfresh.cpft.admin.web.backend.util.ObjectMapperUtils;
 import kr.co.teamfresh.cpft.model.entity.code.CodeCtgry;

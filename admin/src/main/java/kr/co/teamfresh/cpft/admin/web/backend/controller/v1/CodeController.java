@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import kr.co.teamfresh.cpft.admin.web.backend.dto.code.CodeCtgryDTO;
+import kr.co.teamfresh.cpft.model.dto.code.CodeCtgryDTO;
 import kr.co.teamfresh.cpft.admin.web.backend.service.code.CodeService;
 import kr.co.teamfresh.cpft.common.model.response.ListResult;
 import kr.co.teamfresh.cpft.common.service.ResponseService;
