@@ -401,7 +401,6 @@ class ApplicantManage extends Component {
 																.map((r) => {
 																	return r.codeValue;
 																});
-<<<<<<< Updated upstream
 														content +=
 															" " +
 															(obj.workDaysType == "fiveDay"
@@ -410,10 +409,6 @@ class ApplicantManage extends Component {
 																? "주6일"
 																: null);
 														content += " " + obj.salary + " " + obj.detailMatter;
-=======
-														content += " " + (obj.workDaysType == "fiveDay" ? "주5일" : obj.workDaysType == "sixDay" ? "주6일" : null);
-														content += " " + obj.payAmt + " " + obj.detailMatter;
->>>>>>> Stashed changes
 														return (
 															<option key={obj.orderSeq} value={obj.orderSeq}>
 																{content}

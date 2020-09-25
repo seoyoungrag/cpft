@@ -13,21 +13,12 @@ import "vendor/datatables/jquery.dataTables.min.js";
 import { Component } from "react";
 
 const columns = [
-<<<<<<< Updated upstream
  { title: "운송그룹", data: "ordersComplete", width: "15%" },
  { title: "담당자", data: "ordersComplete", width: "15%" },
  { title: "차주명", data: "userNm", width: "15%" },
  { title: "근무 현황", data: "ordersComplete", width: "20%" },
  { title: "근무일", data: "ordersComplete", width: "20%" },
  { title: "연락처", data: "telno", width: "15%" },
-=======
-	{ title: "운송그룹", data: "ordersComplete", width: "15%" },
-	{ title: "담당자", data: "ordersComplete", width: "15%" },
-	{ title: "차주명", data: "userNm", width: "15%" },
-	{ title: "근무 현황", data: "ordersComplete", width: "20%" },
-	{ title: "근무일", data: "ordersComplete", width: "20%" },
-	{ title: "연락처", data: "phone", width: "15%" },
->>>>>>> Stashed changes
 ];
 
 const DataTable_language = {
@@ -322,7 +313,6 @@ class TruckOwnerList extends Component {
 }
 
 const mapStateToProps = (state) => ({
-<<<<<<< Updated upstream
  codes: state.codes.codes,
  orderRegisWorkGroupCodes: state.codes.orderRegisWorkGroupCodes,
  rcritTypeCodes: state.codes.rcritTypeCodes,
@@ -333,17 +323,5 @@ const mapStateToProps = (state) => ({
  token: state.auth.userInfo.token,
  carrierSeq: state.auth.userInfo.carrierSeq,
  userSeq: state.auth.userInfo.userSeq,
-=======
-	codes: state.codes.codes,
-	orderRegisWorkGroupCodes: state.codes.orderRegisWorkGroupCodes,
-	rcritTypeCodes: state.codes.rcritTypeCodes,
-	carTypeCodes: state.codes.carTypeCodes,
-	tonTypeCodes: state.codes.tonTypeCodes,
-	payFullTypeCodes: state.codes.payFullTypeCodes,
-	workDayCodes: state.codes.workDayCodes,
-	token: state.auth.userInfo.token,
-	carrierSeq: state.auth.userInfo.carrierSeq,
-	userSeq: state.auth.userInfo.userSeq,
->>>>>>> Stashed changes
 });
 export default connect(mapStateToProps)(TruckOwnerList);
