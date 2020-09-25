@@ -576,7 +576,7 @@ const mapStateToProps = (state) => ({
  rcritTypeCodes: state.codes.rcritTypeCodes,
  carTypeCodes: state.codes.carTypeCodes,
  tonTypeCodes: state.codes.tonTypeCodes,
- payFullTypeCodes: state.codes.payFullTypeCodes,
+ expensYnCodes: state.codes.expensYnCodes,
  workDayCodes: state.codes.workDayCodes,
  token: state.auth.userInfo.token,
  carrierSeq: state.auth.userInfo.carrierSeq,

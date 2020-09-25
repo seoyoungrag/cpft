@@ -475,7 +475,7 @@ class OrderRegist extends Component {
    $("#dlvyPrdlst").val(order.dlvyPrdlst);
    $("#salary").val(order.salary);
    $(
-    "input:radio[name=payFullType]:input[value=" + order.payFullType + "]"
+    "input:radio[name=expensYn]:input[value=" + order.expensYn + "]"
    ).attr("checked", true);
    $("#workingArea").val(order.workingArea);
    $("#opratSctn").val(order.opratSctn);
@@ -795,14 +795,14 @@ class OrderRegist extends Component {
                 required
                />
                <label
-                htmlFor="payFullType"
+                htmlFor="expensYn"
                 className="col-12 col-sm-2 text-sm-right pr-5 col-form-label"
                >
                 완제/무제
                </label>
                <div className="col-12 col-sm-4 row">
-                <div className="custom-control custom-radio" id="payFullType">
-                 {this.props.payFullTypeCodes.map((obj, index) => {
+                <div className="custom-control custom-radio" id="expensYn">
+                 {this.props.expensYnCodes.map((obj, index) => {
                   return (
                    <label
                     className="col-form-label pr-3 radio-inline"
@@ -812,7 +812,7 @@ class OrderRegist extends Component {
                     <input
                      className="radio mr-1"
                      type="radio"
-                     name="payFullType"
+                     name="expensYn"
                      key={obj.code}
                      id={obj.code}
                      value={obj.code}
@@ -1178,7 +1178,7 @@ const mapStateToProps = (state) => ({
  rcritTypeCodes: state.codes.rcritTypeCodes,
  carTypeCodes: state.codes.carTypeCodes,
  tonTypeCodes: state.codes.tonTypeCodes,
- payFullTypeCodes: state.codes.payFullTypeCodes,
+ expensYnCodes: state.codes.expensYnCodes,
  workDayCodes: state.codes.workDayCodes,
  token: state.auth.userInfo.token,
  carrierSeq: state.auth.userInfo.carrierSeq,

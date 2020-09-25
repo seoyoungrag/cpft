@@ -23,7 +23,7 @@ public class OrderDTO extends CommonDate {
 	private String tonType;
 	private String dlvyPrdlst;
 	private String salary;
-	private String payFullType;
+	private String expensYn;
 	private String workingArea;
 	private String opratSctn;
 	private String workingDaysType;

@@ -81,8 +81,8 @@ public class Order extends CommonDateEntity implements Serializable {
 	private String dlvyPrdlst;
 	@Column(nullable = false, length = 200, name="SALARY")
 	private String salary;
-	@Column(nullable = false, length = 200, name="PAY_FULL_TYPE")
-	private String payFullType;
+	@Column(nullable = false, length = 200, name="EXPENS_YN")
+	private String expensYn;
 	@Column(nullable = false, length = 200, name="WORKING_AREA")
 	private String workingArea;
 	@Column(nullable = true, length = 200, name="WORKING_AREA_ETC")
