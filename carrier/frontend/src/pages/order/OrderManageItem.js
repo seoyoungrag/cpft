@@ -114,7 +114,7 @@ function OrderManageItem(props) {
 										.map((r) => {
 											return r.codeValue;
 										})}{" "}
-									{obj.workingDaysType == "fiveDay" ? "주5일" : obj.workingDaysType == "sixDay" ? "주6일" : null}
+									{obj.workDaysType == "fiveDay" ? "주5일" : obj.workDaysType == "sixDay" ? "주6일" : null}
 									&nbsp;{obj.payAmt} {obj.detailMatter}
 								</h4>
 							</a>
@@ -124,7 +124,7 @@ function OrderManageItem(props) {
 							<div className="tbCol tbDate">
 								<span className="date">
 									<span className="tahoma">
-										{obj.workingArea} {"->"} {obj.opratSctn}
+										{obj.workArea} {"->"} {obj.opratSctn}
 										<span className="mday">
 											<span className="tahoma">{obj.createdAt}</span> 등록
 										</span>

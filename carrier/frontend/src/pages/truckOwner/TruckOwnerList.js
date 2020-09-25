@@ -139,7 +139,7 @@ function TruckOwnerList(props) {
 											})[0];
 										})
 										.join();
-									if (obj.order.workingDaysType == "fiveDay") {
+									if (obj.order.workDaysType == "fiveDay") {
 										workDays += "주5일" + " (" + workDay + ")";
 									} else if (obj.order.status == "sixDay") {
 										workDays += "주6일" + " (" + workDay + ")";

@@ -394,7 +394,7 @@ function ApplicantManage(props) {
 															.map((r) => {
 																return r.codeValue;
 															});
-													content += " " + (obj.workingDaysType == "fiveDay" ? "주5일" : obj.workingDaysType == "sixDay" ? "주6일" : null);
+													content += " " + (obj.workDaysType == "fiveDay" ? "주5일" : obj.workDaysType == "sixDay" ? "주6일" : null);
 													content += " " + obj.payAmt + " " + obj.detailMatter;
 													return (
 														<option key={obj.orderSeq} value={obj.orderSeq}>
