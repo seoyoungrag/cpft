@@ -99,8 +99,7 @@ class ApplicantManage extends Component {
 			const table = $(this.refs.applicantManageTbl).DataTable({
 				createdRow: function (row, data) {
 					var obj = data;
-					var orderNm =
-						"W" + obj.order.workGroupNm + "C" + obj.order.carrierSeq + "U" + obj.order.userSeq + "O" + obj.order.orderSeq;
+					var orderNm = "W" + obj.order.workGroupNm + "C" + obj.order.carrierSeq + "U" + obj.order.userSeq + "O" + obj.order.orderSeq;
 
 					var carAndTon = "";
 					data.truckOwner.trucks.map((obj, index) => {
@@ -221,15 +220,7 @@ class ApplicantManage extends Component {
 						targets: [0],
 						createdCell: function (td, cellData, rowData, row, col) {
 							var obj = rowData;
-							var content =
-								"W" +
-								obj.order.workGroupNm +
-								"C" +
-								obj.order.carrierSeq +
-								"U" +
-								obj.order.userSeq +
-								"O" +
-								obj.order.orderSeq;
+							var content = "W" + obj.order.workGroupNm + "C" + obj.order.carrierSeq + "U" + obj.order.userSeq + "O" + obj.order.orderSeq;
 							$(td).text(content);
 						},
 					},
@@ -330,7 +321,10 @@ class ApplicantManage extends Component {
 	};
 
 	shouldComponentUpdate(nextProps, nextState) {
+		console.log(nextState);
+		console.log(this.state);
 		if (nextState.orderSelecteButtonValue != this.state.orderSelecteButtonValue) {
+			console.log("동작");
 			this.reloadTableData();
 		}
 
@@ -376,23 +370,11 @@ class ApplicantManage extends Component {
 								<div className="card-header">지원자 관리</div>
 								<div className="card-body">
 									<div className="form-row my-2 mb-3">
-										<select
-											className="form-control col-12"
-											id="orderSelecteButton"
-											onChange={this._changeOrderBySelect}
-										>
+										<select className="form-control col-12" id="orderSelecteButton" onChange={this._changeOrderBySelect}>
 											<option value="all">전체보기</option>
 											{orderList.length > 0
 												? orderList.map((obj, index) => {
-														var content =
-															"W" +
-															obj.workGroupNm +
-															"C" +
-															obj.carrierSeq +
-															"U" +
-															obj.userSeq +
-															"O" +
-															obj.orderSeq;
+														var content = "W" + obj.workGroupNm + "C" + obj.carrierSeq + "U" + obj.userSeq + "O" + obj.orderSeq;
 														content += this.props.rcritTypeCodes
 															.filter((e) => {
 																return e.code == obj.rcritType;
@@ -419,6 +401,7 @@ class ApplicantManage extends Component {
 																.map((r) => {
 																	return r.codeValue;
 																});
+<<<<<<< Updated upstream
 														content +=
 															" " +
 															(obj.workDaysType == "fiveDay"
@@ -427,6 +410,10 @@ class ApplicantManage extends Component {
 																? "주6일"
 																: null);
 														content += " " + obj.salary + " " + obj.detailMatter;
+=======
+														content += " " + (obj.workingDaysType == "fiveDay" ? "주5일" : obj.workingDaysType == "sixDay" ? "주6일" : null);
+														content += " " + obj.payAmt + " " + obj.detailMatter;
+>>>>>>> Stashed changes
 														return (
 															<option key={obj.orderSeq} value={obj.orderSeq}>
 																{content}
@@ -449,14 +436,7 @@ class ApplicantManage extends Component {
 									</div>
 								</div>
 							</div>
-							<div
-								className="modal fade"
-								id="applicantModal"
-								tabIndex="-1"
-								role="dialog"
-								aria-labelledby="applicantModalTitle"
-								aria-hidden="true"
-							>
+							<div className="modal fade" id="applicantModal" tabIndex="-1" role="dialog" aria-labelledby="applicantModalTitle" aria-hidden="true">
 								<div className="modal-dialog modal-dialog-centered" role="document">
 									<div className="modal-content">
 										<div className="modal-header">
@@ -471,8 +451,7 @@ class ApplicantManage extends Component {
 											<div className="card mb-4">
 												<div className="card-body">
 													<h5 className="card-title text-primary row m-auto p-auto">
-														<dt id="applicantModalUserNm">김차일</dt>&nbsp;{" "}
-														<dd id="applicantModalUserPhone">010-1111-1411</dd>
+														<dt id="applicantModalUserNm">김차일</dt>&nbsp; <dd id="applicantModalUserPhone">010-1111-1411</dd>
 													</h5>
 													<div className="card-text row">
 														<dl className="col-6 row mb-auto">
@@ -491,9 +470,7 @@ class ApplicantManage extends Component {
 														</dl>
 														<dl className="col-12 m-auto">
 															<dt className="mb-3">메시지</dt>
-															<dd id="applicantModalMsg">
-																성실함으로 열심히 하겠습니다. 처음이지만 적극적으로!
-															</dd>
+															<dd id="applicantModalMsg">성실함으로 열심히 하겠습니다. 처음이지만 적극적으로!</dd>
 														</dl>
 													</div>
 												</div>

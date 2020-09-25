@@ -1,55 +1,51 @@
 import React, { Component } from "react";
 
-class Input extends Component {
- constructor() {
-  super();
-  this.state = {
-   name: "",
-   nickname: "",
-  };
- }
+function Input(props) {
+	const [state, setState] = React.useState({
+		name: "",
+		nickname: "",
+	});
 
- updateValue(fieldName, value) {
-  this.setState({
-   [fieldName]: value,
-  });
- }
+	const updateValue = (fieldName, value) => {
+		setState((prevState) => ({
+			...prevState,
+			[fieldName]: value,
+		}));
+	};
 
- onAddClick() {
-  this.props.onAddClick(this.state.name, this.state.nickname);
- }
+	const onAddClick = () => {
+		props.onAddClick(this.state.name, this.state.nickname);
+	};
 
- render() {
-  return (
-   <div className="app-input">
-    <div>
-     <span>Name:</span>
-     <input
-      type="text"
-      onChange={(e) => {
-       this.updateValue("name", e.target.value);
-      }}
-     />
-    </div>
-    <div>
-     <span>Nickname:</span>
-     <input
-      type="text"
-      onChange={(e) => {
-       this.updateValue("nickname", e.target.value);
-      }}
-     />
-    </div>
-    <button
-     onClick={() => {
-      this.onAddClick();
-     }}
-    >
-     Add
-    </button>
-   </div>
-  );
- }
+	return (
+		<div className="app-input">
+			<div>
+				<span>Name:</span>
+				<input
+					type="text"
+					onChange={(e) => {
+						updateValue("name", e.target.value);
+					}}
+				/>
+			</div>
+			<div>
+				<span>Nickname:</span>
+				<input
+					type="text"
+					onChange={(e) => {
+						updateValue("nickname", e.target.value);
+					}}
+				/>
+			</div>
+			<button
+			//  onClick={() => {
+			//   onAddClick();
+			//  }}
+			>
+				Add
+			</button>
+		</div>
+	);
 }
 
 export default Input;

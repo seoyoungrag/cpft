@@ -2,26 +2,10 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import Header from "components/structure/Header";
 import * as authActions from "store/modules/auth";
+import { authContext } from "context/AuthContext";
 
-export class HeaderContainer extends Component {
- handleLogout = () => {
-  const { logout } = this.props;
-  logout();
- };
- render() {
-  const { handleLogout } = this;
-  return <Header onLogout={handleLogout} />;
- }
+function HeaderContainer(props) {
+	return <Header />;
 }
 
-const mapStateToProps = (state) => ({});
-
-const mapDispatchToProps = (dispatch) => {
- return {
-  logout: () => {
-   dispatch(authActions.logout());
-  },
- };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(HeaderContainer);
+export default HeaderContainer;

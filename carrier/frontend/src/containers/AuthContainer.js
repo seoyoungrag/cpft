@@ -2,115 +2,73 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import AuthForm from "components/auth/AuthForm";
 import { withRouter } from "react-router-dom";
+import usePrevious from "util/Previous";
 import * as authActions from "store/modules/auth";
+import { authContext } from "context/AuthContext";
+import { codesContext } from "context/CodesContext";
 
-export class AuthContainer extends Component {
- componentDidMount() {
-  attachJiraIssueColletor();
-  console.log("authcontainer mount");
-  this.initialize();
- }
+export function AuthContainer(props) {
+	React.useEffect(() => {
+		initialize();
+		return () => {};
+	}, []);
 
- componentDidUpdate(prevProps, prevState) {
-  // 하단에 AuthContainer를 withRouter로 감쌌기 때문에, history를 props로 이용할수 있습니다.
-  //console.log("authcontainer componentDidUpdate");
-  const { history } = this.props;
-  //console.log("authcontainer " + prevProps.kind + " vs " + this.props.kind);
-  if (prevProps.kind !== this.props.kind) {
-   this.initialize();
-  }
+	const { authState, dispatch } = React.useContext(authContext);
+	const { userLoginId, userLoginPw } = authState.form;
+	const { userInfo, logged, error, rememberMe } = authState;
 
-  //console.log("authcontainer " + prevProps.logged + " vs " + this.props.logged);
-  if (prevProps.logged !== this.props.logged && this.props.logged) {
-   // logged가 true가 되면 localStorage에 값을 저장합니다.
-   //console.log("rememberMe");
-   //console.log(this.props.rememberMe);
-   //if (this.props.rememberMe == true) {
-   //console.log(this.props.userInfo.token);
-   console.log(this.props);
-   localStorage.setItem(
-    "userInfo",
-    JSON.stringify({
-     carrierSeq: this.props.userInfo.carrierSeq,
-     userSeq: this.props.userInfo.userSeq,
-     userLoginId: this.props.userInfo.userLoginId,
-     userNm: this.props.userInfo.userNm,
-     userEmail: this.props.userInfo.userEmail,
-     token: this.props.userInfo.token,
-    })
-   );
-   //}
-   // 값을 저장후, main페이지로 이동시켜줍니다.
-   history.push("/");
-  }
- }
+	const { kind } = props;
+	const prevProps = usePrevious({ kind, logged });
+	console.log(authState);
+	React.useEffect(() => {
+		const { history } = props;
+		if (prevProps !== undefined) {
+			if (prevProps.kind !== kind) {
+				initialize();
+			}
+			console.log(prevProps.logged);
+			console.log(logged);
+			if (prevProps.logged !== logged && logged) {
+				localStorage.setItem(
+					"userInfo",
+					JSON.stringify({
+						carrierSeq: authState.userInfo.carrierSeq,
+						userSeq: authState.userInfo.userSeq,
+						userLoginId: authState.userInfo.userLoginId,
+						userNm: authState.userInfo.userNm,
+						userEmail: authState.userInfo.userEmail,
+						token: authState.userInfo.token,
+					})
+				);
+				history.push("/");
+			}
+		}
+	}, [logged]);
 
- initialize = () => {
-  const { initializeInput, initializeError } = this.props;
-  initializeError();
-  initializeInput();
- };
+	const initializeInput = () => {
+		dispatch({ type: "auth/INITIALIZE_INPUT" });
+	};
 
- handleChangeInput = ({ name, value }) => {
-  const { changeInput } = this.props;
-  changeInput({ name, value });
- };
+	const initializeError = () => {
+		dispatch({ type: "auth/INITIALIZE_ERROR" });
+	};
 
- handleLogin = () => {
-  const { login } = this.props;
-  login();
- };
+	const initialize = () => {
+		initializeError();
+		initializeInput();
+	};
 
- handleRegister = () => {
-  const { register } = this.props;
-  register();
- };
- render() {
-  const { kind, userLoginId, userLoginPw, error } = this.props;
-  const { handleChangeInput, handleLogin, handleRegister } = this;
-  return (
-   <AuthForm
-    kind={kind}
-    userLoginId={userLoginId}
-    userLoginPw={userLoginPw}
-    onChangeInput={handleChangeInput}
-    onLogin={handleLogin}
-    onRegister={handleRegister}
-    error={error}
-   />
-  );
- }
+	return (
+		<AuthForm
+			kind={kind}
+			userLoginId={userLoginId}
+			userLoginPw={userLoginPw}
+			// onChangeInput={handleChangeInput}
+			// onLogin={handleLogin}
+			// onRegister={handleRegister}
+			error={error}
+		/>
+	);
 }
 
-const mapStateToProps = (state) => ({
- userLoginId: state.auth.form.userLoginId,
- userLoginPw: state.auth.form.userLoginPw,
- userInfo: state.auth.userInfo,
- logged: state.auth.logged,
- error: state.auth.error,
- rememberMe: state.auth.rememberMe,
-});
-
-const mapDispatchToProps = (dispatch) => {
- return {
-  initializeInput: () => {
-   dispatch(authActions.initializeInput());
-  },
-  changeInput: ({ name, value }) => {
-   dispatch(authActions.changeInput({ name, value }));
-  },
-  initializeError: () => {
-   dispatch(authActions.initializeError());
-  },
-  register: () => {
-   dispatch(authActions.register());
-  },
-  login: () => {
-   dispatch(authActions.login());
-  },
- };
-};
-
-export default withRouter(
- connect(mapStateToProps, mapDispatchToProps)(AuthContainer)
-);
+export default withRouter(AuthContainer);

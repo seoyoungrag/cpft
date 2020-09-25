@@ -1,4 +1,7 @@
 import React from "react";
+import axios from "axios";
+import * as rq from "react-query";
+import Loader from "util/Loader";
 
 import CarrierInfoDetail from "pages/carrier/CarrierInfoDetail";
 import CarrierInfoContract from "pages/carrier/CarrierInfoContract";
@@ -8,20 +11,14 @@ import CarrierInfoAccountManagement from "pages/carrier/CarrierInfoAccountManage
 function CarrierInfoCommon(props) {
 	// 컴포넌트 마운트
 	React.useEffect(() => {
-		setData(userSeq - 1);
-
 		// 컴포넌트 언마운트
 		return () => {};
 	}, []);
 
-	// 수정해야함
-	const url = "/v1/~~~~~/";
-
-	// CarrierInfoContainer에서 가져옴
-	const userSeq = props.userSeq;
-
 	// inputs
 	const [inputs, setInputs] = React.useState({
+		// 운송사 Seq
+		carrierSeq: null,
 		// 법인명
 		corporationName: null,
 		// 대표자
@@ -36,9 +33,34 @@ function CarrierInfoCommon(props) {
 		customerCenterTime: null,
 		// 서비스 운영여부
 		serviceYn: null,
+		// 계약일? 생성일?
+		createdAt: null,
+		// 수정일
+		modifiedAt: null,
 	});
 
-	const { corporationName, ceoName, registrationNumber, carrierCode, customerCenterNumber, customerCenterTime, serviceYn } = inputs;
+	const {
+		carrierSeq,
+		corporationName,
+		ceoName,
+		registrationNumber,
+		carrierCode,
+		customerCenterNumber,
+		customerCenterTime,
+		serviceYn,
+		createdAt,
+		modifiedAt,
+	} = inputs;
+
+	// files
+	const [files, setFiles] = React.useState({
+		// 사업자등록증
+		businessLicense: null,
+		// 직인
+		seal: null,
+	});
+
+	const { businessLicense, seal } = files;
 
 	const onInputsChange = React.useCallback((e) => {
 		const { name, value } = e.target;
@@ -48,16 +70,6 @@ function CarrierInfoCommon(props) {
 		}));
 	}, []);
 
-	// files
-	const [files, setFiles] = React.useState({
-		// 사업자등록증
-		businessLicenseImg: null,
-		// 직인
-		seal: null,
-	});
-
-	const { businessLicenseImg, seal } = files;
-
 	const onFilesChange = React.useCallback((e) => {
 		const { name, value } = e.target;
 		setFiles((prevFiles) => ({
@@ -66,65 +78,36 @@ function CarrierInfoCommon(props) {
 		}));
 	}, []);
 
-	// 데이터 조회
-	// const getDate = React.useCallback(async () => {
-	// 	await axios
-	// 		.get(url + userSeq)
-	// 		.then((res) => {
-	// 			let data = res.data.data;
-	// 			setInputs((prevInputs) => ({}));
-	// 		})
-	// 		.catch((res) => {
-	// 			alert("에러가 발생하였습니다 새로고침 후 다시 이용해주세요.");
-	// 			console.log("에러: " + res);
-	// 		});
-	// }, []);
+	// CarrierInfoContainer에서 가져옴
+	const userSeq = props.userSeq;
 
-	// 더미 데이터 ------------------------------------------------------------------------------
-	const array = [
-		{
-			corporationName: "팀프레시",
-			ceoName: "이성일",
-			registrationNumber: "561-88-31138",
-			carrierCode: "W00001",
-			customerCenterNumber: "02-888-8988",
-			customerCenterTime: "09:00~18:00",
-			serviceYn: "Y",
-		},
-		{
-			corporationName: "마켓컬리",
-			ceoName: "이성일",
-			registrationNumber: "422-32-1138",
-			carrierCode: "W00521",
-			customerCenterNumber: "02-623-7788",
-			customerCenterTime: "09:00~18:00",
-			serviceYn: "Y",
-		},
-		{
-			corporationName: "CJ홈쇼핑",
-			ceoName: "이성일",
-			registrationNumber: "852-18-323",
-			carrierCode: "W00301",
-			customerCenterNumber: "02-766-5252",
-			customerCenterTime: "09:00~18:00",
-			serviceYn: "Y",
-		},
-	];
-
-	// 더미 데이터 세팅
-	const setData = React.useCallback((userSeq) => {
+	const info = rq.useQuery("carrierCommon", async () => {
+		const url = "/test/carrier/getCarrierInfoCommon?ciSeq=" + userSeq;
+		const { data } = await axios.get(url);
 		setInputs((prevInputs) => ({
 			...prevInputs,
-			corporationName: array[userSeq].corporationName,
-			ceoName: array[userSeq].ceoName,
-			registrationNumber: array[userSeq].registrationNumber,
-			carrierCode: array[userSeq].carrierCode,
-			customerCenterNumber: array[userSeq].customerCenterNumber,
-			customerCenterTime: array[userSeq].customerCenterTime,
-			serviceYn: array[userSeq].serviceYn,
+			carrierSeq: data.carrierSeq,
+			corporationName: data.corporationName,
+			ceoName: data.ceoName,
+			registrationNumber: data.registrationNumber,
+			carrierCode: data.carrierCode,
+			customerCenterNumber: data.customerCenterNumber,
+			customerCenterTime: data.customerCenterTime,
+			serviceYn: data.serviceYn,
+			createdAt: data.createdAt,
+			modifiedAt: data.modifiedAt,
 		}));
-	}, []);
-	// ---------------------------------------------------------------------------------
+		setFiles((prevFiles) => ({
+			...prevFiles,
+			businessLicense: data.businessLicense,
+			seal: data.seal,
+		}));
+		return data;
+	});
+
+	if (info.status === "loading") {
+		return <Loader type="spin" color="blue" message={"로딩중..."} />;
+	}
 
 	return (
 		<React.Fragment>

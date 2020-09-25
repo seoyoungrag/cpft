@@ -4,6 +4,7 @@ import * as dl from "util/DataTableLang";
 
 function PushMutate(props) {
 	React.useEffect(() => {
+		console.log(truckOwnerList);
 		if (props.pushSeq !== null) {
 			const index = props.pushSeq - 1;
 			setInputs((prevInputs) => ({
@@ -165,9 +166,7 @@ function PushMutate(props) {
 				initComplete: function (settings, json) {
 					// 카테고리1 추가
 					const column1 = this.api().column(4);
-					const select1 = $(
-						"<select class='form-control mr-2' style='width: 15%; float: left'><option value=''>전체</option></select>"
-					)
+					const select1 = $("<select class='form-control mr-2' style='width: 15%; float: left'><option value=''>전체</option></select>")
 						.appendTo(".searchOptionArea")
 						.on("change", function () {
 							const val = $(this).val();
@@ -183,9 +182,7 @@ function PushMutate(props) {
 
 					// 카테고리2 추가
 					const column2 = this.api().column(1);
-					const select2 = $(
-						"<select class='form-control' style='width: 15%; float: left'><option value=''>전체</option></select>"
-					)
+					const select2 = $("<select class='form-control' style='width: 15%; float: left'><option value=''>전체</option></select>")
 						.appendTo(".searchOptionArea")
 						.on("change", function () {
 							const val = $(this).val();
@@ -204,14 +201,10 @@ function PushMutate(props) {
 						const seq = parseInt($(this).attr("id"));
 						if ($(this).is(":checked")) {
 							truckOwnerList.map(
-								(data) =>
-									data.truckOwnerSeq === seq &&
-									setSelectTargetList((prevSelectTargetList) => prevSelectTargetList.concat(data))
+								(data) => data.truckOwnerSeq === seq && setSelectTargetList((prevSelectTargetList) => prevSelectTargetList.concat(data))
 							);
 						} else {
-							setSelectTargetList((prevSelectTargetList) =>
-								prevSelectTargetList.filter((data) => data.truckOwnerSeq !== seq)
-							);
+							setSelectTargetList((prevSelectTargetList) => prevSelectTargetList.filter((data) => data.truckOwnerSeq !== seq));
 						}
 					});
 
@@ -280,10 +273,7 @@ function PushMutate(props) {
 					</div>
 					<div className="searchOptionArea" style={{ marginBottom: "1rem", overflow: "hidden" }}></div>
 					<div className="targetList" style={{ overflow: "hidden", height: "20rem" }}>
-						<div
-							className="leftSide"
-							style={{ float: "left", width: "48%", height: "100%", marginRight: "1rem", overflow: "scroll" }}
-						>
+						<div className="leftSide" style={{ float: "left", width: "48%", height: "100%", marginRight: "1rem", overflow: "scroll" }}>
 							<form id="myform" method="post">
 								<div className="datatable table-responsive">
 									<table
@@ -419,14 +409,7 @@ function PushMutate(props) {
 								<tr style={{ marginBottom: "3rem" }}>
 									<td style={{ width: "5%" }}>제목</td>
 									<td>
-										<input
-											type="text"
-											id="title"
-											name="title"
-											value={title || ""}
-											className="form-control"
-											onChange={handleChange}
-										/>
+										<input type="text" id="title" name="title" value={title || ""} className="form-control" onChange={handleChange} />
 									</td>
 								</tr>
 								<tr>
