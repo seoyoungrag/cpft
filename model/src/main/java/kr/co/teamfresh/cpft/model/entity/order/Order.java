@@ -83,14 +83,14 @@ public class Order extends CommonDateEntity implements Serializable {
 	private String salary;
 	@Column(nullable = false, length = 200, name="EXPENS_YN")
 	private String expensYn;
-	@Column(nullable = false, length = 200, name="WORKING_AREA")
-	private String workingArea;
-	@Column(nullable = true, length = 200, name="WORKING_AREA_ETC")
-	private String workingAreaEtc;
+	@Column(nullable = false, length = 200, name="WORK_AREA")
+	private String workArea;
+	@Column(nullable = true, length = 200, name="WORK_AREA_ETC")
+	private String workAreaEtc;
 	@Column(nullable = false, length = 200, name="OPRAT_SCTN")
 	private String opratSctn;
-	@Column(nullable = false, length = 200, name="WORKING_DAYS_TYPE")
-	private String workingDaysType;
+	@Column(nullable = false, length = 200, name="WORK_DAYS_TYPE")
+	private String workDaysType;
 
 	@ElementCollection
 	@LazyCollection(LazyCollectionOption.FALSE)

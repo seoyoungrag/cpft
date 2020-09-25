@@ -24,9 +24,9 @@ public class OrderDTO extends CommonDate {
 	private String dlvyPrdlst;
 	private String salary;
 	private String expensYn;
-	private String workingArea;
+	private String workArea;
 	private String opratSctn;
-	private String workingDaysType;
+	private String workDaysType;
 	private List<String> workDays = new ArrayList<>();
 	private int workHourStart;
 	private int workMinuteStart;
@@ -34,6 +34,6 @@ public class OrderDTO extends CommonDate {
 	private int workMinuteEnd;
 	private String detailMatter;
 	private String status;
-	private String workingAreaEtc;
+	private String workAreaEtc;
 	private Set<OrderTruckOwnerForOrderManageDTO> orderTruckOwners = new HashSet<OrderTruckOwnerForOrderManageDTO>(0);
 }

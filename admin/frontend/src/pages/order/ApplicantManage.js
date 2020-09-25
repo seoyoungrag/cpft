@@ -421,9 +421,9 @@ class ApplicantManage extends Component {
 																});
 														content +=
 															" " +
-															(obj.workingDaysType == "fiveDay"
+															(obj.workDaysType == "fiveDay"
 																? "주5일"
-																: obj.workingDaysType == "sixDay"
+																: obj.workDaysType == "sixDay"
 																? "주6일"
 																: null);
 														content += " " + obj.salary + " " + obj.detailMatter;

@@ -22,7 +22,7 @@ export const VALIDATION_ORDER_REGIST_FORM = {
   opratSctn: {
    required: true,
   },
-  workingDaysType: {
+  workDaysType: {
    required: true,
   },
   detailMatter: {
@@ -77,7 +77,7 @@ class OrderRegist extends Component {
   this.state = {
    jusos: null,
    loading: false,
-   registOrderWorkingAreaEtcMatterToggle: false,
+   registOrderWorkAreaEtcMatterToggle: false,
    orderRegistWorkTypeValue: "",
    workGroups: [],
    workGroupManagers: [],
@@ -195,7 +195,7 @@ class OrderRegist extends Component {
   this._getDaumAddressFinder = (event) => {
    new daum.Postcode({
     oncomplete: function (data) {
-     $("#workingArea").val(data.address);
+     $("#workArea").val(data.address);
      // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
      // 예제를 참고하여 다양한 활용법을 확인해 보세요.
     },
@@ -226,14 +226,14 @@ class OrderRegist extends Component {
      break;
    }
   };
-  this._setRegistOrderWorkingAreaEtcMatterToggle = (event) => {
+  this._setRegistOrderWorkAreaEtcMatterToggle = (event) => {
    this.setState({
-    registOrderWorkingAreaEtcMatterToggle: event.target.checked,
+    registOrderWorkAreaEtcMatterToggle: event.target.checked,
    });
   };
   /*
   this._onChangeHandler = async (e) => {
-   $("#registOrderWorkingArea").siblings("div.awesomplete").show();
+   $("#registOrderWorkArea").siblings("div.awesomplete").show();
    this._searchJusos(e.target.value);
   };
   this._searchJusos = async (value) => {
@@ -264,11 +264,11 @@ class OrderRegist extends Component {
     geoResult = this._removeDuplicate(geoResult, "label");
     console.log(geoResult);
     geoResult = geoResult.filter((e) => {
-     return e.label.indexOf($("#registOrderWorkingArea").val()) > -1;
+     return e.label.indexOf($("#registOrderWorkArea").val()) > -1;
     });
     //시를 검색하고 싶을 때
     const siNmList = geoResult.filter((e) => {
-     if (e.siNm.indexOf($("#registOrderWorkingArea").val()) > -1) {
+     if (e.siNm.indexOf($("#registOrderWorkArea").val()) > -1) {
       e.label = e.siNm;
       e.sggNm = "";
       e.emdNm = "";
@@ -277,7 +277,7 @@ class OrderRegist extends Component {
     });
     //시군구를 검색하고 싶을 때
     const sggNmList = geoResult.filter((e) => {
-     if (e.sggNm.indexOf($("#registOrderWorkingArea").val()) > -1) {
+     if (e.sggNm.indexOf($("#registOrderWorkArea").val()) > -1) {
       e.label = e.siNm + " " + e.sggNm;
       e.sggNm = "";
       return true;
@@ -285,7 +285,7 @@ class OrderRegist extends Component {
     });
     //동을 검색하고 싶을 때
     const emdNmList = geoResult.filter((e) => {
-     return e.emdNm.indexOf($("#registOrderWorkingArea").val()) > -1;
+     return e.emdNm.indexOf($("#registOrderWorkArea").val()) > -1;
     });
     //시 따로 시군구 따로 동 따로 중복 없앤 후 다 보여주자
     siNmList = this._removeDuplicate(siNmList, "siNm");
@@ -313,8 +313,8 @@ class OrderRegist extends Component {
   };
   this._onclickJuso = (e) => {
    console.log(e.target.dataset);
-   $("#registOrderWorkingArea").val(e.target.innerText);
-   $("#registOrderWorkingArea").siblings("div.awesomplete").hide();
+   $("#registOrderWorkArea").val(e.target.innerText);
+   $("#registOrderWorkArea").siblings("div.awesomplete").hide();
   };
   */
   this._setTimes = (hour, minute) => {
@@ -477,11 +477,11 @@ class OrderRegist extends Component {
    $(
     "input:radio[name=expensYn]:input[value=" + order.expensYn + "]"
    ).attr("checked", true);
-   $("#workingArea").val(order.workingArea);
+   $("#workArea").val(order.workArea);
    $("#opratSctn").val(order.opratSctn);
-   $("#workingDaysType").val(order.workingDaysType);
+   $("#workDaysType").val(order.workDaysType);
    this._setorderRegistWorkType({
-    target: { value: document.getElementById("workingDaysType").value },
+    target: { value: document.getElementById("workDaysType").value },
    });
    order.workDays.map((e) => {
     $("input:checkbox[name=workDays]:input[value=" + e + "]").attr(
@@ -494,11 +494,11 @@ class OrderRegist extends Component {
    $("#workHourEnd").val(order.workHourEnd);
    $("#workMinuteEnd").val(order.workMinuteEnd);
    $("#detailMatter").val(order.detailMatter);
-   if (order.workingAreaEtc) {
+   if (order.workAreaEtc) {
     this.setState({
-     registOrderWorkingAreaEtcMatterToggle: true,
+     registOrderWorkAreaEtcMatterToggle: true,
     });
-    $("#workingAreaEtc").val(order.workingAreaEtc);
+    $("#workAreaEtc").val(order.workAreaEtc);
    }
   }
  }
@@ -827,7 +827,7 @@ class OrderRegist extends Component {
               </div>
               <div className="form-group row">
                <label
-                htmlFor="workingArea"
+                htmlFor="workArea"
                 className="col-12 col-sm-2 col-form-label"
                >
                 지역
@@ -839,10 +839,10 @@ class OrderRegist extends Component {
                   value={this.state.value}
                   onChange={this._onChangeHandler}
                   className="form-control col-8"
-                  id="registOrderWorkingArea"
+                  id="registOrderWorkArea"
                   type="text"
                   placeholder="서이천물류센터"
-                  key="registOrderWorkingArea"
+                  key="registOrderWorkArea"
                   autoComplete="off"
                  />
  */}
@@ -851,11 +851,11 @@ class OrderRegist extends Component {
                   onClick={this._getDaumAddressFinder}
                   readOnly
                   className="form-control col-sm-8 col-12"
-                  id="workingArea"
-                  name="workingArea"
+                  id="workArea"
+                  name="workArea"
                   type="text"
                   placeholder="서이천물류센터"
-                  key="workingArea"
+                  key="workArea"
                   autoComplete="off"
                   required
                  />
@@ -864,15 +864,15 @@ class OrderRegist extends Component {
                  <div className="col-sm-3 col-12">
                   <label
                    className="col-form-label pr-3 radio-inline"
-                   htmlFor="registOrderWorkingAreaEtcMatterToggle"
+                   htmlFor="registOrderWorkAreaEtcMatterToggle"
                   >
                    <input
                     className="checkbox mr-1"
-                    id="registOrderWorkingAreaEtcMatterToggle"
-                    name="registOrderWorkingAreaEtcMatterToggle"
+                    id="registOrderWorkAreaEtcMatterToggle"
+                    name="registOrderWorkAreaEtcMatterToggle"
                     type="checkbox"
-                    onChange={this._setRegistOrderWorkingAreaEtcMatterToggle}
-                    checked={this.state.registOrderWorkingAreaEtcMatterToggle}
+                    onChange={this._setRegistOrderWorkAreaEtcMatterToggle}
+                    checked={this.state.registOrderWorkAreaEtcMatterToggle}
                    />
                    기타입력사항
                   </label>
@@ -880,26 +880,26 @@ class OrderRegist extends Component {
                 </div>
                </div>
               </div>
-              {this.state.registOrderWorkingAreaEtcMatterToggle ? (
+              {this.state.registOrderWorkAreaEtcMatterToggle ? (
                <div className="form-group row">
                 <label
-                 htmlFor="workingAreaEtc"
+                 htmlFor="workAreaEtc"
                  className="col-12 col-sm-2 col-form-label"
                 ></label>
 
                 <label
-                 htmlFor="workingAreaEtc"
+                 htmlFor="workAreaEtc"
                  className="col-12 col-sm-2 col-form-label text-sm-right"
                 >
                  기타입력사항:
                 </label>
                 <input
                  className="form-control col-12 col-sm-8"
-                 id="workingAreaEtc"
+                 id="workAreaEtc"
                  type="text"
                  placeholder="ex) 기타입력사항"
-                 key="workingAreaEtc"
-                 name="workingAreaEtc"
+                 key="workAreaEtc"
+                 name="workAreaEtc"
                 />
                </div>
               ) : null}
@@ -922,16 +922,16 @@ class OrderRegist extends Component {
               </div>
               <div className="form-group row">
                <label
-                htmlFor="workingDaysType"
+                htmlFor="workDaysType"
                 className="col-12 col-sm-2 col-form-label"
                >
                 근무요일
                </label>
                <select
                 className="form-control col-12 col-sm-10"
-                id="workingDaysType"
+                id="workDaysType"
                 onChange={this._setorderRegistWorkType}
-                name="workingDaysType"
+                name="workDaysType"
                 required
                >
                 <option value="">선택</option>

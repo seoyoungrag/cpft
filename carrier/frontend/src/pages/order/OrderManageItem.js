@@ -116,9 +116,9 @@ class OrderManageItem extends Component {
            .map((r) => {
             return r.codeValue;
            })}{" "}
-          {obj.workingDaysType == "fiveDay"
+          {obj.workDaysType == "fiveDay"
            ? "주5일"
-           : obj.workingDaysType == "sixDay"
+           : obj.workDaysType == "sixDay"
            ? "주6일"
            : null}
           &nbsp;{obj.salary} {obj.detailMatter}
@@ -130,7 +130,7 @@ class OrderManageItem extends Component {
         <div className="tbCol tbDate">
          <span className="date">
           <span className="tahoma">
-           {obj.workingArea} {"->"} {obj.opratSctn}
+           {obj.workArea} {"->"} {obj.opratSctn}
            <span className="mday">
             <span className="tahoma">{obj.createdAt}</span> 등록
            </span>
