@@ -426,7 +426,7 @@ class ApplicantManage extends Component {
 																: obj.workingDaysType == "sixDay"
 																? "주6일"
 																: null);
-														content += " " + obj.payAmt + " " + obj.detailMatter;
+														content += " " + obj.salary + " " + obj.detailMatter;
 														return (
 															<option key={obj.orderSeq} value={obj.orderSeq}>
 																{content}

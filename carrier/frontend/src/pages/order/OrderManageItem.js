@@ -121,7 +121,7 @@ class OrderManageItem extends Component {
            : obj.workingDaysType == "sixDay"
            ? "주6일"
            : null}
-          &nbsp;{obj.payAmt} {obj.detailMatter}
+          &nbsp;{obj.salary} {obj.detailMatter}
          </h4>
         </a>
        </div>

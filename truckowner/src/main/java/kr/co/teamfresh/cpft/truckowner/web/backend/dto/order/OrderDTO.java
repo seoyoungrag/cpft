@@ -22,7 +22,7 @@ public class OrderDTO extends CommonDate {
 	private List<String> carTypes = new ArrayList<>();
 	private String tonType;
 	private String dlvyPrdlst;
-	private String payAmt;
+	private String salary;
 	private String payFullType;
 	private String workingArea;
 	private String opratSctn;

@@ -16,7 +16,7 @@ export const VALIDATION_ORDER_REGIST_FORM = {
   dlvyPrdlst: {
    required: true,
   },
-  payAmt: {
+  salary: {
    required: true,
   },
   opratSctn: {
@@ -473,7 +473,7 @@ class OrderRegist extends Component {
     true
    );
    $("#dlvyPrdlst").val(order.dlvyPrdlst);
-   $("#payAmt").val(order.payAmt);
+   $("#salary").val(order.salary);
    $(
     "input:radio[name=payFullType]:input[value=" + order.payFullType + "]"
    ).attr("checked", true);
@@ -780,18 +780,18 @@ class OrderRegist extends Component {
               </div>
               <div className="form-group row">
                <label
-                htmlFor="payAmt"
+                htmlFor="salary"
                 className="col-12 col-sm-2 col-form-label"
                >
                 급여
                </label>
                <input
                 className="form-control col-12 col-sm-4"
-                id="payAmt"
+                id="salary"
                 type="text"
                 placeholder="ex) 500만원"
-                key="payAmt"
-                name="payAmt"
+                key="salary"
+                name="salary"
                 required
                />
                <label
