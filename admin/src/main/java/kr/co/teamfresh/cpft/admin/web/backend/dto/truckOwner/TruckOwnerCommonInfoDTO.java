@@ -7,7 +7,7 @@ import lombok.Data;
 public class TruckOwnerCommonInfoDTO implements Serializable{
 
 	private String userName;
-	private String phone;
+	private String telno;
 	private String ownerCode;
 	private Integer CarrierSeq;
 	

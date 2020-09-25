@@ -26,7 +26,7 @@ function CarrierInfoDetail(props) {
 	//             setInputs((state) => ({
 	//                 ...inputs,
 	//                 userName: data.userNm,
-	//                 phoneNumber: data.truckOwner.phone
+	//                 phoneNumber: data.truckOwner.telno
 	//             }));
 	//         })
 	//         .catch(res => {

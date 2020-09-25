@@ -144,7 +144,7 @@ class ApplicantManage extends Component {
 							}
 							$("#applicantModalTitle").text(orderNm);
 							$("#applicantModalUserNm").text(data.truckOwner.userNm);
-							$("#applicantModalUserPhone").text(data.truckOwner.phone);
+							$("#applicantModalUserPhone").text(data.truckOwner.telno);
 							$("#applicantModalCarAndTon").html(carAndTon);
 							$("#applicantModalCareer").text(data.careerCn);
 							$("#applicantModalCert").html(certs);

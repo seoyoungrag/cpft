@@ -75,7 +75,7 @@ public class TruckOwnerController {
 	@ApiOperation(value = "test업데이트", notes = "업데이트")
 	@GetMapping("/truckOwnerInfoUpdate")
 	public  SingleResult<TruckOwner> update() {
-		TruckOwner truck = TruckOwner.builder().phone("454545").userSeq(2).build();
+		TruckOwner truck = TruckOwner.builder().telno("454545").userSeq(2).build();
 		truckOwnerJpaRepo.save(truck);
 		return responseService.getSingleResult(truck);
 	}

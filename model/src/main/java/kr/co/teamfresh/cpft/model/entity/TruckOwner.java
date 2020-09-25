@@ -51,8 +51,8 @@ public class TruckOwner {
     @Column(name="CAREER_DETAIL")
     private String careerDetail;
     
-    @Column(name="PHONE")
-    private String phone;
+    @Column(name="TELNO")
+    private String telno;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "truckPK.truckOnwer")
 	private Set<Truck> trucks = new HashSet<Truck>(0);

@@ -18,7 +18,7 @@ const columns = [
  { title: "차주명", data: "userNm", width: "15%" },
  { title: "근무 현황", data: "ordersComplete", width: "20%" },
  { title: "근무일", data: "ordersComplete", width: "20%" },
- { title: "연락처", data: "phone", width: "15%" },
+ { title: "연락처", data: "telno", width: "15%" },
 ];
 
 const DataTable_language = {

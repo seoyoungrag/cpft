@@ -96,7 +96,7 @@ function TuckOwnerAccount({history, location, match}) {
                 { title: "운송그룹", data: "ordersComplete", width: "14%" },
                 { title: "담당자", data: "ordersComplete", width: "14%" },
                 { title: "차주", data: "userNm", width: "14%" },
-                { title: "연락처", data: "phone", width: "14%" }
+                { title: "연락처", data: "telno", width: "14%" }
             ],
 
             createdRow: function(row, data) {
