@@ -13,6 +13,6 @@ public class OrderTruckOwnerForApplicationListDTO extends CommonDate implements 
 	private TruckOwnerForApplicationListDTO truckOwner;
 	private String message;
 	private String status;
-	private String isRead;
+	private String readYn;
 	
 }

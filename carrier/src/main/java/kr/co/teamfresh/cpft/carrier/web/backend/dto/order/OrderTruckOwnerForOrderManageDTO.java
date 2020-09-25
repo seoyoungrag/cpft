@@ -10,6 +10,6 @@ import lombok.Data;
 public class OrderTruckOwnerForOrderManageDTO extends CommonDate implements Serializable{
 
 	private String status;
-	private String isRead;
+	private String readYn;
 	
 }

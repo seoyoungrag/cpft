@@ -90,16 +90,16 @@ public class OrderController {
 	}
 
 	@ApiOperation(value = "오더 지원의 열람 여부를 수정", notes = "오더의 열람 여부를 수정한다.")
-	@PutMapping("/{orderSeq}/truckOwner/{userSeq}/isRead")
+	@PutMapping("/{orderSeq}/truckOwner/{userSeq}/readYn")
 	@Transactional
-	public SingleResult<Integer> updateOrderTruckOwnerIsRead(@PathVariable String orderSeq,
+	public SingleResult<Integer> updateOrderTruckOwnerReadYn(@PathVariable String orderSeq,
 			@PathVariable String userSeq,
 			@ApiParam(value = "오더 지원 열람 여부", required = true) @RequestBody OrderTruckOwnerForApplicationListDTO ordertruckOwnerDTO) {
 
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 		CriteriaUpdate<OrderTruckOwner> update = cb.createCriteriaUpdate(OrderTruckOwner.class);
 		Root<OrderTruckOwner> orderTruckOwnerRoot = update.from(OrderTruckOwner.class);
-		update.set(orderTruckOwnerRoot.get(OrderTruckOwner_.isRead), ordertruckOwnerDTO.getIsRead());
+		update.set(orderTruckOwnerRoot.get(OrderTruckOwner_.readYn), ordertruckOwnerDTO.getReadYn());
 		List<Predicate> predicates = new ArrayList<Predicate>();
 		predicates.add(cb.equal(orderTruckOwnerRoot.get(OrderTruckOwner_.orderSeq), orderSeq));
 		predicates.add(cb.equal(orderTruckOwnerRoot.get(OrderTruckOwner_.userSeq), userSeq));

@@ -179,7 +179,7 @@ class OrderManageItem extends Component {
           <li className="apyStatusNotRead w-25">
            <strong className="stepTit">열람</strong>
            <a href="#" className="itemNum tahoma devLinkExpire" data-pts="-77">
-            {obj.orderTruckOwners.filter((obj,idx)=>obj.isRead=='Y').length}
+            {obj.orderTruckOwners.filter((obj,idx)=>obj.readYn=='Y').length}
            </a>
           </li>
           <li className="on w-25">
@@ -210,7 +210,7 @@ class OrderManageItem extends Component {
           <li className="apyStatusNotRead w-25">
            <strong className="stepTit">열람</strong>
            <a href="#" className="itemNum tahoma devLinkExpire" data-pts="-77">
-            {obj.orderTruckOwners.filter((obj,idx)=>obj.isRead=='Y').length}
+            {obj.orderTruckOwners.filter((obj,idx)=>obj.readYn=='Y').length}
            </a>
           </li>
           <li className="on w-25">

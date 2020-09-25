@@ -12,6 +12,6 @@ public class OrderTruckOwnerForTruckOwnerListDTO extends CommonDate implements S
 	//private TruckOwnerForTruckOwnerListDTO truckOwner;
 	private String message;
 	private String status;
-	private String isRead;
+	private String readYn;
 	
 }

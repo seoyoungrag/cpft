@@ -19,7 +19,7 @@ const columns = [
 	{ title: "경력", data: "truckOwner.careerCn", width: "6%" },
 	{ title: "메세지", data: "message", width: "44%" },
 	{ title: "지원일", data: "createdAt", width: "7%" },
-	{ title: "열람", data: "isRead", width: "7%" },
+	{ title: "열람", data: "readYn", width: "7%" },
 	{ title: "상태", data: "status", width: "7%" },
 ];
 const DataTable_language = {
@@ -133,10 +133,10 @@ class ApplicantManage extends Component {
 					$(row)
 						.off()
 						.on("click", function () {
-							if (data.isRead == "N") {
+							if (data.readYn == "N") {
 								axios
-									.put(`/v1/order/${data.order.orderSeq}/truckOwner/${data.truckOwner.userSeq}/isRead`, {
-										isRead: "Y",
+									.put(`/v1/order/${data.order.orderSeq}/truckOwner/${data.truckOwner.userSeq}/readYn`, {
+										readYn: "Y",
 									})
 									.then(function (response) {
 										$(COM.refs.applicantManageTbl).DataTable().ajax.reload(null, false);

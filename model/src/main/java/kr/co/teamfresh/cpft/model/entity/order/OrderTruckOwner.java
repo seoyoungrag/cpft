@@ -36,7 +36,7 @@ public class OrderTruckOwner extends CommonDateEntity implements Serializable{
 	@Column(nullable = false, length = 100, name="STATUS")
 	private String status;
 
-	@Column(nullable = false, length = 100, name="IS_READ")
-	private String isRead;
+	@Column(nullable = false, length = 100, name="READ_YN")
+	private String readYn;
 	
 }
