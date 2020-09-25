@@ -1,26 +1,13 @@
 import React from "react";
 import MainStructure from "components/structure/MainStructure";
+import * as dl from "util/DataTableLang";
 
 function TruckOwnerInfoList(props) {
-	const DataTable_language = {
-		decimal: ",",
-		thousands: ".",
-		paginate: {
-			first: "",
-			last: "",
-			previous: "<",
-			next: ">",
-		},
-		processing: "처리 중 입니다.",
-		emptyTable: "처리할 내용이 없습니다.",
-		info: "총 _PAGES_페이지/_TOTAL_개 중 (_START_ ~ _END_) ",
-	};
-
 	// 컴포넌트 마운트
 	React.useEffect(() => {
 		// 더미 테이블 -----------------------------------------------------------
 		const dummyTable = $("#truckOwnerInfoList").DataTable({
-			language: DataTable_language,
+			language: dl.DataTable_language,
 			responsive: true,
 			data: array,
 			dom:

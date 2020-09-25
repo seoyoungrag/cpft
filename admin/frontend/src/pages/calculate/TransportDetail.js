@@ -24,7 +24,7 @@ function TransportDetail(props) {
 				{ data: "shippingCharge" },
 				{ data: "shippingServiceCharge" },
 				{ data: "totalPayment" },
-				{ data: "shippingChargeMonth" },
+				{ data: "shippingChargesMonth" },
 			],
 			columnDefs: [
 				{
@@ -132,7 +132,7 @@ function TransportDetail(props) {
 			shippingCharge: "3,000,000",
 			shippingServiceCharge: "50,000",
 			totalPayment: "2,950,000",
-			shippingChargeMonth: "2020-08",
+			shippingChargesMonth: "2020-08",
 		},
 		{
 			truckOwnerNm: "김차주",
@@ -141,7 +141,7 @@ function TransportDetail(props) {
 			shippingCharge: "3,000,000",
 			shippingServiceCharge: "50,000",
 			totalPayment: "2,950,000",
-			shippingChargeMonth: "2020-09",
+			shippingChargesMonth: "2020-09",
 		},
 		{
 			truckOwnerNm: "양차주",
@@ -150,7 +150,7 @@ function TransportDetail(props) {
 			shippingCharge: "3,000,000",
 			shippingServiceCharge: "50,000",
 			totalPayment: "2,950,000",
-			shippingChargeMonth: "2020-09",
+			shippingChargesMonth: "2020-09",
 		},
 		{
 			truckOwnerNm: "서차주",
@@ -159,7 +159,7 @@ function TransportDetail(props) {
 			shippingCharge: "3,000,000",
 			shippingServiceCharge: "50,000",
 			totalPayment: "2,950,000",
-			shippingChargeMonth: "2020-08",
+			shippingChargesMonth: "2020-08",
 		},
 		{
 			truckOwnerNm: "최차주",
@@ -168,7 +168,7 @@ function TransportDetail(props) {
 			shippingCharge: "3,000,000",
 			shippingServiceCharge: "50,000",
 			totalPayment: "2,950,000",
-			shippingChargeMonth: "2020-08",
+			shippingChargesMonth: "2020-08",
 		},
 		{
 			truckOwnerNm: "유차주",
@@ -177,7 +177,7 @@ function TransportDetail(props) {
 			shippingCharge: "3,000,000",
 			shippingServiceCharge: "50,000",
 			totalPayment: "2,950,000",
-			shippingChargeMonth: "2020-07",
+			shippingChargesMonth: "2020-07",
 		},
 	];
 	//--------------------------------------------

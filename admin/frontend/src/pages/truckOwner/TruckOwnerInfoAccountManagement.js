@@ -111,6 +111,24 @@ function TruckOwnerInfoAccountManagement(props) {
 		},
 	];
 
+	// 수정 버튼 이벤트
+	const handleClick = (e) => {
+		const btn = e.target;
+		const html = $(btn).html();
+		if (html === "수정") {
+			$(btn).html("저장");
+			$("input[type=radio]").each(function () {
+				$(this).prop("disabled", false);
+			});
+		} else {
+			$(btn).html("수정");
+			$("input[type=radio]").each(function () {
+				$(this).prop("disabled", true);
+			});
+			// 업데이트 통신~
+		}
+	};
+
 	return (
 		<React.Fragment>
 			<div className="form-row my-2 mb-3">
@@ -128,7 +146,7 @@ function TruckOwnerInfoAccountManagement(props) {
 										id="registDate"
 										name="registDate"
 										className="form-control col-8"
-										onChange={handleChange}
+										readOnly
 										value={registDate}
 									/>
 								</td>
@@ -139,7 +157,7 @@ function TruckOwnerInfoAccountManagement(props) {
 										id="registPath"
 										name="registPath"
 										className="form-control col-8"
-										onChange={handleChange}
+										readOnly
 										value={registPath}
 									/>
 								</td>
@@ -150,7 +168,7 @@ function TruckOwnerInfoAccountManagement(props) {
 										id="lastLoginDate"
 										name="lastLoginDate"
 										className="form-control col-8"
-										onChange={handleChange}
+										readOnly
 										value={lastLoginDate}
 									/>
 								</td>
@@ -158,89 +176,102 @@ function TruckOwnerInfoAccountManagement(props) {
 						</tbody>
 					</table>
 				</div>
-				<div className="agreeHistory" style={{ marginTop: "50px", width: "100%" }}>
+				<div className="agreeHistory" style={{ marginTop: "50px", width: "100%", overflow: "hidden" }}>
 					<h4>
 						<b>약관 동의 내역</b>
 					</h4>
-					<table>
-						<tbody>
-							<tr>
-								<td style={{ width: "10rem" }}>약관1</td>
-								<td style={{ width: "6rem" }}>
-									<input
-										type="radio"
-										id="agreement1"
-										value="agree"
-										name="agreement1"
-										checked={agreement1.agree || ""}
-										onChange={handleRadio}
-									/>{" "}
-									동의
-								</td>
-								<td>
-									<input
-										type="radio"
-										id="agreement1"
-										value="reject"
-										name="agreement1"
-										checked={agreement1.reject || ""}
-										onChange={handleRadio}
-									/>{" "}
-									철회
-								</td>
-							</tr>
-							<tr>
-								<td style={{ width: "10rem" }}>약관2</td>
-								<td style={{ width: "6rem" }}>
-									<input
-										type="radio"
-										id="agreement2"
-										value="agree"
-										name="agreement2"
-										checked={agreement2.agree || ""}
-										onChange={handleRadio}
-									/>{" "}
-									동의
-								</td>
-								<td>
-									<input
-										type="radio"
-										id="agreement2"
-										value="reject"
-										name="agreement2"
-										checked={agreement2.reject || ""}
-										onChange={handleRadio}
-									/>{" "}
-									철회
-								</td>
-							</tr>
-							<tr>
-								<td style={{ width: "10rem" }}>약관3</td>
-								<td style={{ width: "6rem" }}>
-									<input
-										type="radio"
-										id="agreement3"
-										value="agree"
-										name="agreement3"
-										checked={agreement3.agree || ""}
-										onChange={handleRadio}
-									/>{" "}
-									동의
-								</td>
-								<td>
-									<input
-										type="radio"
-										id="agreement3"
-										value="reject"
-										name="agreement3"
-										checked={agreement3.reject || ""}
-										onChange={handleRadio}
-									/>{" "}
-									철회
-								</td>
-							</tr>
-						</tbody>
-					</table>
+					<div style={{ width: "70%", float: "left" }}>
+						<table>
+							<tbody>
+								<tr>
+									<td style={{ width: "10rem" }}>약관1</td>
+									<td style={{ width: "6rem" }}>
+										<input
+											type="radio"
+											id="agreement1"
+											value="agree"
+											name="agreement1"
+											checked={agreement1.agree || ""}
+											disabled
+											onChange={handleRadio}
+										/>{" "}
+										동의
+									</td>
+									<td>
+										<input
+											type="radio"
+											id="agreement1"
+											value="reject"
+											name="agreement1"
+											checked={agreement1.reject || ""}
+											disabled
+											onChange={handleRadio}
+										/>{" "}
+										철회
+									</td>
+								</tr>
+								<tr>
+									<td style={{ width: "10rem" }}>약관2</td>
+									<td style={{ width: "6rem" }}>
+										<input
+											type="radio"
+											id="agreement2"
+											value="agree"
+											name="agreement2"
+											checked={agreement2.agree || ""}
+											disabled
+											onChange={handleRadio}
+										/>{" "}
+										동의
+									</td>
+									<td>
+										<input
+											type="radio"
+											id="agreement2"
+											value="reject"
+											name="agreement2"
+											checked={agreement2.reject || ""}
+											disabled
+											onChange={handleRadio}
+										/>{" "}
+										철회
+									</td>
+								</tr>
+								<tr>
+									<td style={{ width: "10rem" }}>약관3</td>
+									<td style={{ width: "6rem" }}>
+										<input
+											type="radio"
+											id="agreement3"
+											value="agree"
+											name="agreement3"
+											checked={agreement3.agree || ""}
+											disabled
+											onChange={handleRadio}
+										/>{" "}
+										동의
+									</td>
+									<td>
+										<input
+											type="radio"
+											id="agreement3"
+											value="reject"
+											name="agreement3"
+											checked={agreement3.reject || ""}
+											disabled
+											onChange={handleRadio}
+										/>{" "}
+										철회
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div style={{ width: "30%", float: "right" }}>
+						<button className="btn btn-info ml-1" id="mutateBtn" onClick={handleClick} style={{ float: "right" }}>
+							수정
+						</button>
+					</div>
 				</div>
 				<div className="accountHistory" style={{ marginTop: "50px", width: "100%" }}>
 					<h4>

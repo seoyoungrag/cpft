@@ -4,106 +4,103 @@ import { Provider } from "react-redux";
 import store from "./store/configure";
 import { BrowserRouter as Router } from "react-router-dom";
 import ReactStore from "ReactStore";
-import { Component } from "react";
-import MainStructure from "components/structure/MainStructure";
 
-class Root extends Component {
-	constructor(props) {
-		super(props);
-		// this._initButton = () => {
-		//  this.state.buttonIdsArray.forEach((button) => {
-		//   document.getElementById(button).classList.remove("active");
-		//  });
-		// };
-		this._handleClick = (id) => {
-			var isClicked = false;
-			if (document.getElementById(id).classList.contains("active")) {
-				isClicked = true;
+function Root(props) {
+	React.useEffect(() => {
+		_initNav();
+
+		return () => {};
+	}, []);
+
+	// componentDidUpdate = () => {
+	// 	/*
+	//   first = location.pathname;
+	//   first.indexOf(1);
+	//   first.toLowerCase();
+	//   first = first.split("/")[1];
+	//   */
+	// };
+
+	const _initButton = () => {
+		state.buttonIdsArray.forEach((button) => {
+			document.getElementById(button).classList.remove("active");
+		});
+	};
+	const _handleClick = (id) => {
+		let isClicked = false;
+		if (document.getElementById(id).classList.contains("active")) {
+			isClicked = true;
+		}
+		_initButton();
+		if (isClicked) {
+			document.getElementById(id).classList.remove("active");
+			setState((prevState) => ({
+				...prevState,
+				clickedButton: "",
+			}));
+			localStorage.setItem("clickedButton", "");
+		} else {
+			document.getElementById(id).classList.add("active");
+			setState((prevState) => ({
+				...prevState,
+				clickedButton: id,
+			}));
+			localStorage.setItem("clickedButton", id);
+		}
+		setState((prevState) => ({ ...prevState, active: !prevState.active }));
+	};
+
+	const _initNav = () => {
+		let isInitNav = true;
+		state.buttonIdsArray.forEach((button) => {
+			if (!document.getElementById(button)) {
+				isInitNav = false;
 			}
-			//  this._initButton();
-			if (isClicked) {
-				document.getElementById(id).classList.remove("active");
-				this.setState({
-					clickedButton: "",
-				});
-				localStorage.setItem("clickedButton", "");
+		});
+		if (!isInitNav) {
+			return false;
+		}
+		_initButton();
+		state.buttonIdsArray.forEach((button) => {
+			document.getElementById(button).classList.remove("active");
+			let collapseDiv = document.getElementById(button).querySelector("a").dataset.target;
+			if (state.clickedButton == button) {
+				document.getElementById(button).classList.add("active");
+				document.querySelector(collapseDiv).classList.add("show");
 			} else {
-				document.getElementById(id).classList.add("active");
-				this.setState({
-					clickedButton: id,
-				});
-				localStorage.setItem("clickedButton", id);
-			}
-
-			this.setState({ active: !this.state.active });
-		};
-		this._initNav = () => {
-			var isInitNav = true;
-			this.state.buttonIdsArray.forEach((button) => {
-				if (!document.getElementById(button)) {
-					isInitNav = false;
-				}
-			});
-			if (!isInitNav) {
-				return false;
-			}
-
-			//  this._initButton();
-
-			this.state.buttonIdsArray.forEach((button) => {
 				document.getElementById(button).classList.remove("active");
-				var collapseDiv = document.getElementById(button).querySelector("a").dataset.target;
-				if (this.state.clickedButton == button) {
-					document.getElementById(button).classList.add("active");
-					document.querySelector(collapseDiv).classList.add("show");
-				} else {
-					document.getElementById(button).classList.remove("active");
-					document.querySelector(collapseDiv).classList.remove("show");
-				}
-			});
-			var aTags = document.querySelectorAll("a.collapse-item");
-			for (var i = 0; i < aTags.length; i++) {
-				if (aTags[i].pathname == location.pathname) {
-					aTags[i].classList.add("active");
-				} else {
-					aTags[i].classList.remove("active");
-				}
+				document.querySelector(collapseDiv).classList.remove("show");
 			}
-		};
-		this.state = {
-			active: true,
-			buttonIdsArray: ["button1", "button2", "button3"],
-			clickedButton: localStorage.getItem("clickedButton") || "",
-			//  initButton: this._initButton,
-			handleClick: this._handleClick,
-			initNav: this._initNav,
-		};
-	}
-
-	componentDidMount = () => {
-		this._initNav();
-	};
-	componentDidUpdate = () => {
-		/*
-    first = location.pathname;
-    first.indexOf(1);
-    first.toLowerCase();
-    first = first.split("/")[1];
-    */
+		});
+		let aTags = document.querySelectorAll("a.collapse-item");
+		for (let i = 0; i < aTags.length; i++) {
+			if (aTags[i].pathname == location.pathname) {
+				aTags[i].classList.add("active");
+			} else {
+				aTags[i].classList.remove("active");
+			}
+		}
 	};
 
-	render() {
-		return (
-			<Provider store={store}>
-				<ReactStore.Provider value={this.state}>
-					<React.StrictMode>
-						<Router>
-							<App initNav={this._initNav} />
-						</Router>
-					</React.StrictMode>
-				</ReactStore.Provider>
-			</Provider>
-		);
-	}
+	const [state, setState] = React.useState({
+		active: true,
+		buttonIdsArray: ["button1", "button2", "button3", "button4", "button5", "button7", "button8"],
+		clickedButton: localStorage.getItem("clickedButton") || "",
+		initButton: _initButton,
+		handleClick: _handleClick,
+		initNav: _initNav,
+	});
+
+	return (
+		<Provider store={store}>
+			<ReactStore.Provider value={state}>
+				<React.StrictMode>
+					<Router>
+						<App initNav={_initNav} />
+					</Router>
+				</React.StrictMode>
+			</ReactStore.Provider>
+		</Provider>
+	);
 }
 export default Root;

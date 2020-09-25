@@ -8,27 +8,23 @@ import ReactStore from "ReactStore";
 import { Link } from "react-router-dom";
 import SideNav from "components/structure/SideNav";
 
-class MainStructure extends Component {
-  constructor(props) {
-    super(props);
-  }
+function MainStructure(props) {
+	React.useEffect(() => {
+		return () => {};
+	}, []);
 
-  componentDidMount() {}
+	return (
+		<div id="wrapper">
+			<SideNav></SideNav>
 
-  render() {
-    return (
-      <div id="wrapper">
-        <SideNav></SideNav>
-
-        <div id="content-wrapper" className="d-flex flex-column">
-          <div id="content">
-            <HeaderContainer />
-            {this.props.children}
-          </div>
-        </div>
-      </div>
-    );
-  }
+			<div id="content-wrapper" className="d-flex flex-column">
+				<div id="content">
+					<HeaderContainer />
+					{props.children}
+				</div>
+			</div>
+		</div>
+	);
 }
 
 export default MainStructure;
